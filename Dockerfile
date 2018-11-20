@@ -1,5 +1,5 @@
 FROM python:3.6
-MAINTAINER Cuenca <dev@cuenca.com>
+LABEL maintainer="dev@cuenca.com"
 
 WORKDIR /arcusd
 
