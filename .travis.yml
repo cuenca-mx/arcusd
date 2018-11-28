@@ -15,3 +15,10 @@ jobs:
     python: 3.7
     dist: xenial
     sudo: true
+  - stage: code coverage
+    python: 3.6
+    install: pip install coveralls
+    script:
+      - coverage run --source arcusd -m py.test
+      - coverage report -m
+      - coveralls
