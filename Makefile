@@ -1,5 +1,4 @@
 SHELL := bash
-DOCKER=docker-compose run --rm arcusd
 PYTHON=python3.7
 
 
@@ -15,7 +14,7 @@ venv:
 		pip install --quiet --upgrade pip
 
 lint:
-		pycodestyle --ignore=E402 arcusd/ migrations/ test/
+		pycodestyle --ignore=E402 arcusd/ tests/
 
 clean-pyc:
 		find . -name '__pycache__' -exec rm -r "{}" +
@@ -28,31 +27,5 @@ test: clean-pyc lint
 travis-test:
 		pip install -q pycodestyle
 		$(MAKE) lint
-		$(MAKE) docker-build
-		$(DOCKER) scripts/test.sh
-		$(MAKE) docker-stop
 
-docker-test: docker-build
-		# Clean up even if there's an error
-		$(DOCKER) scripts/test.sh || $(MAKE) docker-stop
-		$(MAKE) docker-stop
-
-docker-build: clean-pyc
-		docker-compose build
-		touch docker-build
-
-docker-stop:
-		docker-compose stop
-		docker-compose rm -f
-
-clean-docker:
-		docker-compose down --rmi local
-		rm docker-build
-
-docker-shell: docker-build
-		# Clean up even if there's an error
-		$(DOCKER) scripts/devwrapper.sh bash || $(MAKE) docker-stop
-		$(MAKE) docker-stop
-
-
-.PHONY: install install-dev lint clean-pyc test docker-stop clean-docker shell
+.PHONY: install install-dev lint clean-pyc test
