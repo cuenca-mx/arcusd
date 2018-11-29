@@ -4,19 +4,14 @@ notifications:
 language: python
 python: 3.6
 sudo: required
+services:
+- docker
 
 script: make travis-test
 
 jobs:
   include:
-  - stage: test
-    python: 3.6
-  - stage: test
-    python: 3.7
-    dist: xenial
-    sudo: true
   - stage: code coverage
-    python: 3.6
     install: pip install coveralls
     script:
       - coverage run --source arcusd -m py.test
