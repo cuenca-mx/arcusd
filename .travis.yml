@@ -4,11 +4,20 @@ notifications:
 language: python
 python: 3.6
 
+sudo: required
+
+services:
+  - docker
+
 jobs:
   include:
+  - stage: docker compose build
+    script: make docker-build
   - stage: test
-    python: 3.6
-    sudo: required
-    services:
-    - docker
-    script: make travis-test
+    script:
+      - pip install -q pycodestyle
+      - make lint
+      - docker-compose run --rm arcusd scripts/test.sh
+  - stage: code coverage
+    script:
+      - make code-coverage-upload

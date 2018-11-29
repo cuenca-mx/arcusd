@@ -30,6 +30,9 @@ code-coverage:
 		coverage run --source arcusd -m py.test
 		coverage report -m
 
+code-coverage-upload:
+		$(DOCKER) scripts/code-coverage-upload.sh
+
 travis-test:
 		pip install -q pycodestyle
 		$(MAKE) lint
