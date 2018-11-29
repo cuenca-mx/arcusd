@@ -1,4 +1,4 @@
-#!/usr/bin/env bash -e
+#!/usr/bin/env bash
 
 make clean-pyc
 pip install -q --upgrade pip
