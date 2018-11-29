@@ -2,4 +2,4 @@
 
 make code-coverage
 coveralls
-make docker-stop
+

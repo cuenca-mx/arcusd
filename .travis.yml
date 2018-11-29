@@ -11,13 +11,10 @@ services:
 
 jobs:
   include:
-  - stage: docker compose build
-    script: make docker-build
-  - stage: test
+  - stage: docker build and test
     script:
-      - pip install -q pycodestyle
-      - make lint
-      - docker-compose run --rm arcusd scripts/test.sh
+      - make travis-test
   - stage: code coverage
     script:
       - make code-coverage-upload
+      - make docker-stop
