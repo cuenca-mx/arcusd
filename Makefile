@@ -60,4 +60,6 @@ docker-shell: docker-build
 		$(DOCKER) scripts/devwrapper.sh bash || $(MAKE) docker-stop
 		$(MAKE) docker-stop
 
-.PHONY: install install-dev lint clean-pyc test travis-test
+
+
+.PHONY: install install-dev lint clean-pyc test travis-test docker-test clean-docker docker-shell
