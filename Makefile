@@ -14,7 +14,7 @@ venv:
 		pip install --quiet --upgrade pip
 
 lint:
-		pycodestyle --ignore=E402 arcusd/ tests/
+		pycodestyle arcusd/ tests/
 
 clean-pyc:
 		find . -name '__pycache__' -exec rm -r "{}" +
