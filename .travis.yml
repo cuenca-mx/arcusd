@@ -3,8 +3,12 @@ notifications:
 
 language: python
 python: 3.6
-sudo: required
-services:
-- docker
 
-script: make travis-test
+jobs:
+  include:
+  - stage: test
+    python: 3.6
+    sudo: required
+    services:
+    - docker
+    script: make travis-test

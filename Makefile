@@ -29,7 +29,6 @@ code-coverage:
 		pip install coveralls
 		coverage run --source arcusd -m py.test
 		coverage report -m
-		coveralls
 
 travis-test:
 		pip install -q pycodestyle
@@ -62,4 +61,4 @@ docker-shell: docker-build
 
 
 
-.PHONY: install install-dev lint clean-pyc test travis-test docker-test clean-docker docker-shell
+.PHONY: install install-dev lint clean-pyc test travis-test docker-test clean-docker docker-shell code-coverage
