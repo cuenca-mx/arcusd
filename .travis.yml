@@ -8,12 +8,3 @@ services:
 - docker
 
 script: make travis-test
-
-jobs:
-  include:
-  - stage: code coverage
-    install: pip install coveralls
-    script:
-      - coverage run --source arcusd -m py.test
-      - coverage report -m
-      - coveralls
