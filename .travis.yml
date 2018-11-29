@@ -2,7 +2,6 @@ notifications:
   slack: cuencafinance:6N0IaVciA0KyNylSTq5ZzW4I
 
 language: python
-python: 3.6
 
 sudo: required
 
@@ -12,9 +11,11 @@ services:
 jobs:
   include:
   - stage: docker build and test
+    python: 3.6
     script:
       - make travis-test
   - stage: code coverage
+    python: 3.6
     script:
       - make code-coverage-upload
       - make docker-stop
