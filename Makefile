@@ -17,11 +17,6 @@ venv:
 lint:
 		pycodestyle arcusd/ tests/
 
-clean-pyc:
-		find . -name '__pycache__' -exec rm -r "{}" +
-		find . -name '*.pyc' -delete
-		find . -name '*~' -delete
-
 test: clean-pyc lint
 		coverage run --source arcusd -m py.test
 		coverage report -m
@@ -43,6 +38,13 @@ docker-test: docker-build
 docker-stop:
 		docker-compose stop
 		docker-compose rm -f
+
+clean: clean-docker clean-pyc
+
+clean-pyc:
+		find . -name '__pycache__' -exec rm -r "{}" +
+		find . -name '*.pyc' -delete
+		find . -name '*~' -delete
 
 clean-docker:
 		docker-compose down --rmi local
