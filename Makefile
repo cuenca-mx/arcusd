@@ -26,12 +26,8 @@ test: clean-pyc lint
 		pytest
 
 code-coverage:
-		pip install coveralls
 		coverage run --source arcusd -m py.test
 		coverage report -m
-
-code-coverage-upload:
-		$(DOCKER) scripts/code-coverage-upload.sh
 
 travis-test:
 		pip install -q pycodestyle

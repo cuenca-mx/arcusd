@@ -6,4 +6,3 @@ WORKDIR /arcusd
 
 RUN pip install --quiet --upgrade pip
 RUN make install
-

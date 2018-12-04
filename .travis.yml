@@ -12,10 +12,12 @@ jobs:
   include:
   - stage: docker build and test
     python: 3.6
+    before_install:
+      - docker-compose up -d
+    install:
+      - docker-compose exec arcusd make install-dev
     script:
-      - make travis-test
-  - stage: code coverage
-    python: 3.6
-    script:
-      - make code-coverage-upload
-      - make docker-stop
+      - docker-compose exec arcusd make test
+    after_success:
+      - docker-compose exec arcusd make code-coverage
+      - docker-compose exec arcusd coveralls
