@@ -114,3 +114,6 @@ venv.bak/
 
 # envrc
 .envrc
+
+# build docs
+docker-build

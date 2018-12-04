@@ -1,0 +1,22 @@
+notifications:
+  slack: cuencafinance:6N0IaVciA0KyNylSTq5ZzW4I
+
+language: python
+
+sudo: required
+
+services:
+  - docker
+
+jobs:
+  include:
+  - stage: docker build and test
+    python: 3.6
+    before_install:
+      - docker-compose up -d
+    install:
+      - docker-compose exec arcusd make install-dev
+    script:
+      - docker-compose exec arcusd make test
+    after_success:
+      - docker-compose exec arcusd coveralls
