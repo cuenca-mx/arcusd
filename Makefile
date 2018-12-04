@@ -23,27 +23,22 @@ clean-pyc:
 		find . -name '*~' -delete
 
 test: clean-pyc lint
-		pytest
-
-code-coverage:
 		coverage run --source arcusd -m py.test
 		coverage report -m
 
-travis-test:
-		pip install -q pycodestyle
-		$(MAKE) lint
-		$(MAKE) docker-build
-		$(DOCKER) scripts/test.sh
+docker-build: clean-pyc
+		docker-compose build
+		touch docker-build
+
+docker-shell: docker-build
+		# Clean up even if there's an error
+		$(DOCKER) scripts/devwrapper.sh bash || $(MAKE) docker-stop
 		$(MAKE) docker-stop
 
 docker-test: docker-build
 		# Clean up even if there's an error
 		$(DOCKER) scripts/test.sh || $(MAKE) docker-stop
 		$(MAKE) docker-stop
-
-docker-build: clean-pyc
-		docker-compose build
-		touch docker-build
 
 docker-stop:
 		docker-compose stop
@@ -53,11 +48,5 @@ clean-docker:
 		docker-compose down --rmi local
 		rm docker-build
 
-docker-shell: docker-build
-		# Clean up even if there's an error
-		$(DOCKER) scripts/devwrapper.sh bash || $(MAKE) docker-stop
-		$(MAKE) docker-stop
 
-
-
-.PHONY: install install-dev lint clean-pyc test travis-test docker-test clean-docker docker-shell code-coverage
+.PHONY: install install-dev lint clean-pyc test clean-docker docker-shell
