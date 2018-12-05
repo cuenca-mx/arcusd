@@ -1,6 +1,3 @@
-import os
-
-
 broker_url = 'rabbitmq'
 task_serializer = 'json'
 accept_content = ['json']
