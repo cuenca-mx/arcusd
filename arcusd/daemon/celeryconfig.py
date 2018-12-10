@@ -6,4 +6,4 @@ task_serializer = 'json'
 accept_content = ['json']
 task_default_queue = os.environ['ARCUSD_PAYMENTS_QUEUE']
 include = ['arcusd.daemon.tasks']
-backend = 'amqp'
+result_backend = 'amqp'

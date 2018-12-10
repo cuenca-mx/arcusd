@@ -1,3 +1,4 @@
+import json
 import os
 
 from .celery_app import app
@@ -51,7 +52,7 @@ def pay_bill(biller_id: int, account_number: str) -> OpInfo:
 
 
 @app.task
-def cancell_transaction(transaction_id: int) -> OpInfo:
+def cancel_transaction(transaction_id: int) -> OpInfo:
     def cancell(transaction_id: int) -> Transaction:
         cancellation = client.transactions.cancel(transaction_id)
         return client.transactions.get(transaction_id)

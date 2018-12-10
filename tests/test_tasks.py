@@ -3,7 +3,7 @@ import pytest
 from arcusd.models.enums.opstatus import OperationStatus
 from arcusd.models.enums.optype import OperationType
 from arcusd.daemon.tasks import (
-    topup, query_bill, pay_bill, cancell_transaction)
+    topup, query_bill, pay_bill, cancel_transaction)
 
 
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
@@ -69,7 +69,7 @@ def test_failed_topup(phone_number, amount, expected_message):
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 def test_cancel_bill():
     pay_op_info = pay_bill(35, '123456851236')
-    cancell_op_info = cancell_transaction(pay_op_info.operation.id)
-    assert cancell_op_info.status == OperationStatus.SUCCESS
-    assert cancell_op_info.operation.id == pay_op_info.operation.id
-    assert cancell_op_info.operation.status == 'refunded'
+    cancel_op_info = cancel_transaction(pay_op_info.operation.id)
+    assert cancel_op_info.status == OperationStatus.SUCCESS
+    assert cancel_op_info.operation.id == pay_op_info.operation.id
+    assert cancel_op_info.operation.status == 'refunded'
