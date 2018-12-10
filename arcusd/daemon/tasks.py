@@ -11,8 +11,7 @@ ARCUS_API_KEY = os.environ['ARCUS_API_KEY']
 ARCUS_SECRET_KEY = os.environ['ARCUS_SECRET_KEY']
 
 
-use_arcus_sandbox = ('ARCUS_USE_SANDBOX' in os.environ
-                     and os.environ['ARCUS_USE_SANDBOX'].lower() == 'true')
+use_arcus_sandbox = os.environ.get('ARCUS_USE_SANDBOX') == 'true'
 
 
 client = Client(ARCUS_API_KEY, ARCUS_SECRET_KEY,
@@ -86,3 +85,4 @@ def cancell_transaction(transaction_id: int) -> OpInfo:
         op_info.status = OperationStatus.FAILED
         op_info.error_message = exc.message
     return op_info
+

@@ -22,3 +22,5 @@ services:
       - ARCUS_API_KEY
       - ARCUS_SECRET_KEY
       - ARCUS_USE_SANDBOX
+      - ARCUSD_AMPQ_ADDRESS
+      - ARCUSD_PAYMENTS_QUEUE
