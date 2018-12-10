@@ -1,12 +1,11 @@
-import json
 import os
+
+from arcus.client import Client
+from arcus.resources import Transaction
 
 from .celery_app import app
 from ..models.operationinfo import OpInfo
-from ..models.enums.optype import OperationType
-from ..models.enums.opstatus import OperationStatus
-from arcus.client import Client
-from arcus.resources import Transaction
+from ..types import OperationStatus, OperationType
 
 
 ARCUS_API_KEY = os.environ['ARCUS_API_KEY']
@@ -23,13 +22,13 @@ client = Client(ARCUS_API_KEY, ARCUS_SECRET_KEY,
 @app.task
 def topup(biller_id: int, phone_number: str,
           amount: float, currency: str = 'MXN') -> OpInfo:
-    return execute_op(OperationType.TOPUP, client.topups.create, biller_id,
+    return execute_op(OperationType.topup, client.topups.create, biller_id,
                       phone_number, amount, currency)
 
 
 @app.task
 def query_bill(biller_id: int, account_number: str) -> OpInfo:
-    return execute_op(OperationType.QUERY, client.bills.create, biller_id,
+    return execute_op(OperationType.query, client.bills.create, biller_id,
                       account_number)
 
 
@@ -39,7 +38,7 @@ def pay_bill(bill_id: int) -> OpInfo:
         bill = client.bills.get(bill_id)
         return bill.pay()
 
-    return execute_op(OperationType.PAYMENT, pay, bill_id)
+    return execute_op(OperationType.payment, pay, bill_id)
 
 
 @app.task
@@ -48,7 +47,7 @@ def pay_bill(biller_id: int, account_number: str) -> OpInfo:
         bill = client.bills.create(biller_id, account_number)
         return bill.pay()
 
-    return execute_op(OperationType.PAYMENT, pay, biller_id, account_number)
+    return execute_op(OperationType.payment, pay, biller_id, account_number)
 
 
 @app.task
@@ -57,7 +56,7 @@ def cancel_transaction(transaction_id: int) -> OpInfo:
         cancellation = client.transactions.cancel(transaction_id)
         return client.transactions.get(transaction_id)
 
-    return execute_op(OperationType.PAYMENT, cancell, transaction_id)
+    return execute_op(OperationType.payment, cancell, transaction_id)
 
 
 def execute_op(op_type: OperationType, funct, *args) -> OpInfo:
@@ -65,8 +64,8 @@ def execute_op(op_type: OperationType, funct, *args) -> OpInfo:
     try:
         transaction = funct(*args)
         op_info.operation = transaction
-        op_info.status = OperationStatus.SUCCESS
+        op_info.status = OperationStatus.success
     except Exception as exc:
-        op_info.status = OperationStatus.FAILED
+        op_info.status = OperationStatus.failed
         op_info.error_message = exc.message
     return op_info
