@@ -48,15 +48,15 @@ def test_failed_payment():
 
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 def test_successful_topup():
-    op_info = topup(13599, '5599999999', 100.0, 'MXN')
+    op_info = topup(13599, '5599999999', 10000, 'MXN')
     assert op_info.type == OperationType.topup
     assert op_info.status == OperationStatus.success
 
 
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 @pytest.mark.parametrize('phone_number,amount,expected_message', [
-    ('559999', 100.0, 'Invalid Phone Number'),
-    ('5599999999', 93.3, 'Invalid Payment Amount')
+    ('559999', 10000, 'Invalid Phone Number'),
+    ('5599999999', 9330, 'Invalid Payment Amount')
 ])
 def test_failed_topup(phone_number, amount, expected_message):
     op_info = topup(13599, phone_number, amount, 'MXN')
