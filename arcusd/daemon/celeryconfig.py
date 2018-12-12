@@ -1,6 +1,5 @@
 import os
 
-
 broker_url = os.environ['ARCUSD_AMPQ_ADDRESS']
 task_serializer = 'json'
 accept_content = ['json']

@@ -13,8 +13,6 @@ services:
       - .:/arcusd
     ports:
       - 3000:3000
-    links:
-      - rabbitmq
     depends_on:
       - rabbitmq
     environment:
