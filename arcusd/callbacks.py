@@ -1,4 +1,4 @@
-from .models.operationinfo import OpInfo
+from .contracts.operationinfo import OpInfo
 
 
 class CallbackHelper:

@@ -1,5 +1,5 @@
 from .celery_app import app
-from ..models.operationinfo import OpInfo
+from ..contracts.operationinfo import OpInfo
 from ..types import OperationStatus, OperationType
 from ..callbacks import CallbackHelper
 import arcusd.arcusactions
