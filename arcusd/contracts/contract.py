@@ -1,4 +1,5 @@
 from enum import Enum
+from datetime import datetime
 
 EXCLUDED_TYPES = (int, str, bool, dict, Enum)
 
@@ -18,6 +19,8 @@ class Contract:
                                       for item in contract_dict[key]]
             if isinstance(value, Enum):
                 continue
+            if type(value) is datetime:
+                contract_dict[key] = contract_dict[key].isoformat()
             if not hasattr(value, 'to_dict'):
                 continue
             contract_dict[key] = value.to_dict()
