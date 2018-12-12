@@ -1,7 +1,7 @@
 from enum import Enum
 from datetime import datetime
 
-EXCLUDED_TYPES = (int, str, bool, dict, Enum)
+EXCLUDED_TYPES = (int, str, bool, dict)
 
 
 def filter_item(item):
@@ -9,6 +9,7 @@ def filter_item(item):
 
 
 class Contract:
+
     def to_dict(self):
         contract_dict = self.__dict__.copy()
         for key, value in contract_dict.items():

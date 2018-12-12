@@ -2,12 +2,12 @@ from enum import Enum
 
 
 class OperationStatus(str, Enum):
-    none = 'NONE'
-    success = 'SUCCESS'
-    failed = 'FAILED'
+    none = 'none'
+    success = 'success'
+    failed = 'failed'
 
 
 class OperationType(str, Enum):
-    query = 'QUERY'
-    payment = 'PAYMENT'
-    topup = 'TOPUP'
+    query = 'query'
+    payment = 'payment'
+    topup = 'topup'

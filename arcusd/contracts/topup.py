@@ -2,6 +2,7 @@ from .contract import Contract
 
 
 class Topup(Contract):
+
     def __init__(self,
                  id: int,
                  biller_id: int,

@@ -2,6 +2,7 @@ from .contract import Contract
 
 
 class Bill(Contract):
+
     def __init__(self,
                  id: int,
                  biller_id: int,

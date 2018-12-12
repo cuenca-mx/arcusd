@@ -3,6 +3,7 @@ from ..types import OperationStatus, OperationType
 
 
 class OpInfo(Contract):
+
     def __init__(self,
                  tran_type: OperationType,
                  status: OperationStatus = OperationStatus.none,

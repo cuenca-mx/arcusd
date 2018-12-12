@@ -1,4 +1,8 @@
-class Transaction:
+from .contract import Contract
+
+
+class Transaction(Contract):
+
     def __init__(self,
                  id: int,
                  amount: int,
