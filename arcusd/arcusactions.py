@@ -3,7 +3,6 @@ import os
 from arcus.client import Client
 from arcus.resources import Bill, Topup, Transaction
 
-from .callbacks import CallbackHelper
 import arcusd.contracts
 
 ARCUS_API_KEY = os.environ['ARCUS_API_KEY']
