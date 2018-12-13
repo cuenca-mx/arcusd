@@ -2,8 +2,8 @@ from unittest.mock import patch
 import pytest
 
 import arcusd.arcusactions
-from arcusd.daemon.tasks import (
-    topup, query_bill, pay_bill, cancel_transaction)
+from arcusd.daemon.tasks import (cancel_transaction, pay_bill, pay_bill_id,
+                                 query_bill, topup)
 from arcusd.types import OperationStatus, OperationType
 
 
@@ -43,6 +43,19 @@ def test_query_bill_failed(callback_helper, biller_id, account_number,
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 def test_successful_payment(callback_helper):
     pay_bill(40, '501000000007')
+    assert callback_helper.called
+    op_info = callback_helper.call_args[0][0]
+    assert op_info.type == OperationType.payment
+    assert op_info.status == OperationStatus.success
+    assert type(op_info.operation.id) is int
+    assert op_info.operation.status == 'fulfilled'
+
+
+@patch('arcusd.callbacks.CallbackHelper.send_op_result')
+@pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
+def test_successful_payment_bill_id(callback_helper):
+    bill = arcusd.arcusactions.query_bill(40, '501000000007')
+    pay_bill_id(bill.id)
     assert callback_helper.called
     op_info = callback_helper.call_args[0][0]
     assert op_info.type == OperationType.payment
