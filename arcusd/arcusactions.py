@@ -1,9 +1,8 @@
 import os
 
 from arcus.client import Client
-from arcus.resources import Bill, Topup, Transaction
 
-import arcusd.contracts
+from arcusd.contracts import Bill, Topup, Transaction
 
 ARCUS_API_KEY = os.environ['ARCUS_API_KEY']
 ARCUS_SECRET_KEY = os.environ['ARCUS_SECRET_KEY']
@@ -26,7 +25,7 @@ def unit_to_cents(unit: float)-> int:
 
 def query_bill(biller_id: int, account_number: str) -> Bill:
     bill = client.bills.create(biller_id, account_number)
-    bill_contract = arcusd.contracts.Bill(
+    bill_contract = Bill(
         id=bill.id,
         biller_id=bill.biller_id,
         account_number=bill.account_number,
@@ -39,7 +38,7 @@ def query_bill(biller_id: int, account_number: str) -> Bill:
 def pay_bill_id(bill_id: int) -> Transaction:
     bill = client.bills.get(bill_id)
     transaction = bill.pay()
-    transaction_contract = arcusd.contracts.Transaction(
+    transaction_contract = Transaction(
         id=transaction.id,
         amount=unit_to_cents(transaction.amount),
         currency=transaction.amount_currency,
@@ -53,7 +52,7 @@ def pay_bill_id(bill_id: int) -> Transaction:
 def pay_bill(biller_id: int, account_number: str) -> Transaction:
     bill = client.bills.create(biller_id, account_number)
     transaction = bill.pay()
-    transaction_contract = arcusd.contracts.Transaction(
+    transaction_contract = Transaction(
         id=transaction.id,
         amount=unit_to_cents(transaction.amount),
         currency=transaction.amount_currency,
@@ -67,7 +66,7 @@ def pay_bill(biller_id: int, account_number: str) -> Transaction:
 def cancel_transaction(transaction_id: int) -> Transaction:
     cancelation = client.transactions.cancel(transaction_id)
     transaction = client.transactions.get(transaction_id)
-    transaction_contract = arcusd.contracts.Transaction(
+    transaction_contract = Transaction(
         id=transaction.id,
         amount=unit_to_cents(transaction.amount),
         currency=transaction.amount_currency,
@@ -82,7 +81,7 @@ def topup(biller_id: int, phone_number: str, amount: int,
           currency='MXN') -> Topup:
     unit = cents_to_unit(amount)
     topup = client.topups.create(biller_id, phone_number, unit, currency)
-    topup_contract = arcusd.contracts.Topup(
+    topup_contract = Topup(
         id=topup.id,
         biller_id=topup.biller_id,
         account_number=topup.account_number,

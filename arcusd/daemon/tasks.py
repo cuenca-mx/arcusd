@@ -8,12 +8,13 @@ import arcusd.arcusactions
 @app.task
 def topup(biller_id: int, phone_number: str,
           amount: int, currency: str = 'MXN'):
-    return execute_op(OperationType.topup, arcusd.arcusactions.topup,
-                      biller_id, phone_number, amount, currency)
+    execute_op(OperationType.topup, arcusd.arcusactions.topup,
+               biller_id, phone_number, amount, currency)
 
 
 @app.task
 def query_bill(biller_id: int, account_number: str):
+    print(f'parameters: {biller_id}, {account_number}')
     execute_op(OperationType.query, arcusd.arcusactions.query_bill, biller_id,
                account_number)
 
@@ -24,6 +25,7 @@ def pay_bill(bill_id: int):
 
 @app.task
 def pay_bill(biller_id: int, account_number: str):
+    print(f'parameters: {biller_id}, {account_number}')
     execute_op(OperationType.payment, arcusd.arcusactions.pay_bill, biller_id,
                account_number)
 

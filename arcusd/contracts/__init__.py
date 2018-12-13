@@ -1,3 +1,4 @@
 from .bill import Bill
-from .transaction import Transaction
+from .operationinfo import OpInfo
 from .topup import Topup
+from .transaction import Transaction

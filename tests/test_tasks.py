@@ -2,9 +2,9 @@ from unittest.mock import patch
 import pytest
 
 import arcusd.arcusactions
-from arcusd.types import OperationStatus, OperationType
 from arcusd.daemon.tasks import (
     topup, query_bill, pay_bill, cancel_transaction)
+from arcusd.types import OperationStatus, OperationType
 
 
 @patch('arcusd.callbacks.CallbackHelper.send_op_result')
