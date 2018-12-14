@@ -1,13 +1,13 @@
 from enum import Enum
 
 
-class OperationStatus(str, Enum):
+class OperationStatus(Enum):
     none = 'none'
     success = 'success'
     failed = 'failed'
 
 
-class OperationType(str, Enum):
+class OperationType(Enum):
     query = 'query'
     payment = 'payment'
     topup = 'topup'
