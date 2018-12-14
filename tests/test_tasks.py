@@ -14,7 +14,7 @@ def test_query_bill(callback_helper):
     assert callback_helper.called
     op_info = callback_helper.call_args[0][0]
     assert op_info.status == OperationStatus.success
-    assert op_info.type == OperationType.query
+    assert op_info.tran_type == OperationType.query
     assert op_info.operation.account_number == '501000000007'
     assert type(op_info.operation.balance) is int
 
@@ -33,7 +33,7 @@ def test_query_bill_failed(callback_helper, biller_id, account_number,
     query_bill(biller_id, account_number)
     assert callback_helper.called
     op_info = callback_helper.call_args[0][0]
-    assert op_info.type == OperationType.query
+    assert op_info.tran_type == OperationType.query
     assert op_info.status == OperationStatus.failed
     assert (op_info.error_message == expected_message
             or op_info.error_message.startswith(expected_message))
@@ -45,7 +45,7 @@ def test_successful_payment(callback_helper):
     pay_bill(40, '501000000007')
     assert callback_helper.called
     op_info = callback_helper.call_args[0][0]
-    assert op_info.type == OperationType.payment
+    assert op_info.tran_type == OperationType.payment
     assert op_info.status == OperationStatus.success
     assert type(op_info.operation.id) is int
     assert op_info.operation.status == 'fulfilled'
@@ -58,7 +58,7 @@ def test_successful_payment_bill_id(callback_helper):
     pay_bill_id(bill.id)
     assert callback_helper.called
     op_info = callback_helper.call_args[0][0]
-    assert op_info.type == OperationType.payment
+    assert op_info.tran_type == OperationType.payment
     assert op_info.status == OperationStatus.success
     assert type(op_info.operation.id) is int
     assert op_info.operation.status == 'fulfilled'
@@ -70,7 +70,7 @@ def test_failed_payment(callback_helper):
     pay_bill(37, '2424240024')
     assert callback_helper.called
     op_info = callback_helper.call_args[0][0]
-    assert op_info.type == OperationType.payment
+    assert op_info.tran_type == OperationType.payment
     assert op_info.status == OperationStatus.failed
 
 
@@ -80,7 +80,7 @@ def test_successful_topup(callback_helper):
     topup(13599, '5599999999', 10000, 'MXN')
     assert callback_helper.called
     op_info = callback_helper.call_args[0][0]
-    assert op_info.type == OperationType.topup
+    assert op_info.tran_type == OperationType.topup
     assert op_info.status == OperationStatus.success
     assert op_info.operation.amount == 10000
     assert op_info.operation.currency == 'MXN'
@@ -98,7 +98,7 @@ def test_failed_topup(callback_helper, phone_number, amount, expected_message):
     topup(13599, phone_number, amount, 'MXN')
     assert callback_helper.called
     op_info = callback_helper.call_args[0][0]
-    assert op_info.type == OperationType.topup
+    assert op_info.tran_type == OperationType.topup
     assert op_info.status == OperationStatus.failed
     assert op_info.error_message == expected_message
 
