@@ -18,8 +18,6 @@ class Contract:
             if type(value) is list:
                 contract_dict[key] = [filter_item(item)
                                       for item in contract_dict[key]]
-            if isinstance(value, Enum):
-                continue
             if type(value) is datetime:
                 contract_dict[key] = contract_dict[key].isoformat()
             if not hasattr(value, 'to_dict'):
