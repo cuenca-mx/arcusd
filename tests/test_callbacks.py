@@ -1,8 +1,11 @@
+import pytest
+
 from arcusd.callbacks import CallbackHelper
-from arcusd.contracts import Bill, OpInfo, Transaction
+from arcusd.contracts import OpInfo, Transaction
 from arcusd import OperationStatus, OperationType
 
 
+@pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_callbacks')
 def test_callbackhelper_send_message():
     op_info = OpInfo(OperationType.topup, OperationStatus.success)
     op_info.operation = Transaction(

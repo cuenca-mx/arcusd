@@ -12,15 +12,12 @@ services:
     volumes:
       - .:/arcusd
     ports:
-      - 3000:3000
+      - 5000:5000
     depends_on:
       - rabbitmq
+    env_file:
+      - .env
     environment:
       - COVERALLS_REPO_TOKEN
       - ARCUS_API_KEY
       - ARCUS_SECRET_KEY
-      - ARCUS_USE_SANDBOX
-      - ARCUSD_AMPQ_ADDRESS
-      - ARCUSD_CALLBACK_URL
-      - ARCUSD_PAYMENTS_QUEUE
-      - ARCUSD_WORKERS
