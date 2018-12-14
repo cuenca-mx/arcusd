@@ -1,31 +1,34 @@
 import json
-import datetime
-from arcusd.contracts.contract import Contract
 
-
-class FooClass(Contract):
-    def __init__(self, a: int, b: str):
-        self.a = a
-        self.b = b
-
-
-class BarClass(Contract):
-    def __init__(self, x: list, y: float, z: FooClass, date: datetime):
-        self.x = x
-        self.y = y
-        self.z = z
-        self.date = date
+from arcusd.contracts import OpInfo, Transaction
+from arcusd.types import OperationStatus, OperationType
 
 
 def test_to_dict():
-    foo = FooClass(100, 'fooclass')
-    bar = BarClass([1, 2, foo], 500.80, foo, datetime.datetime.now())
-    test_dict = bar.to_dict()
-    json_str = json.dumps(test_dict)
-    assert 'x' in test_dict
-    assert type(test_dict['x']) is list
-    assert 'y' in test_dict
-    assert 'z' in test_dict
-    assert type(test_dict['z']) is dict
-    assert type(test_dict['x'][2]) is dict
+    transaction = Transaction(
+        id=987765,
+        amount=1599900,
+        currency='MXN',
+        transaction_fee=1000,
+        hours_to_fulfill=0,
+        status='success'
+    )
+    op_info = OpInfo(
+        tran_type=OperationType.payment,
+        status=OperationStatus.success,
+        operation=transaction
+    )
+    op_info.operation = transaction
+    op_info_dict = op_info.to_dict()
+    json_str = json.dumps(op_info_dict)
     assert json_str is not None
+    assert 'tran_type' in op_info_dict
+    assert 'status' in op_info_dict
+    assert 'operation' in op_info_dict
+    assert 'error_message' in op_info_dict
+    assert op_info_dict['tran_type'] == 'payment'
+    assert op_info_dict['status'] == 'success'
+    assert 'id' in op_info_dict['operation']
+    assert 'amount' in op_info_dict['operation']
+    assert 'currency' in op_info_dict['operation']
+    assert 'status' in op_info_dict['operation']

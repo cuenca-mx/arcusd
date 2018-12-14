@@ -9,7 +9,7 @@ class OpInfo(Contract):
                  status: OperationStatus = OperationStatus.none,
                  operation=None,
                  error_message=None):
-        self.type = tran_type
+        self.tran_type = tran_type
         self.status = status
         self.operation = operation,
         self.error_message = error_message
