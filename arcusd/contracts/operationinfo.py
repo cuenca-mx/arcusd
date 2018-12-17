@@ -11,5 +11,5 @@ class OpInfo(Contract):
                  error_message=None):
         self.tran_type = tran_type
         self.status = status
-        self.operation = operation,
+        self.operation = operation
         self.error_message = error_message
