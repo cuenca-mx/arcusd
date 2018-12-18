@@ -1,6 +1,6 @@
 import json
 
-from arcusd.contracts import OpInfo, Transaction
+from arcusd.contracts import ContractEncoder, OpInfo, Transaction
 from arcusd.types import OperationStatus, OperationType
 
 
@@ -32,3 +32,25 @@ def test_to_dict():
     assert 'amount' in op_info_dict['operation']
     assert 'currency' in op_info_dict['operation']
     assert 'status' in op_info_dict['operation']
+
+
+def test_contract_encoder():
+    transaction = Transaction(
+        id=987765,
+        amount=1599900,
+        currency='MXN',
+        transaction_fee=1000,
+        hours_to_fulfill=0,
+        status='success'
+    )
+    op_info = OpInfo(
+        tran_type=OperationType.payment,
+        status=OperationStatus.success,
+        operation=transaction
+    )
+    contract_json = json.dumps(op_info, cls=ContractEncoder)
+    assert contract_json == ('{"tran_type": "payment", "status": "success", '
+                             '"operation": {"id": 987765, "amount": 1599900, '
+                             '"currency": "MXN", "transaction_fee": 1000, '
+                             '"hours_to_fulfill": 0, "status": "success"}, '
+                             '"error_message": null}')
