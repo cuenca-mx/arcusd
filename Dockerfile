@@ -8,3 +8,5 @@ RUN make install
 
 # Add project content to image
 ADD . /arcusd/
+
+CMD celery worker -A arcusd.daemon.tasks --loglevel=info -c ${ARCUSD_WORKERS:-0}

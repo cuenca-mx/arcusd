@@ -1,3 +1,4 @@
 coveralls
 pycodestyle
 pytest
+pytest-vcr

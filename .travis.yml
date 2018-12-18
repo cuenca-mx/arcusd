@@ -13,6 +13,7 @@ jobs:
   - stage: docker build and test
     python: 3.6
     before_install:
+      - cp env.template .env
       - docker-compose up -d
     install:
       - docker-compose exec arcusd make install-dev
