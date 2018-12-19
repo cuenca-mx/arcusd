@@ -14,12 +14,23 @@ jobs:
     python: 3.6
     before_install:
       - cp env.template .env
+    # env variables taken from
+    # https://github.com/coveralls-clients/coveralls-python/blob/661e0f54fcfd98472d3cf97df98f2a1a85242b9c/coveralls/git.py#L85
+      - echo TRAVIS_JOB_ID=$TRAVIS_JOB_ID
+      - echo TRAVIS_BRANCH=$TRAVIS_BRANCH
+      - echo GIT_BRANCH=$TRAVIS_BRANCH
+      - echo GIT_ID=10000
+      - echo GIT_AUTHOR_NAME=Cuenca
+      - echo GIT_AUTHOR_EMAIL=dev@cuenca.com
+      - echo GIT_COMMITTER_NAME=Cuenca
+      - echo GIT_COMMITTER_EMAIL=dev@cuenca.com
+      - echo GIT_MESSAGE=$TRAVIS_COMMIT_MESSAGE
+    # docker compose up
       - docker-compose up -d
     install:
       - docker-compose exec arcusd make install-dev
     script:
       - docker-compose exec arcusd make test
     after_success:
-      # env variables taken from
-      # https://github.com/coveralls-clients/coveralls-python/blob/661e0f54fcfd98472d3cf97df98f2a1a85242b9c/coveralls/git.py#L85
-      - docker-compose exec -e TRAVIS_JOB_ID="$TRAVIS_JOB_ID" -e TRAVIS_BRANCH="$TRAVIS_BRANCH" -e GIT_BRANCH="$TRAVIS_BRANCH" -e GIT_ID=10000 -e GIT_AUTHOR_NAME=Cuenca -e GIT_AUTHOR_EMAIL=dev@cuenca.com -e GIT_COMMITTER_NAME=Cuenca -e GIT_COMMITTER_EMAIL=dev@cuenca.com -e GIT_MESSAGE="$TRAVIS_COMMIT_MESSAGE" arcusd coveralls
+
+      - docker-compose exec arcusd coveralls
