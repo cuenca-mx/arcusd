@@ -1,4 +1,5 @@
 # arcusd
+[Build Status](https://travis-ci.com/cuenca-mx/arcusd.svg?branch=master)](https://travis-ci.com/cuenca-mx/arcusd)
 [![Coverage Status](https://coveralls.io/repos/github/cuenca-mx/arcusd/badge.svg?branch=master)](https://coveralls.io/github/cuenca-mx/arcusd?branch=master)
 
 arcus daemon

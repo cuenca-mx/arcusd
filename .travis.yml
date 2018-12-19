@@ -32,5 +32,4 @@ jobs:
     script:
       - docker-compose exec arcusd make test
     after_success:
-
       - docker-compose exec arcusd coveralls
