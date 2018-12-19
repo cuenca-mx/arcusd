@@ -25,11 +25,5 @@ jobs:
       - echo GIT_COMMITTER_NAME=Cuenca >> .env
       - echo GIT_COMMITTER_EMAIL=dev@cuenca.com >> .env
       - echo GIT_MESSAGE=$TRAVIS_COMMIT_MESSAGE >> .env
-    # docker compose up
-      - docker-compose up -d
-    install:
-      - docker-compose exec arcusd make install-dev
     script:
-      - docker-compose exec arcusd make test
-    after_success:
-      - docker-compose exec arcusd coveralls
+      - make travis-test

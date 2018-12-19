@@ -30,6 +30,10 @@ docker-shell: docker-build
 		$(DOCKER) scripts/devwrapper.sh bash || $(MAKE) docker-stop
 		$(MAKE) docker-stop
 
+travis-test: docker-build
+		$(DOCKER) scripts/test.sh
+		$(DOCKER) coveralls
+
 docker-test: docker-build
 		# Clean up even if there's an error
 		$(DOCKER) scripts/test.sh || $(MAKE) docker-stop
