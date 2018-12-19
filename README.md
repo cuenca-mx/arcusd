@@ -1,4 +1,5 @@
 # arcusd
+[![Build Status](https://travis-ci.com/cuenca-mx/arcusd.svg?branch=master)](https://travis-ci.com/cuenca-mx/arcusd)
 [![Coverage Status](https://coveralls.io/repos/github/cuenca-mx/arcusd/badge.svg?branch=master)](https://coveralls.io/github/cuenca-mx/arcusd?branch=master)
 
 arcus daemon
@@ -81,10 +82,9 @@ app.send_task('arcusd.daemon.tasks.cancel_bill', kwargs={
     'transaction_id': my_transaction_id
 })
 ```
-
 ##### Top-up
 For topups you have to send the following message:
-Note that `amount` must be expressed in cents. The example code make a top-up of MXN $100.00
+
 ```python
 app.send_task('arcusd.daemon.tasks.topup', kwargs={
     'biller_id': 13599,
@@ -93,3 +93,4 @@ app.send_task('arcusd.daemon.tasks.topup', kwargs={
     'currency': 'MXN'
 })
 ```
+Note that `amount` must be expressed in cents. The example code make a top-up of MXN $100.00
