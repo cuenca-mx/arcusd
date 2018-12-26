@@ -1,3 +1,5 @@
+from sentry_sdk import capture_exception
+
 from .celery_app import app
 from ..contracts.operationinfo import OpInfo
 from ..types import OperationStatus, OperationType
@@ -42,6 +44,7 @@ def execute_op(op_type: OperationType, funct, *args) -> OpInfo:
     except Exception as exc:
         op_info.status = OperationStatus.failed
         op_info.error_message = exc.message
+        capture_exception(exc)
     else:
         op_info.operation = transaction
         op_info.status = OperationStatus.success
