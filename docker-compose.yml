@@ -21,3 +21,4 @@ services:
       - COVERALLS_REPO_TOKEN
       - ARCUS_API_KEY
       - ARCUS_SECRET_KEY
+      - ARCUSD_SENTRY_DSN
