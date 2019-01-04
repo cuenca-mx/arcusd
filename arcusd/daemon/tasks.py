@@ -1,7 +1,6 @@
 from .celery_app import app
-from ..contracts.operationinfo import OpInfo
-from ..types import OperationStatus, OperationType
-from ..callbacks import CallbackHelper
+from .utils import execute_op
+from ..types import OperationType
 import arcusd.arcusactions
 
 
@@ -33,17 +32,3 @@ def pay_bill(biller_id: int, account_number: str):
 def cancel_transaction(transaction_id: int):
     execute_op(OperationType.payment, arcusd.arcusactions.cancel_transaction,
                transaction_id)
-
-
-def execute_op(op_type: OperationType, funct, *args) -> OpInfo:
-    op_info = OpInfo(op_type)
-    try:
-        transaction = funct(*args)
-    except Exception as exc:
-        op_info.status = OperationStatus.failed
-        op_info.error_message = exc.message
-    else:
-        op_info.operation = transaction
-        op_info.status = OperationStatus.success
-    CallbackHelper.send_op_result(op_info)
-    return op_info
