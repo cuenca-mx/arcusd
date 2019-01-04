@@ -1,8 +1,8 @@
 from sentry_sdk import capture_exception
 
+from ..callbacks import CallbackHelper
 from ..contracts.operationinfo import OpInfo
 from ..types import OperationStatus, OperationType
-from ..callbacks import CallbackHelper
 
 
 def execute_op(op_type: OperationType,
