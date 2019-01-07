@@ -5,9 +5,9 @@ from ..contracts.operationinfo import OpInfo
 from ..types import OperationStatus, OperationType
 
 
-def execute_op(op_type: OperationType,
-               funct, *args, **kwargs) -> OpInfo:
-    op_info = OpInfo(op_type)
+def execute_op(request_id: str, op_type: OperationType, funct,
+               *args, **kwargs) -> OpInfo:
+    op_info = OpInfo(request_id, op_type)
     try:
         transaction = funct(*args)
     except Exception as exc:
