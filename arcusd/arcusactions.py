@@ -1,8 +1,9 @@
 import os
 
 from arcus.client import Client
+from arcus.client import Transaction as ArcusTransaction
 
-from arcusd.contracts import Bill, Topup, Transaction
+from arcusd.contracts import Bill, Cancellation, Topup, Transaction
 
 ARCUS_API_KEY = os.environ['ARCUS_API_KEY']
 ARCUS_SECRET_KEY = os.environ['ARCUS_SECRET_KEY']
@@ -63,18 +64,15 @@ def pay_bill(biller_id: int, account_number: str) -> Transaction:
     return transaction_contract
 
 
-def cancel_transaction(transaction_id: int) -> Transaction:
-    cancelation = client.transactions.cancel(transaction_id)
-    transaction = client.transactions.get(transaction_id)
-    transaction_contract = Transaction(
-        id=transaction.id,
-        amount=unit_to_cents(transaction.amount),
-        currency=transaction.amount_currency,
-        transaction_fee=unit_to_cents(transaction.transaction_fee),
-        hours_to_fulfill=transaction.hours_to_fulfill,
-        status=transaction.status
+def cancel_transaction(transaction_id: int) -> Cancellation:
+    transaction = ArcusTransaction(transaction_id, 0, '', '')
+    arcus_cancellation = transaction.cancel()
+    cancellation = Cancellation(
+        transaction_id=transaction_id,
+        code=arcus_cancellation['code'],
+        message=arcus_cancellation['message'],
     )
-    return transaction_contract
+    return cancellation
 
 
 def topup(biller_id: int, phone_number: str, amount: int,

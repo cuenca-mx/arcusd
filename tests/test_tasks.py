@@ -23,7 +23,7 @@ def test_query_bill(callback_helper):
 
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 @pytest.mark.parametrize('biller_id,account_number,expected_message', [
-    (40, '501000000004', 'Invalid Account Number'),
+    (40, '501000000004', '501000000004 is an invalid account_number'),
     (6900, '1111362009', 'Unexpected error'),
     (2901, '1111322016', 'Failed to make the consult, please try again later'),
     (1821,
@@ -126,5 +126,5 @@ def test_cancel_bill(callback_helper):
     assert callback_helper.called
     cancel_op_info = callback_helper.call_args[0][0]
     assert cancel_op_info.status == OperationStatus.success
-    assert cancel_op_info.operation.id == transaction.id
-    assert cancel_op_info.operation.status == 'refunded'
+    assert cancel_op_info.operation.transaction_id == transaction.id
+    assert cancel_op_info.operation.code == 'R0'
