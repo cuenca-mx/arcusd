@@ -100,6 +100,38 @@ def test_successful_topup(callback_helper):
             op_info.operation.ending_balance)
 
 
+@patch('arcusd.callbacks.CallbackHelper.send_op_result')
+@pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
+def test_successful_topup(callback_helper):
+    request_id = 'request-id'
+    topup(request_id, 13599, '5599999999', 10000, 'MXN')
+    assert callback_helper.called
+    op_info = callback_helper.call_args[0][0]
+    assert op_info.request_id == request_id
+    assert op_info.tran_type == OperationType.topup
+    assert op_info.status == OperationStatus.success
+    assert op_info.operation.amount == 10000
+    assert op_info.operation.currency == 'MXN'
+    assert (op_info.operation.starting_balance >
+            op_info.operation.ending_balance)
+
+
+@patch('arcusd.callbacks.CallbackHelper.send_op_result')
+@pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
+def test_successful_invoice_with_name_on_account(callback_helper):
+    request_id = 'request-id'
+    topup(request_id, 1781, '5599999999', 35000, 'MXN', 'Billy R. Rosemond')
+    assert callback_helper.called
+    op_info = callback_helper.call_args[0][0]
+    assert op_info.request_id == request_id
+    assert op_info.tran_type == OperationType.topup
+    assert op_info.status == OperationStatus.success
+    assert op_info.operation.amount == 35000
+    assert op_info.operation.currency == 'MXN'
+    assert (op_info.operation.starting_balance >
+            op_info.operation.ending_balance)
+
+
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 @pytest.mark.parametrize('phone_number,amount,expected_message', [
     ('559999', 10000, 'Invalid Phone Number'),

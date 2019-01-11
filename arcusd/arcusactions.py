@@ -8,19 +8,17 @@ from arcusd.contracts import Bill, Cancellation, Topup, Transaction
 ARCUS_API_KEY = os.environ['ARCUS_API_KEY']
 ARCUS_SECRET_KEY = os.environ['ARCUS_SECRET_KEY']
 
-
 use_arcus_sandbox = os.environ.get('ARCUS_USE_SANDBOX') == 'true'
-
 
 client = Client(ARCUS_API_KEY, ARCUS_SECRET_KEY,
                 sandbox=use_arcus_sandbox)
 
 
-def cents_to_unit(cents: int)-> float:
-    return cents/100
+def cents_to_unit(cents: int) -> float:
+    return cents / 100
 
 
-def unit_to_cents(unit: float)-> int:
+def unit_to_cents(unit: float) -> int:
     return int(unit * 100)
 
 
@@ -76,9 +74,10 @@ def cancel_transaction(transaction_id: int) -> Cancellation:
 
 
 def topup(biller_id: int, phone_number: str, amount: int,
-          currency='MXN') -> Topup:
+          currency: str, name_on_account: str) -> Topup:
     unit = cents_to_unit(amount)
-    topup = client.topups.create(biller_id, phone_number, unit, currency)
+    topup = client.topups.create(biller_id, phone_number, unit, currency,
+                                 name_on_account)
     topup_contract = Topup(
         id=topup.id,
         biller_id=topup.biller_id,
