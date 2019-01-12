@@ -18,7 +18,7 @@ def test_query_bill_sync(callback_helper):
 
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks_sync')
 @pytest.mark.parametrize('biller_id,account_number,expected_message', [
-    (40, '501000000004', 'Invalid Account Number'),
+    (40, '501000000004', '501000000004 is an invalid account_number'),
     (6900, '1111362009', 'Unexpected error'),
     (2901, '1111322016', 'Failed to make the consult, please try again later'),
     (1821,

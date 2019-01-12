@@ -1,4 +1,4 @@
-arcus>=0.1.2,<0.2
+arcus==0.2.5
 celery>=4.2,<4.3
 sentry-sdk==0.6.5
 requests==2.20.1
