@@ -25,7 +25,7 @@ class Topup(Contract):
         self.payment_transaction_fee = payment_transaction_fee
         self.payment_total = payment_total
         self.chain_earned = chain_earned
-        self.chain_pain = chain_paid
+        self.chain_paid = chain_paid
         self.starting_balance = starting_balance
         self.ending_balance = ending_balance
         self.hours_to_fulfill = hours_to_fulfill

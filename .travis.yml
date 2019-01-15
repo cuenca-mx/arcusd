@@ -27,3 +27,5 @@ jobs:
       - echo GIT_MESSAGE=$TRAVIS_COMMIT_MESSAGE >> .env
     script:
       - make travis-test
+    after_failure:
+      - docker-compose logs arcusd

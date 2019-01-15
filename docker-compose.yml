@@ -5,6 +5,10 @@ services:
     image: rabbitmq
     ports:
       - 5672:5672
+  mongo:
+    image: mongo
+    ports:
+      - 27017:27017
   arcusd:
     build: .
     tty: true
@@ -12,10 +16,12 @@ services:
       - .:/arcusd
     depends_on:
       - rabbitmq
+      - mongo
     env_file:
       - .env
     environment:
-      - COVERALLS_REPO_TOKEN
       - ARCUS_API_KEY
       - ARCUS_SECRET_KEY
+      - ARCUSD_DB_MONGO_URL
       - ARCUSD_SENTRY_DSN
+      - COVERALLS_REPO_TOKEN
