@@ -1,8 +1,14 @@
 from unittest.mock import patch
 import pytest
+import logging
 
 from arcusd.daemon.tasks_sync import query_bill
 from arcusd.types import OperationStatus, OperationType
+
+logging.basicConfig()
+
+vcr_log = logging.getLogger('vcr')
+vcr_log.setLevel(logging.DEBUG)
 
 
 @patch('arcusd.callbacks.CallbackHelper.send_op_result')
