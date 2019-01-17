@@ -12,8 +12,7 @@ vcr_log.setLevel(logging.DEBUG)
 
 
 @patch('arcusd.callbacks.CallbackHelper.send_op_result')
-@pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks_sync',
-                 ignore_hosts=['sentry.io'])
+@pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks_sync')
 def test_query_bill_sync(callback_helper):
     op_info = query_bill(40, '501000000007')
     assert op_info['status'] == OperationStatus.success.value
@@ -23,8 +22,7 @@ def test_query_bill_sync(callback_helper):
     assert not callback_helper.called
 
 
-@pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks_sync',
-                 ignore_hosts=['sentry.io'])
+@pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks_sync')
 @pytest.mark.parametrize('biller_id,account_number,expected_message', [
     (40, '501000000004', '501000000004 is an invalid account_number'),
     (6900, '1111362009', 'Unexpected error'),

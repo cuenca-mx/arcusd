@@ -21,8 +21,7 @@ def test_query_bill(callback_helper):
     assert type(op_info.operation.balance) is int
 
 
-@pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks',
-                 ignore_hosts=['sentry.io'])
+@pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 @pytest.mark.parametrize('biller_id,account_number,expected_message', [
     (40, '501000000004', '501000000004 is an invalid account_number'),
     (6900, '1111362009', 'Unexpected error'),
