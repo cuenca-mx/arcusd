@@ -4,29 +4,29 @@ interactions:
     headers:
       Accept: [application/vnd.regalii.v3.1+json]
       Accept-Encoding: ['gzip, deflate']
-      Authorization: ['APIAuth 88879c1b066dc9aea6201f27be2bbba9:SmOY8gM4qMK4+SJ4JLmEGP937qs=']
+      Authorization: ['APIAuth 88879c1b066dc9aea6201f27be2bbba9:bdYKZHQr/HHWGglAaJ0onL7TaLw=']
       Connection: [keep-alive]
       Content-Length: ['51']
       Content-MD5: [PtZUYQ9bmh3ULNV0W7ZNdw==]
       Content-Type: [application/json]
-      Date: ['Mon, 10 Dec 2018 18:09:49 GMT']
+      Date: ['Thu, 17 Jan 2019 17:32:56 GMT']
       User-Agent: [python-requests/2.20.1]
     method: POST
     uri: https://api.casiregalii.com/bills
   response:
-    body: {string: '{"type":"bill","id":8390,"biller_id":40,"account_number":"501000000007","name_on_account":null,"due_date":null,"balance":549.0,"balance_currency":"MXN","balance_updated_at":"2018-12-10T18:09:50Z","error_code":null,"error_message":null,"status":"linked","migrated_at":null,"mfa_challenges":[]}'}
+    body: {string: '{"type":"bill","id":8390,"biller_id":40,"account_number":"501000000007","name_on_account":null,"due_date":null,"balance":549.0,"balance_currency":"MXN","balance_updated_at":"2019-01-17T17:32:57Z","error_code":null,"error_message":null,"status":"linked","migrated_at":null,"mfa_challenges":[]}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Connection: [keep-alive]
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Mon, 10 Dec 2018 18:09:51 GMT']
-      ETag: [W/"9544730d99a610b7ba88af1db4712c49"]
+      Date: ['Thu, 17 Jan 2019 17:32:58 GMT']
+      ETag: [W/"c9c93c9d9e5b50bf77df12b0212140a6"]
       Strict-Transport-Security: [max-age=31536000]
       Transfer-Encoding: [chunked]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [0d89cac3-7d10-4111-b76c-6188feb84525]
-      X-Runtime: ['1.364071']
+      X-Request-Id: [da1b882d-4b6a-42e2-a222-bcdcf4bd8792]
+      X-Runtime: ['1.056243']
       X-XSS-Protection: [1; mode=block]
     status: {code: 200, message: OK}
 version: 1
