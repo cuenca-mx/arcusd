@@ -1,6 +1,7 @@
-from unittest.mock import patch
-import pytest
 import logging
+from unittest.mock import patch
+
+import pytest
 
 from arcusd.daemon.tasks_sync import query_bill
 from arcusd.types import OperationStatus, OperationType
