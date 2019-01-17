@@ -4,12 +4,12 @@ interactions:
     headers:
       Accept: [application/vnd.regalii.v3.1+json]
       Accept-Encoding: ['gzip, deflate']
-      Authorization: ['APIAuth 88879c1b066dc9aea6201f27be2bbba9:U7YR3fiwvesueiD49IjcFgSvu2w=']
+      Authorization: ['APIAuth 88879c1b066dc9aea6201f27be2bbba9:a5qOfxluwYJwRfu6WKBqRhuvHCo=']
       Connection: [keep-alive]
       Content-Length: ['51']
       Content-MD5: [mDRNhwgEiKn41ooFxmHjFQ==]
       Content-Type: [application/json]
-      Date: ['Wed, 16 Jan 2019 22:54:22 GMT']
+      Date: ['Thu, 17 Jan 2019 01:00:20 GMT']
       User-Agent: [python-requests/2.20.1]
     method: POST
     uri: https://api.casiregalii.com/bills
@@ -19,13 +19,13 @@ interactions:
       Cache-Control: [no-cache]
       Connection: [keep-alive]
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Wed, 16 Jan 2019 22:54:24 GMT']
+      Date: ['Thu, 17 Jan 2019 01:00:21 GMT']
       Strict-Transport-Security: [max-age=31536000]
       Transfer-Encoding: [chunked]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [62471d8a-37ed-4acc-9ddc-afbe5fd1191b]
-      X-Runtime: ['1.056673']
+      X-Request-Id: [b420f462-4bb7-4dd7-9e7c-4f2d5b97cd1a]
+      X-Runtime: ['1.051969']
       X-XSS-Protection: [1; mode=block]
     status: {code: 422, message: Unprocessable Entity}
 version: 1

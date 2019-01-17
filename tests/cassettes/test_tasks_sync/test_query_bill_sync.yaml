@@ -1,105 +1,32 @@
 interactions:
 - request:
-    body: !!binary |
-      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
-    headers:
-      Content-Encoding: [gzip]
-      Content-Type: [application/json]
-      X-Sentry-Auth: ['Sentry sentry_key=b7d0cf87104140ff9d7597e58246c763, sentry_version=7,
-          sentry_client=sentry.python/0.6.5']
-    method: POST
-    uri: https://sentry.io/api/1360433/store/
-  response:
-    body: {string: '{"id":"9d1a3a0281034f7d83b14b30d47a8fa7"}'}
-    headers:
-      Cache-Control: [max-age=0]
-      Connection: [keep-alive]
-      Content-Language: [en]
-      Content-Length: ['41']
-      Content-Type: [application/json]
-      Date: ['Wed, 16 Jan 2019 22:54:21 GMT']
-      Expires: ['Wed, 16 Jan 2019 22:54:21 GMT']
-      Last-Modified: ['Wed, 16 Jan 2019 22:54:21 GMT']
-      Server: [nginx]
-      Strict-Transport-Security: [max-age=31536000; includeSubDomains; preload]
-      Vary: ['Accept-Language, Cookie']
-      X-Content-Type-Options: [nosniff]
-      X-Frame-Options: [deny]
-      X-Served-By: [api-store-5429dadf]
-      X-XSS-Protection: [1; mode=block]
-    status: {code: 200, message: OK}
-- request:
     body: '{"biller_id": 40, "account_number": "501000000007"}'
     headers:
       Accept: [application/vnd.regalii.v3.1+json]
       Accept-Encoding: ['gzip, deflate']
-      Authorization: ['APIAuth 88879c1b066dc9aea6201f27be2bbba9:NuKOu44MHZyjZehruUb+76hxddo=']
+      Authorization: ['APIAuth 88879c1b066dc9aea6201f27be2bbba9:s61RQgSqSvcbQlQ5VA0Q8pdwqWw=']
       Connection: [keep-alive]
       Content-Length: ['51']
       Content-MD5: [PtZUYQ9bmh3ULNV0W7ZNdw==]
       Content-Type: [application/json]
-      Date: ['Wed, 16 Jan 2019 22:54:21 GMT']
+      Date: ['Thu, 17 Jan 2019 01:00:18 GMT']
       User-Agent: [python-requests/2.20.1]
     method: POST
     uri: https://api.casiregalii.com/bills
   response:
-    body: {string: '{"type":"bill","id":8390,"biller_id":40,"account_number":"501000000007","name_on_account":null,"due_date":null,"balance":549.0,"balance_currency":"MXN","balance_updated_at":"2019-01-16T22:54:21Z","error_code":null,"error_message":null,"status":"linked","migrated_at":null,"mfa_challenges":[]}'}
+    body: {string: '{"type":"bill","id":8390,"biller_id":40,"account_number":"501000000007","name_on_account":null,"due_date":null,"balance":549.0,"balance_currency":"MXN","balance_updated_at":"2019-01-17T01:00:19Z","error_code":null,"error_message":null,"status":"linked","migrated_at":null,"mfa_challenges":[]}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Connection: [keep-alive]
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Wed, 16 Jan 2019 22:54:22 GMT']
-      ETag: [W/"721fef8eba9802837f6ae1d691b96627"]
+      Date: ['Thu, 17 Jan 2019 01:00:20 GMT']
+      ETag: [W/"6ad22503b364fc8aaaec45c236fb8c5e"]
       Strict-Transport-Security: [max-age=31536000]
       Transfer-Encoding: [chunked]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [ac5036c7-0a4f-4dc1-9e25-7179101c9249]
-      X-Runtime: ['1.066425']
+      X-Request-Id: [cedf26ba-bd38-49ba-8528-81f8c2caf9c3]
+      X-Runtime: ['1.054964']
       X-XSS-Protection: [1; mode=block]
     status: {code: 200, message: OK}
 version: 1
