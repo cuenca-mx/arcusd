@@ -59,6 +59,20 @@ def test_successful_payment(callback_helper):
 
 @patch('arcusd.callbacks.CallbackHelper.send_op_result')
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
+def test_successful_payment_with_amount(callback_helper):
+    request_id = 'request-id'
+    pay_bill(request_id, 40, '501000000007', 57000)
+    assert callback_helper.called
+    op_info = callback_helper.call_args[0][0]
+    assert op_info.request_id == request_id
+    assert op_info.tran_type == OperationType.payment
+    assert op_info.status == OperationStatus.success
+    assert type(op_info.operation.id) is int
+    assert op_info.operation.status == 'fulfilled'
+
+
+@patch('arcusd.callbacks.CallbackHelper.send_op_result')
+@pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 def test_successful_payment_bill_id(callback_helper):
     request_id = 'request-id'
     bill = arcusd.arcusactions.query_bill(40, '501000000007')
