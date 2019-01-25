@@ -27,9 +27,10 @@ def pay_bill_id(request_id: str, bill_id: int):
 
 
 @app.task
-def pay_bill(request_id: str, biller_id: int, account_number: str):
+def pay_bill(request_id: str, biller_id: int, account_number: str,
+             amount: Optional[int] = None):
     execute_op(request_id, OperationType.payment, arcusd.arcusactions.pay_bill,
-               biller_id, account_number)
+               biller_id, account_number, amount)
 
 
 @app.task

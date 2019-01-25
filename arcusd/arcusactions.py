@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 
 from arcus.client import Client
 from arcus.client import Transaction as ArcusTransaction
@@ -48,9 +49,14 @@ def pay_bill_id(bill_id: int) -> Transaction:
     return transaction_contract
 
 
-def pay_bill(biller_id: int, account_number: str) -> Transaction:
+def pay_bill(biller_id: int, account_number: str,
+             amount: Optional[int] = None) -> Transaction:
     bill = client.bills.create(biller_id, account_number)
-    transaction = bill.pay()
+    if amount is None:
+        transaction = bill.pay()
+    else:
+        amount = cents_to_unit(amount)
+        transaction = bill.pay(amount)
     transaction_contract = Transaction(
         id=transaction.id,
         amount=unit_to_cents(transaction.amount),
