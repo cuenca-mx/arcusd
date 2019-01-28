@@ -4,29 +4,29 @@ interactions:
     headers:
       Accept: [application/vnd.regalii.v3.1+json]
       Accept-Encoding: ['gzip, deflate']
-      Authorization: ['APIAuth 88879c1b066dc9aea6201f27be2bbba9:xIpn5k1qSmnEePdGshYOhYhHEd8=']
+      Authorization: ['APIAuth 88879c1b066dc9aea6201f27be2bbba9:vfdxxq6flki98I3TGSRaYFYMvFE=']
       Connection: [keep-alive]
       Content-Length: ['51']
       Content-MD5: [PtZUYQ9bmh3ULNV0W7ZNdw==]
       Content-Type: [application/json]
-      Date: ['Fri, 25 Jan 2019 19:13:10 GMT']
+      Date: ['Mon, 28 Jan 2019 18:33:25 GMT']
       User-Agent: [python-requests/2.20.1]
     method: POST
     uri: https://api.casiregalii.com/bills
   response:
-    body: {string: '{"type":"bill","id":8390,"biller_id":40,"account_number":"501000000007","name_on_account":null,"due_date":null,"balance":549.0,"balance_currency":"MXN","balance_updated_at":"2019-01-25T19:13:10Z","error_code":null,"error_message":null,"status":"linked","migrated_at":null,"mfa_challenges":[]}'}
+    body: {string: '{"type":"bill","id":8390,"biller_id":40,"account_number":"501000000007","name_on_account":null,"due_date":null,"balance":549.0,"balance_currency":"MXN","balance_updated_at":"2019-01-28T18:33:25Z","error_code":null,"error_message":null,"status":"linked","migrated_at":null,"mfa_challenges":[]}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Connection: [keep-alive]
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 25 Jan 2019 19:13:11 GMT']
-      ETag: [W/"5da83c25c1cfe9a3a3a01bc0ba781b15"]
+      Date: ['Mon, 28 Jan 2019 18:33:26 GMT']
+      ETag: [W/"f2576eb85365d877d7be18a56d6c717d"]
       Strict-Transport-Security: [max-age=31536000]
       Transfer-Encoding: [chunked]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [53aa05bc-e756-4189-a4b9-50fa6a79a7e0]
-      X-Runtime: ['1.061848']
+      X-Request-Id: [db39425b-57d3-4217-bb77-ec60f6999616]
+      X-Runtime: ['1.064802']
       X-XSS-Protection: [1; mode=block]
     status: {code: 200, message: OK}
 - request:
@@ -34,29 +34,29 @@ interactions:
     headers:
       Accept: [application/vnd.regalii.v3.1+json]
       Accept-Encoding: ['gzip, deflate']
-      Authorization: ['APIAuth 88879c1b066dc9aea6201f27be2bbba9:GzjuKXCbZV0Itfl4OONYZjX0SJo=']
+      Authorization: ['APIAuth 88879c1b066dc9aea6201f27be2bbba9:9CDXKn8zpktfPi/LUtoiLqt5hqQ=']
       Connection: [keep-alive]
       Content-Length: ['36']
       Content-MD5: [cYrTQ+Up3JCNJwJvAtfUaQ==]
       Content-Type: [application/json]
-      Date: ['Fri, 25 Jan 2019 19:13:11 GMT']
+      Date: ['Mon, 28 Jan 2019 18:33:27 GMT']
       User-Agent: [python-requests/2.20.1]
     method: POST
     uri: https://api.casiregalii.com/bills/8390/pay
   response:
-    body: {string: '{"type":"transaction","id":47503,"amount":570.0,"amount_currency":"MXN","fx_rate":1.0,"amount_usd":30.04,"transaction_fee":3.0,"total_usd":30.2,"hours_to_fulfill":0,"created_at":"2019-01-25T19:13:12Z","status":"fulfilled"}'}
+    body: {string: '{"type":"transaction","id":47579,"amount":570.0,"amount_currency":"MXN","fx_rate":1.0,"amount_usd":29.93,"transaction_fee":3.0,"total_usd":30.08,"hours_to_fulfill":0,"created_at":"2019-01-28T18:33:27Z","status":"fulfilled"}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Connection: [keep-alive]
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Fri, 25 Jan 2019 19:13:12 GMT']
-      ETag: [W/"b83bf895d28a38e69a1b59495cda0502"]
+      Date: ['Mon, 28 Jan 2019 18:33:27 GMT']
+      ETag: [W/"30c68f664f548585eae02ddb1d8db426"]
       Strict-Transport-Security: [max-age=31536000]
       Transfer-Encoding: [chunked]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [1774e44c-6ff1-4619-9230-926d9cf1354d]
-      X-Runtime: ['0.105895']
+      X-Request-Id: [0066a2d2-65c7-4923-b06c-d7651c2d1f2e]
+      X-Runtime: ['0.067900']
       X-XSS-Protection: [1; mode=block]
     status: {code: 201, message: Created}
 version: 1
