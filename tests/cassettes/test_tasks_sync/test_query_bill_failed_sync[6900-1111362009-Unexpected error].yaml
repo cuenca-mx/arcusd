@@ -4,7 +4,7 @@ interactions:
     headers:
       Accept: [application/vnd.regalii.v3.1+json]
       Accept-Encoding: ['gzip, deflate']
-      Authorization: ['APIAuth 88879c1b066dc9aea6201f27be2bbba9:T7PvnGp2CuoqnjU5bT/W8m/Xws4=']
+      Authorization: ['APIAuth ABCDEFG:evodb8PG8fsXzjIifbgiUJJm+mw=']
       Connection: [keep-alive]
       Content-Length: ['51']
       Content-MD5: [bQK9pnQdJW/eFR0gpmVoHA==]
