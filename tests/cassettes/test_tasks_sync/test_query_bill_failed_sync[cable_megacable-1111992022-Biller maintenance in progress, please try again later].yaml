@@ -1,31 +1,32 @@
 interactions:
 - request:
-    body: '{"biller_id": 40, "account_number": "501000000004"}'
+    body: '{"biller_id": 1821, "account_number": "1111992022"}'
     headers:
       Accept: [application/vnd.regalii.v3.1+json]
       Accept-Encoding: ['gzip, deflate']
-      Authorization: ['APIAuth 88879c1b066dc9aea6201f27be2bbba9:FWRtVLIuFCr1r0CX5tt+UR2HA/E=']
+      Authorization: ['APIAuth 88879c1b066dc9aea6201f27be2bbba9:nRQ3UpyrgPiDwFz180FKkS/Bij8=']
       Connection: [keep-alive]
       Content-Length: ['51']
-      Content-MD5: [mDRNhwgEiKn41ooFxmHjFQ==]
+      Content-MD5: [HR9jX/Q86NJdP9mdMUuy6w==]
       Content-Type: [application/json]
-      Date: ['Mon, 28 Jan 2019 18:33:17 GMT']
+      Date: ['Tue, 29 Jan 2019 16:59:15 GMT']
       User-Agent: [python-requests/2.20.1]
     method: POST
     uri: https://api.casiregalii.com/bills
   response:
-    body: {string: '{"code":"R2","message":"Invalid Account Number","id":8389}'}
+    body: {string: '{"code":"R22","message":"Biller maintenance in progress, please
+        try again later","id":8394}'}
     headers:
       Cache-Control: [no-cache]
       Connection: [keep-alive]
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Mon, 28 Jan 2019 18:33:18 GMT']
+      Date: ['Tue, 29 Jan 2019 16:59:17 GMT']
       Strict-Transport-Security: [max-age=31536000]
       Transfer-Encoding: [chunked]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [fe5d028c-e9b1-4cdd-b873-c3f2cdebc00c]
-      X-Runtime: ['1.079429']
+      X-Request-Id: [24ebfba4-f9fe-4c08-911f-1235b8e64267]
+      X-Runtime: ['1.637566']
       X-XSS-Protection: [1; mode=block]
     status: {code: 422, message: Unprocessable Entity}
 version: 1

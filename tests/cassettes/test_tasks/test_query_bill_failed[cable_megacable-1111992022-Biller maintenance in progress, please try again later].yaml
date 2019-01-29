@@ -1,0 +1,32 @@
+interactions:
+- request:
+    body: '{"biller_id": 1821, "account_number": "1111992022"}'
+    headers:
+      Accept: [application/vnd.regalii.v3.1+json]
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: ['APIAuth 88879c1b066dc9aea6201f27be2bbba9:+1YMWdOW46jYxIZ5wVCQ7NFyYek=']
+      Connection: [keep-alive]
+      Content-Length: ['51']
+      Content-MD5: [HR9jX/Q86NJdP9mdMUuy6w==]
+      Content-Type: [application/json]
+      Date: ['Tue, 29 Jan 2019 16:58:57 GMT']
+      User-Agent: [python-requests/2.20.1]
+    method: POST
+    uri: https://api.casiregalii.com/bills
+  response:
+    body: {string: '{"code":"R22","message":"Biller maintenance in progress, please
+        try again later","id":8394}'}
+    headers:
+      Cache-Control: [no-cache]
+      Connection: [keep-alive]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Tue, 29 Jan 2019 16:58:59 GMT']
+      Strict-Transport-Security: [max-age=31536000]
+      Transfer-Encoding: [chunked]
+      X-Content-Type-Options: [nosniff]
+      X-Frame-Options: [SAMEORIGIN]
+      X-Request-Id: [5a7003b7-b55d-452a-bb95-5857ffa66ab5]
+      X-Runtime: ['1.655838']
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 422, message: Unprocessable Entity}
+version: 1
