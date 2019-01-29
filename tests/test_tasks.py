@@ -4,6 +4,7 @@ import pytest
 import arcusd.arcusactions
 from arcusd.daemon.tasks import (cancel_transaction, pay_bill, pay_bill_id,
                                  query_bill, topup)
+from arcusd.daemon.utils import mapping
 from arcusd.exc import UnknownServiceProvider
 from arcusd.types import OperationStatus, OperationType, ServiceProvider
 
@@ -176,11 +177,11 @@ def test_failed_topup(callback_helper, phone_number, amount, expected_message):
 
 
 @patch('arcusd.callbacks.CallbackHelper.send_op_result')
-@pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
+@pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks2')
 def test_cancel_bill(callback_helper):
     request_id = 'request-id'
     transaction = arcusd.arcusactions.pay_bill(
-        ServiceProvider.electricity_cfe.name, '123456851236')
+        mapping(ServiceProvider.electricity_cfe.name), '123456851236')
     cancel_transaction(request_id, transaction.id)
     assert callback_helper.called
     cancel_op_info = callback_helper.call_args[0][0]
