@@ -180,7 +180,7 @@ def test_failed_topup(callback_helper, phone_number, amount, expected_message):
 
 
 @patch('arcusd.callbacks.CallbackHelper.send_op_result')
-@pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks2')
+@pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 def test_cancel_bill(callback_helper):
     request_id = 'request-id'
     transaction = arcusd.arcusactions.pay_bill(
