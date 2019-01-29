@@ -5,6 +5,7 @@ from arcus.client import Client
 from arcus.client import Transaction as ArcusTransaction
 
 from arcusd.contracts import Bill, Cancellation, Topup, Transaction
+from arcusd.types import ServiceProvider
 
 ARCUS_API_KEY = os.environ['ARCUS_API_KEY']
 ARCUS_SECRET_KEY = os.environ['ARCUS_SECRET_KEY']
@@ -27,7 +28,7 @@ def query_bill(biller_id: int, account_number: str) -> Bill:
     bill = client.bills.create(biller_id, account_number)
     bill_contract = Bill(
         id=bill.id,
-        biller_id=bill.biller_id,
+        service_provider_code=ServiceProvider(bill.biller_id).name,
         account_number=bill.account_number,
         balance=unit_to_cents(bill.balance),
         currency=bill.balance_currency
@@ -86,7 +87,7 @@ def topup(biller_id: int, phone_number: str, amount: int,
                                  name_on_account)
     topup_contract = Topup(
         id=topup.id,
-        biller_id=topup.biller_id,
+        service_provider_code=ServiceProvider(topup.biller_id).name,
         account_number=topup.account_number,
         amount=unit_to_cents(topup.bill_amount),
         currency=topup.bill_amount_currency,

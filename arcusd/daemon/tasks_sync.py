@@ -5,8 +5,9 @@ from ..types import OperationType
 
 
 @app.task
-def query_bill(biller_id: str, account_number: str) -> dict:
+def query_bill(service_provider_code: str, account_number: str) -> dict:
     op_info = execute_op(None, OperationType.query,
-                         arcusd.arcusactions.query_bill,  mapping(biller_id),
-                         account_number, send_callback=False)
+                         arcusd.arcusactions.query_bill,
+                         mapping(service_provider_code), account_number,
+                         send_callback=False)
     return op_info.to_dict()

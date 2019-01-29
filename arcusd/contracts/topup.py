@@ -5,7 +5,7 @@ class Topup(Contract):
 
     def __init__(self,
                  id: int,
-                 biller_id: int,
+                 service_provider_code: int,
                  account_number: str,
                  amount: int,
                  currency: str,
@@ -18,7 +18,7 @@ class Topup(Contract):
                  hours_to_fulfill: int,
                  ticket_text: str):
         self.id = id
-        self.biller_id = biller_id
+        self.service_provider_code = service_provider_code
         self.account_number = account_number
         self.amount = amount
         self.currency = currency
