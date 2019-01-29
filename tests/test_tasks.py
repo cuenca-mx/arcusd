@@ -4,6 +4,7 @@ import pytest
 import arcusd.arcusactions
 from arcusd.daemon.tasks import (cancel_transaction, pay_bill, pay_bill_id,
                                  query_bill, topup)
+from arcusd.exc import UnknownServiceProvider
 from arcusd.types import OperationStatus, OperationType, ServiceProvider
 
 
@@ -186,3 +187,10 @@ def test_cancel_bill(callback_helper):
     assert cancel_op_info.status == OperationStatus.success
     assert cancel_op_info.operation.transaction_id == transaction.id
     assert cancel_op_info.operation.code == 'R0'
+
+
+def test_invalid_service_provider():
+    with pytest.raises(UnknownServiceProvider) as exc:
+        query_bill('abcdfeghijoklmn', 'fake-provider',
+                   '501000000007')
+    assert exc.value.message == 'Unknown service provider: fake-provider'
