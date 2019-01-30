@@ -5,30 +5,30 @@ interactions:
     headers:
       Accept: [application/vnd.regalii.v1.6+json]
       Accept-Encoding: ['gzip, deflate']
-      Authorization: ['APIAuth 88879c1b066dc9aea6201f27be2bbba9:vY/H2m6SrGWZIQSI7Rxrg9LbtTU=']
+      Authorization: ['APIAuth 88879c1b066dc9aea6201f27be2bbba9:HpwL2YaJOW28t3I44gjvAbTdoYA=']
       Connection: [keep-alive]
       Content-Length: ['113']
       Content-MD5: [gezFHl/YiK0K7SyixrATUQ==]
       Content-Type: [application/json]
-      Date: ['Thu, 17 Jan 2019 17:33:30 GMT']
+      Date: ['Mon, 28 Jan 2019 18:33:51 GMT']
       User-Agent: [python-requests/2.20.1]
     method: POST
     uri: https://api.casiregalii.com/bill/pay
   response:
-    body: {string: '{"id":47140,"external_id":null,"biller_id":13599,"account_number":"5599999999","bill_amount":100.0,"bill_amount_currency":"MXN","fx_rate":1.0,"bill_amount_usd":5.29,"bill_amount_chain_currency":100.0,"payment_transaction_fee":0.0,"payment_total_usd":5.29,"payment_total_chain_currency":100.0,"chain_earned":7.5,"chain_paid":92.5,"starting_balance":115091.26,"ending_balance":114998.76,"hours_to_fulfill":0,"sms_text":null,"created_at":"2019-01-17T17:33:30Z","bill_amount_local_currency":100.0,"local_currency":"MXN","ticket_text":"Pago
-        realizado exitosamente Auth: 1547746410"}'}
+    body: {string: '{"id":47581,"external_id":null,"biller_id":13599,"account_number":"5599999999","bill_amount":100.0,"bill_amount_currency":"MXN","fx_rate":1.0,"bill_amount_usd":5.25,"bill_amount_chain_currency":100.0,"payment_transaction_fee":0.0,"payment_total_usd":5.25,"payment_total_chain_currency":100.0,"chain_earned":7.5,"chain_paid":92.5,"starting_balance":105322.01,"ending_balance":105229.51,"hours_to_fulfill":0,"sms_text":null,"created_at":"2019-01-28T18:33:52Z","bill_amount_local_currency":100.0,"local_currency":"MXN","ticket_text":"Pago
+        realizado exitosamente Auth: 1548700432"}'}
     headers:
       Cache-Control: ['max-age=0, private, must-revalidate']
       Connection: [keep-alive]
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Thu, 17 Jan 2019 17:33:30 GMT']
-      ETag: [W/"2df9357e75ff242777881b2cc30a7fed"]
+      Date: ['Mon, 28 Jan 2019 18:33:52 GMT']
+      ETag: [W/"cae02ff016ec26501dcf25f492ba58bb"]
       Strict-Transport-Security: [max-age=31536000]
       Transfer-Encoding: [chunked]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [463a27b3-0aa1-4b32-ae3b-fe1354bccffb]
-      X-Runtime: ['0.074021']
+      X-Request-Id: [0ae2365e-ceb7-47d9-861f-7f5c89acb4b7]
+      X-Runtime: ['0.069875']
       X-XSS-Protection: [1; mode=block]
     status: {code: 201, message: Created}
 version: 1

@@ -1,31 +1,32 @@
 interactions:
 - request:
-    body: '{"biller_id": 40, "account_number": "501000000004"}'
+    body: '{"biller_id": 6900, "account_number": "1111362009"}'
     headers:
       Accept: [application/vnd.regalii.v3.1+json]
       Accept-Encoding: ['gzip, deflate']
-      Authorization: ['APIAuth 88879c1b066dc9aea6201f27be2bbba9:2lKwGhCzmFYrmE5GideNM9MFVlQ=']
+      Authorization: ['APIAuth 88879c1b066dc9aea6201f27be2bbba9:D1fdIl8ulb6GAW18gcxfkRHnKPQ=']
       Connection: [keep-alive]
       Content-Length: ['51']
-      Content-MD5: [mDRNhwgEiKn41ooFxmHjFQ==]
+      Content-MD5: [bQK9pnQdJW/eFR0gpmVoHA==]
       Content-Type: [application/json]
-      Date: ['Thu, 17 Jan 2019 17:32:58 GMT']
+      Date: ['Tue, 29 Jan 2019 16:59:11 GMT']
       User-Agent: [python-requests/2.20.1]
     method: POST
     uri: https://api.casiregalii.com/bills
   response:
-    body: {string: '{"code":"R2","message":"Invalid Account Number","id":8389}'}
+    body: {string: '{"code":"R9","message":"Unexpected error (everything entered was
+        correct)","id":8391}'}
     headers:
       Cache-Control: [no-cache]
       Connection: [keep-alive]
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Thu, 17 Jan 2019 17:32:59 GMT']
+      Date: ['Tue, 29 Jan 2019 16:59:13 GMT']
       Strict-Transport-Security: [max-age=31536000]
       Transfer-Encoding: [chunked]
       X-Content-Type-Options: [nosniff]
       X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [e4cce790-25f5-4a3b-a7d3-b856c82e0edd]
-      X-Runtime: ['1.048502']
+      X-Request-Id: [2a16e090-4010-4b4b-8f98-0904522d4bea]
+      X-Runtime: ['1.741262']
       X-XSS-Protection: [1; mode=block]
     status: {code: 422, message: Unprocessable Entity}
 version: 1

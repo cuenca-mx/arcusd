@@ -19,9 +19,3 @@ services:
       - mongo
     env_file:
       - .env
-    environment:
-      - ARCUS_API_KEY
-      - ARCUS_SECRET_KEY
-      - ARCUSD_DB_MONGO_URL
-      - ARCUSD_SENTRY_DSN
-      - COVERALLS_REPO_TOKEN
