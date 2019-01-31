@@ -11,16 +11,19 @@ logging.basicConfig()
 vcr_log = logging.getLogger('vcr')
 vcr_log.setLevel(logging.DEBUG)
 
+SEND_OP_RESULT = 'arcusd.callbacks.CallbackHelper.send_op_result'
 
-@patch('arcusd.callbacks.CallbackHelper.send_op_result')
+
+@patch(SEND_OP_RESULT, return_value=dict(status='ok'))
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks_sync')
-def test_query_bill_sync(callback_helper):
-    op_info = query_bill(ServiceProvider.satellite_tv_sky.name, '501000000007')
+def test_query_bill_sync(send_op_result):
+    op_info = query_bill(ServiceProvider.satellite_tv_sky.name,
+                         '501000000007')
     assert op_info['status'] == OperationStatus.success.value
     assert op_info['tran_type'] == OperationType.query.value
     assert op_info['operation']['account_number'] == '501000000007'
     assert type(op_info['operation']['balance']) is int
-    assert not callback_helper.called
+    assert not send_op_result.called
 
 
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks_sync')
@@ -35,8 +38,8 @@ def test_query_bill_sync(callback_helper):
          '1111992022',
          'Biller maintenance in progress, please try again later')
     ])
-@patch('arcusd.callbacks.CallbackHelper.send_op_result')
-def test_query_bill_failed_sync(callback_helper, service_provider_code,
+@patch(SEND_OP_RESULT, return_value=dict(status='ok'))
+def test_query_bill_failed_sync(send_op_result, service_provider_code,
                                 account_number,
                                 expected_message):
     op_info = query_bill(service_provider_code, account_number)
@@ -44,4 +47,4 @@ def test_query_bill_failed_sync(callback_helper, service_provider_code,
     assert op_info['status'] == OperationStatus.failed.value
     assert (op_info['error_message'] == expected_message
             or op_info['error_message'].startswith(expected_message))
-    assert not callback_helper.called
+    assert not send_op_result.called

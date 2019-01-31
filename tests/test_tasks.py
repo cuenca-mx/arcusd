@@ -8,15 +8,17 @@ from arcusd.daemon.utils import mapping
 from arcusd.exc import UnknownServiceProvider
 from arcusd.types import OperationStatus, OperationType, ServiceProvider
 
+SEND_OP_RESULT = 'arcusd.callbacks.CallbackHelper.send_op_result'
 
-@patch('arcusd.callbacks.CallbackHelper.send_op_result')
+
+@patch(SEND_OP_RESULT, return_value=dict(status='ok'))
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
-def test_query_bill(callback_helper):
+def test_query_bill(send_op_result):
     request_id = 'request-id'
     query_bill(request_id, ServiceProvider.satellite_tv_sky.name,
                '501000000007')
-    assert callback_helper.called
-    op_info = callback_helper.call_args[0][0]
+    assert send_op_result.called
+    op_info = send_op_result.call_args[0][0]
     assert op_info.request_id == request_id
     assert op_info.status == OperationStatus.success
     assert op_info.tran_type == OperationType.query
@@ -36,14 +38,14 @@ def test_query_bill(callback_helper):
          '1111992022',
          'Biller maintenance in progress, please try again later')
     ])
-@patch('arcusd.callbacks.CallbackHelper.send_op_result')
-def test_query_bill_failed(callback_helper, service_provider_code,
+@patch(SEND_OP_RESULT, return_value=dict(status='ok'))
+def test_query_bill_failed(send_op_result, service_provider_code,
                            account_number,
                            expected_message):
     request_id = 'request-id'
     query_bill(request_id, service_provider_code, account_number)
-    assert callback_helper.called
-    op_info = callback_helper.call_args[0][0]
+    assert send_op_result.called
+    op_info = send_op_result.call_args[0][0]
     assert op_info.request_id == request_id
     assert op_info.tran_type == OperationType.query
     assert op_info.status == OperationStatus.failed
@@ -51,14 +53,14 @@ def test_query_bill_failed(callback_helper, service_provider_code,
             or op_info.error_message.startswith(expected_message))
 
 
-@patch('arcusd.callbacks.CallbackHelper.send_op_result')
+@patch(SEND_OP_RESULT, return_value=dict(status='ok'))
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
-def test_successful_payment(callback_helper):
+def test_successful_payment(send_op_result):
     request_id = 'request-id'
     pay_bill(request_id, ServiceProvider.satellite_tv_sky.name,
              '501000000007')
-    assert callback_helper.called
-    op_info = callback_helper.call_args[0][0]
+    assert send_op_result.called
+    op_info = send_op_result.call_args[0][0]
     assert op_info.request_id == request_id
     assert op_info.tran_type == OperationType.payment
     assert op_info.status == OperationStatus.success
@@ -66,14 +68,14 @@ def test_successful_payment(callback_helper):
     assert op_info.operation.status == 'fulfilled'
 
 
-@patch('arcusd.callbacks.CallbackHelper.send_op_result')
+@patch(SEND_OP_RESULT, return_value=dict(status='ok'))
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
-def test_successful_payment_with_amount(callback_helper):
+def test_successful_payment_with_amount(send_op_result):
     request_id = 'request-id'
     pay_bill(request_id, ServiceProvider.satellite_tv_sky.name,
              '501000000007', 57000)
-    assert callback_helper.called
-    op_info = callback_helper.call_args[0][0]
+    assert send_op_result.called
+    op_info = send_op_result.call_args[0][0]
     assert op_info.request_id == request_id
     assert op_info.tran_type == OperationType.payment
     assert op_info.status == OperationStatus.success
@@ -81,15 +83,15 @@ def test_successful_payment_with_amount(callback_helper):
     assert op_info.operation.status == 'fulfilled'
 
 
-@patch('arcusd.callbacks.CallbackHelper.send_op_result')
+@patch(SEND_OP_RESULT, return_value=dict(status='ok'))
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
-def test_successful_payment_bill_id(callback_helper):
+def test_successful_payment_bill_id(send_op_result):
     request_id = 'request-id'
     bill = arcusd.arcusactions.query_bill(
         ServiceProvider.satellite_tv_sky.name, '501000000007')
     pay_bill_id(request_id, bill.id)
-    assert callback_helper.called
-    op_info = callback_helper.call_args[0][0]
+    assert send_op_result.called
+    op_info = send_op_result.call_args[0][0]
     assert op_info.request_id == request_id
     assert op_info.tran_type == OperationType.payment
     assert op_info.status == OperationStatus.success
@@ -97,27 +99,27 @@ def test_successful_payment_bill_id(callback_helper):
     assert op_info.operation.status == 'fulfilled'
 
 
-@patch('arcusd.callbacks.CallbackHelper.send_op_result')
+@patch(SEND_OP_RESULT, return_value=dict(status='ok'))
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
-def test_failed_payment(callback_helper):
+def test_failed_payment(send_op_result):
     request_id = 'request-id'
     pay_bill(request_id, ServiceProvider.internet_telmex.name,
              '24242ServiceProvider.satellite_tv_sky.value024')
-    assert callback_helper.called
-    op_info = callback_helper.call_args[0][0]
+    assert send_op_result.called
+    op_info = send_op_result.call_args[0][0]
     assert op_info.request_id == request_id
     assert op_info.tran_type == OperationType.payment
     assert op_info.status == OperationStatus.failed
 
 
-@patch('arcusd.callbacks.CallbackHelper.send_op_result')
+@patch(SEND_OP_RESULT, return_value=dict(status='ok'))
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
-def test_successful_topup(callback_helper):
+def test_successful_topup(send_op_result):
     request_id = 'request-id'
     topup(request_id, ServiceProvider.topup_att.name, '5599999999', 10000,
           'MXN')
-    assert callback_helper.called
-    op_info = callback_helper.call_args[0][0]
+    assert send_op_result.called
+    op_info = send_op_result.call_args[0][0]
     assert op_info.request_id == request_id
     assert op_info.tran_type == OperationType.topup
     assert op_info.status == OperationStatus.success
@@ -127,14 +129,14 @@ def test_successful_topup(callback_helper):
             op_info.operation.ending_balance)
 
 
-@patch('arcusd.callbacks.CallbackHelper.send_op_result')
+@patch(SEND_OP_RESULT, return_value=dict(status='ok'))
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
-def test_successful_topup(callback_helper):
+def test_successful_topup(send_op_result):
     request_id = 'request-id'
     topup(request_id, ServiceProvider.topup_att.name, '5599999999', 10000,
           'MXN')
-    assert callback_helper.called
-    op_info = callback_helper.call_args[0][0]
+    assert send_op_result.called
+    op_info = send_op_result.call_args[0][0]
     assert op_info.request_id == request_id
     assert op_info.tran_type == OperationType.topup
     assert op_info.status == OperationStatus.success
@@ -144,14 +146,14 @@ def test_successful_topup(callback_helper):
             op_info.operation.ending_balance)
 
 
-@patch('arcusd.callbacks.CallbackHelper.send_op_result')
+@patch(SEND_OP_RESULT, return_value=dict(status='ok'))
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
-def test_successful_invoice_with_name_on_account(callback_helper):
+def test_successful_invoice_with_name_on_account(send_op_result):
     request_id = 'request-id'
     topup(request_id, ServiceProvider.internet_axtel.name, '5599999999', 35000,
           'MXN', 'Billy R. Rosemond')
-    assert callback_helper.called
-    op_info = callback_helper.call_args[0][0]
+    assert send_op_result.called
+    op_info = send_op_result.call_args[0][0]
     assert op_info.request_id == request_id
     assert op_info.tran_type == OperationType.topup
     assert op_info.status == OperationStatus.success
@@ -166,28 +168,28 @@ def test_successful_invoice_with_name_on_account(callback_helper):
     ('559999', 10000, 'Invalid Phone Number'),
     ('5599999999', 9330, 'Invalid Payment Amount')
 ])
-@patch('arcusd.callbacks.CallbackHelper.send_op_result')
-def test_failed_topup(callback_helper, phone_number, amount, expected_message):
+@patch(SEND_OP_RESULT, return_value=dict(status='ok'))
+def test_failed_topup(send_op_result, phone_number, amount, expected_message):
     request_id = 'request-id'
     topup(request_id, ServiceProvider.topup_att.name, phone_number, amount,
           'MXN')
-    assert callback_helper.called
-    op_info = callback_helper.call_args[0][0]
+    assert send_op_result.called
+    op_info = send_op_result.call_args[0][0]
     assert op_info.request_id == request_id
     assert op_info.tran_type == OperationType.topup
     assert op_info.status == OperationStatus.failed
     assert op_info.error_message == expected_message
 
 
-@patch('arcusd.callbacks.CallbackHelper.send_op_result')
+@patch(SEND_OP_RESULT, return_value=dict(status='ok'))
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
-def test_cancel_bill(callback_helper):
+def test_cancel_bill(send_op_result):
     request_id = 'request-id'
     transaction = arcusd.arcusactions.pay_bill(
         mapping(ServiceProvider.electricity_cfe.name), '123456851236')
     cancel_transaction(request_id, transaction.id)
-    assert callback_helper.called
-    cancel_op_info = callback_helper.call_args[0][0]
+    assert send_op_result.called
+    cancel_op_info = send_op_result.call_args[0][0]
     assert cancel_op_info.status == OperationStatus.success
     assert cancel_op_info.operation.transaction_id == transaction.id
     assert cancel_op_info.operation.code == 'R0'
@@ -198,3 +200,19 @@ def test_invalid_service_provider():
         query_bill('abcdfeghijoklmn', 'fake-provider',
                    '501000000007')
     assert exc.value.message == 'Unknown service provider: fake-provider'
+
+
+@patch(SEND_OP_RESULT, side_effect=ConnectionError())
+@pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
+def test_send_operation_result_callback_failed_with_connection_error(
+        send_op_result):
+    request_id = 'request-id'
+    pay_bill(request_id, ServiceProvider.satellite_tv_sky.name,
+             '501000000007')
+    assert send_op_result.called
+    op_info = send_op_result.call_args[0][0]
+    assert op_info.request_id == request_id
+    assert op_info.tran_type == OperationType.payment
+    assert op_info.status == OperationStatus.success
+    assert type(op_info.operation.id) is int
+    assert op_info.operation.status == 'fulfilled'

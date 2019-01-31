@@ -14,33 +14,13 @@ interactions:
     method: POST
     uri: http://127.0.0.1:5000/arcusd/callback
   response:
-    body: {string: ok}
+    body: {string: '{"status":"ok"}
+
+'}
     headers:
-      Content-Length: ['2']
-      Content-Type: [text/html; charset=utf-8]
-      Date: ['Fri, 25 Jan 2019 18:55:05 GMT']
-      Server: [Werkzeug/0.14.1 Python/3.7.0]
-    status: {code: 200, message: OK}
-- request:
-    body: '{"request_id": "topup", "tran_type": "success", "status": "none", "operation":
-      {"id": 1010101, "amount": 550000, "currency": "MXN", "transaction_fee": 500,
-      "hours_to_fulfill": 10, "status": "fulfilled"}, "error_message": null}'
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: [Basic QUJDREVGR0hJOkpLTE1OT1BRUlM=]
-      Connection: [keep-alive]
-      Content-Length: ['226']
+      Content-Length: ['16']
       Content-Type: [application/json]
-      User-Agent: [python-requests/2.20.1]
-    method: POST
-    uri: http://127.0.0.1:5000/arcusd/callback
-  response:
-    body: {string: ok}
-    headers:
-      Content-Length: ['2']
-      Content-Type: [text/html; charset=utf-8]
-      Date: ['Fri, 25 Jan 2019 19:00:29 GMT']
+      Date: ['Thu, 31 Jan 2019 03:07:42 GMT']
       Server: [Werkzeug/0.14.1 Python/3.7.0]
     status: {code: 200, message: OK}
 version: 1
