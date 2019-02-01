@@ -20,7 +20,7 @@ class CallbackHelper:
 
     @classmethod
     def send_op_result(cls, op_info: OpInfo):
-        requests.post(
+        resp = requests.post(
             ARCUSD_CALLBACK_URL,
             data=json.dumps(op_info, cls=ContractEncoder),
             headers={
@@ -28,3 +28,4 @@ class CallbackHelper:
                 'Authorization': auth_header(ARCUSD_CALLBACK_API_KEY,
                                              ARCUSD_CALLBACK_SECRET)
             })
+        return resp.json()
