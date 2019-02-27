@@ -9,6 +9,17 @@ arcus daemon
 - RabbitMQ
 - Docker
 
+### Setup
+
+To setup copy `env.template` to `.env`
+
+```bash
+cp env.template .env
+```
+
+Replace ARCUS_API_KEY and ARCUS_SECRET_KEY with appropriate values
+
+
 ### Testing
 You can test arcusd using `make` tool.
 
