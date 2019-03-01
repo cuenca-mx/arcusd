@@ -1,4 +1,4 @@
-FROM python:3.6
+FROM cuenca/python:latest
 LABEL maintainer="dev@cuenca.com"
 
 # Install app
