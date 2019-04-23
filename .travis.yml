@@ -23,10 +23,10 @@ jobs:
       - echo TRAVIS_BRANCH=$TRAVIS_BRANCH >> .env
       - echo GIT_BRANCH=$TRAVIS_BRANCH >> .env
       - echo GIT_ID=$(git log --format=%H -1) >> .env
-      - echo GIT_AUTHOR_NAME=Cuenca >> .env
-      - echo GIT_AUTHOR_EMAIL=dev@cuenca.com >> .env
-      - echo GIT_COMMITTER_NAME=Cuenca >> .env
-      - echo GIT_COMMITTER_EMAIL=dev@cuenca.com >> .env
+      - echo GIT_AUTHOR_NAME=$(git log --format=%an -1) >> .env
+      - echo GIT_AUTHOR_EMAIL=$(git log --format=%ae -1) >> .env
+      - echo GIT_COMMITTER_NAME=$(git log --format=%cn -1) >> .env
+      - echo GIT_COMMITTER_EMAIL=$(git log --format=%ce -1) >> .env
       - echo GIT_MESSAGE=$TRAVIS_COMMIT_MESSAGE >> .env
     script:
       - make travis-test
