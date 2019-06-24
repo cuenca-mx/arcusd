@@ -14,7 +14,10 @@ def execute_op(request_id: str, op_type: OperationType, funct,
         transaction = funct(*args)
     except Exception as exc:
         op_info.status = OperationStatus.failed
+        if exc.message
         op_info.error_message = exc.message
+        else
+        op_info.error_message = 'failed transaction'
         capture_exception(exc)
     else:
         op_info.operation = transaction
