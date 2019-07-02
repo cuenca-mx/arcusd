@@ -21,35 +21,35 @@ def change_status(transaction_id: str, status: str) -> None:
     if task is None:
         click.echo(f'transaction id {transaction_id} does not exists')
         return
-    if hasattr(task, 'op_info'):
+    if 'op_info' in task:
+
         click.echo('tasks was successfully handled')
-        return
-    if status == OperationStatus.success:
-        print('request values')
-        id_value = click.prompt('please enter arcus id: ',
-                                type=int)
-        amount = click.prompt('please enter amount paid: ',
-                              type=int)
-        update_task_info({'request_id': transaction_id},
-                         {'op_info': {'request_id': transaction_id,
-                                      'tran_type': 'payment',
-                                      'status': status,
-                                      'operation': {
-                                          'id': id_value,
-                                          'amount': amount,
-                                          'currency': 'MXN'}
-                                      }
-                          })
     else:
-        update_task_info(dict(request_id=transaction_id), dict(
-            op_info=dict(
-                request_id=transaction_id,
-                tran_type='payment',
-                status=status
-            )))
-    try:
-        CallbackHelper.send_op_result(OpInfo(transaction_id,
-                                             OperationType.payment,
-                                             status))
-    except ConnectionError:
-        click.echo('connection  error try again')
+
+        if status == 'success':
+
+            id_value = input('please enter arcus id: ')
+            amount = input('please enter amount paid: ')
+            update_task_info({'request_id': transaction_id},
+                             {'op_info': {'request_id': transaction_id,
+                                          'tran_type': 'payment',
+                                          'status': status,
+                                          'operation': {
+                                              'id': id_value,
+                                              'amount': amount,
+                                              'currency': 'MXN'}
+                                          }
+                              })
+        else:
+            update_task_info(dict(request_id=transaction_id), dict(
+                op_info=dict(
+                    request_id=transaction_id,
+                    tran_type='payment',
+                    status=status
+                )))
+        try:
+            CallbackHelper.send_op_result(OpInfo(transaction_id,
+                                                 OperationType.payment,
+                                                 status))
+        except ConnectionError:
+            click.echo('connection  error try again')
