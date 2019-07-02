@@ -55,22 +55,6 @@ def test_query_bill_failed(send_op_result, service_provider_code,
             or op_info.error_message.startswith(expected_message))
 
 
-# @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
-# @patch(SEND_OP_RESULT, return_value=dict(status='ok'))
-# @patch('arcusd.arcusactions.pay_bill', side_effect=mock_http_error)
-# def test_query_bill_failed_exe(send_op_result, pay_bill_mock):
-#     request_id = 'request-id'
-#     provider_code = ServiceProvider.electricity_cfe.name
-#     account_number = '123445567789'
-#     pay_bill('abc', provider_code, '1234567890')
-#     assert send_op_result.called
-#     op_info = send_op_result.call_args[0][0]
-#     assert op_info.request_id == request_id
-#     assert op_info.tran_type == OperationType.query
-#     assert op_info.status == OperationStatus.failed
-#     assert op_info.error_message == 'failed transaction'
-
-
 @patch(SEND_OP_RESULT, return_value=dict(status='ok'))
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 def test_successful_payment(send_op_result):

@@ -5,6 +5,8 @@ from ..contracts.operationinfo import OpInfo
 from ..data_access.tasks import update_task_info
 from ..exc import UnknownServiceProvider
 from ..types import OperationStatus, OperationType, ServiceProvider
+from arcus.exc import ArcusException
+from requests import HTTPError
 
 
 def execute_op(request_id: str, op_type: OperationType, funct,
@@ -12,7 +14,7 @@ def execute_op(request_id: str, op_type: OperationType, funct,
     op_info = OpInfo(request_id, op_type)
     try:
         transaction = funct(*args)
-    except Exception as exc:
+    except (ArcusException, HTTPError) as exc:
         op_info.status = OperationStatus.failed
         if hasattr(exc, 'message'):
             op_info.error_message = exc.message
