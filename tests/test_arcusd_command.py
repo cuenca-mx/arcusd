@@ -106,7 +106,7 @@ def test_set_status_success_and_create_op_info(mock_pay_bill,
     result = runner.invoke(
         change_status,
         [request_id, 'success'],
-        input='arus-id\n100')
+        input='arcus-id\n100')
 
     assert result.exit_code == 0
     transaction = get_task_info(dict(request_id=request_id))
