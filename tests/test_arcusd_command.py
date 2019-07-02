@@ -65,7 +65,7 @@ def test_set_status_handles_error(mock_pay_bill, mock_send_op_result):
 
     get_task_info(dict(request_id=request_id))
 
-    assert result.output == 'connection  error try again\n'
+    assert result.output == 'connection error try again\n'
 
 
 def test_command_donnot_change_status_when_property_exist():
@@ -112,3 +112,6 @@ def test_set_status_success_and_create_op_info(mock_pay_bill,
     transaction = get_task_info(dict(request_id=request_id))
 
     assert 'op_info' in transaction
+    assert 'operation' in transaction['op_info']
+    assert 'amount' in transaction['op_info']['operation']
+    assert transaction['op_info']['operation']['amount'] == '100'

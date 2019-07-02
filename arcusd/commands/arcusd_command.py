@@ -23,7 +23,7 @@ def change_status(transaction_id: str, status: str) -> None:
         if status == 'success':
 
             id_value = click.prompt('please enter arcus id: ', type=str)
-            amount = click.prompt('please enter amount paid: ', type=int)
+            amount = click.prompt('please enter amount paid: ', type=str)
             update_task_info(dict(request_id=transaction_id), dict(
                 op_info=dict(
                     request_id=transaction_id,
@@ -48,4 +48,4 @@ def change_status(transaction_id: str, status: str) -> None:
                                                  OperationType.payment,
                                                  status))
         except ConnectionError:
-            click.echo('connection  error try again')
+            click.echo('connection error try again')
