@@ -22,11 +22,10 @@ def change_status(transaction_id: str, status: str) -> None:
         click.echo(f'transaction id {transaction_id} does not exists')
         return
     if hasattr(task, 'op_info'):
-        import pdb
-        pdb.set_trace()
         click.echo('tasks was successfully handled')
         return
     if status == OperationStatus.success:
+        print('request values')
         id_value = click.prompt('please enter arcus id: ',
                                 type=int)
         amount = click.prompt('please enter amount paid: ',
@@ -53,4 +52,4 @@ def change_status(transaction_id: str, status: str) -> None:
                                              OperationType.payment,
                                              status))
     except ConnectionError:
-        click.echo('connection error please try again')
+        click.echo('connection  error try again')

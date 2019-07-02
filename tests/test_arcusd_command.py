@@ -48,24 +48,43 @@ def test_set_status_failed_and_create_op_info(mock_pay_bill,
     assert mock_send_op_result.called
 
 
-def test_arcusd_handles_correct_when_property_exist():
-    request_id = 'test-id3'
+@patch('arcusd.arcusactions.pay_bill', side_effect=Exception('unexpected!'))
+@patch(SEND_OP_RESULT,  side_effect=ConnectionError())
+def test_set_status_handles_error(mock_pay_bill,
+                                   mock_send_op_result):
+    request_id = 'testid'
     task_info = dict(
         task_id='abcdfg',
-        task_sender='test',
         request_id=request_id,
-        op_info=dict(abc='abc')
     )
     save_task_info(task_info)
     runner = CliRunner()
+    with pytest.raises(Exception):
+        pay_bill(request_id, ServiceProvider.internet_telmex.name,
+                 '24242ServiceProvider.satellite_tv_sky.value')
+    result = runner.invoke(change_status, [request_id, 'failed'])
 
-    result = runner.invoke(change_status, [request_id, 'success'])
-    task = get_task_info(dict(request_id=request_id))
-    # import pdb
-    # pdb.set_trace()
+    get_task_info(dict(request_id=request_id))
 
-    assert 'op_info' in task
-    assert result.output == 'tasks was successfully handled'
+    assert result.output == 'connection  error try again\n'
+
+# def test_arcusd_handles_correct_when_property_exist():
+#     request_id = 'test-id'
+#     task_info = dict(
+#         task_id='abcdfg',
+#         task_sender='test',
+#         request_id=request_id,
+#         op_info=dict(abc='abc')
+#     )
+#     save_task_info(task_info)
+#     runner = CliRunner()
+#
+#     result = runner.invoke(change_status, [request_id, 'success'])
+#     task = get_task_info({'request_id': 'test-id'})
+#     print(task)
+#
+#     assert task['op_info']['abc'] == 'abc'
+#     assert result.output == 'tasks was successfully handled'
 
 #
 # @patch('arcusd.commands.arcusd_command.change_status',
@@ -85,30 +104,3 @@ def test_arcusd_handles_correct_when_property_exist():
 #     get_task_info({'request_id': 'request-id'})
 #
 #     assert result.output == 'connection error, try again'
-
-# @patch('arcusd.arcusactions.pay_bill', side_effect=Exception('unexpected!'))
-# def test_arcusd_recover_state_after_failure(mock_pay_bill):
-#     request_id = 'request-id'
-#     task_info = dict(
-#         task_id='abcdfg',
-#         request_id=request_id,
-#     )
-#     save_task_info(task_info)
-#     runner = CliRunner()
-#     with pytest.raises(Exception):
-#         pay_bill(request_id, ServiceProvider.internet_telmex.name,
-#                  '24242ServiceProvider.satellite_tv_sky.value')
-#     result2 = runner.invoke(change_status, ['other-id', 'failed'])
-#     assert result2.output == 'transaction id other-id does not exists\n'
-#
-#     runner.invoke(change_status, ['request-id', 'success'])
-#
-#     transaction = get_task_info({'request_id': request_id})
-#
-#     assert transaction['op_info'] is not None
-#     runner.invoke(prompt(input='arcus-id'))
-#     runner.invoke(prompt(input=1000))
-#
-#     assert transaction['op_info']
-#     assert transaction['op_info']['status'] == 'success'
-#     assert transaction['op_info']['operation']['id'] == 'arcus-id'
