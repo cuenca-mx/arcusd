@@ -8,7 +8,7 @@ from arcusd.data_access.tasks import get_task_info, update_task_info
 
 @click.command()
 @click.argument('transaction_id', type=str)
-@click.argument('status', type=str)
+@click.argument('status', type=click.Choice(['success', 'failed']))
 def change_status(transaction_id: str, status: str) -> None:
     """Script to set the status of a transaction on the db"""
 
@@ -19,11 +19,10 @@ def change_status(transaction_id: str, status: str) -> None:
     if 'op_info' in task:
         click.echo('tasks was successfully handled')
     else:
-
         if status == 'success':
-
             id_value = click.prompt('please enter arcus id: ', type=str)
-            amount = click.prompt('please enter amount paid: ', type=str)
+            amount = click.prompt('please enter amount paid in cents: ',
+                                  type=int)
             update_task_info(dict(request_id=transaction_id), dict(
                 op_info=dict(
                     request_id=transaction_id,

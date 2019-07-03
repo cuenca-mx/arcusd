@@ -7,10 +7,8 @@ from arcusd.daemon.tasks import (cancel_transaction, pay_bill, pay_bill_id,
 from arcusd.daemon.utils import mapping
 from arcusd.exc import UnknownServiceProvider
 from arcusd.types import OperationStatus, OperationType, ServiceProvider
-from urllib.error import HTTPError
 
 SEND_OP_RESULT = 'arcusd.callbacks.CallbackHelper.send_op_result'
-mock_http_error = HTTPError('http://foo.com/test', 400, 'test2', dict(), None)
 
 
 @patch(SEND_OP_RESULT, return_value=dict(status='ok'))
@@ -116,7 +114,7 @@ def test_failed_payment(send_op_result):
 
 @patch(SEND_OP_RESULT, return_value=dict(status='ok'))
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
-def test_failed_payment_exc(send_op_result):
+def test_failed_payment_exception_400(send_op_result):
     request_id = 'request-id'
     pay_bill(request_id, ServiceProvider.internet_telmex.name,
              '24242ServiceProvider.satellite_tv_sky.value')

@@ -41,8 +41,6 @@ def test_set_status_failed_and_create_op_info(mock_pay_bill,
     result = runner.invoke(change_status, [request_id, 'failed'])
     assert result.exit_code == 0
     transaction = get_task_info(dict(request_id=request_id))
-
-    assert 'op_info' in transaction
     assert transaction['op_info'] is not None
     assert transaction['op_info']['status'] == 'failed'
     assert mock_send_op_result.called
@@ -62,9 +60,7 @@ def test_set_status_handles_error(mock_pay_bill, mock_send_op_result):
         pay_bill(request_id, ServiceProvider.internet_telmex.name,
                  '24242ServiceProvider.satellite_tv_sky.value')
     result = runner.invoke(change_status, [request_id, 'failed'])
-
     get_task_info(dict(request_id=request_id))
-
     assert result.output == 'connection error try again\n'
 
 
@@ -78,13 +74,10 @@ def test_command_donnot_change_status_when_property_exist():
     )
     save_task_info(task_info)
     runner = CliRunner()
-
     result = runner.invoke(change_status, [request_id, 'success'])
     transaction = get_task_info(dict(request_id=request_id))
-
     assert 'op_info' in transaction
     assert 'abc' in transaction['op_info']
-
     assert result.output == 'tasks was successfully handled\n'
 
 
@@ -102,16 +95,11 @@ def test_set_status_success_and_create_op_info(mock_pay_bill,
     with pytest.raises(Exception):
         pay_bill(request_id, ServiceProvider.internet_telmex.name,
                  '24242ServiceProvider.satellite_tv_sky.value')
-
     result = runner.invoke(
         change_status,
         [request_id, 'success'],
         input='arcus-id\n100')
-
     assert result.exit_code == 0
     transaction = get_task_info(dict(request_id=request_id))
-
-    assert 'op_info' in transaction
-    assert 'operation' in transaction['op_info']
-    assert 'amount' in transaction['op_info']['operation']
-    assert transaction['op_info']['operation']['amount'] == '100'
+    assert transaction['op_info']['operation']['amount'] == 100
+    assert transaction['op_info']['operation']['id'] == 'arcus-id'
