@@ -74,13 +74,11 @@ def cancel_task(transaction_id: str, status: str) -> None:
             Zendesk_link = click.prompt('please enter Zendesk link of ticket',
                                         type=str)
             update_task_info(dict(request_id=transaction_id), dict(
-                op_info=dict(
-                    status='CANCELLED'
-                )
+                task_state='CANCELLED',
+                refund_details=dict(
+                    Zendesk_link=Zendesk_link,
+                    datetime=date, )
             ))
-            save_task_info(dict(refund_details=dict(
-                Zendesk_link=Zendesk_link,
-                datetime=date,)))
         except ConnectionError:
             click.echo('connection error try again')
         finally:
