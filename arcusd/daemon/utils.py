@@ -13,7 +13,8 @@ def execute_op(request_id: str, op_type: OperationType, funct,
                *args, **kwargs) -> OpInfo:
     op_info = OpInfo(request_id, op_type)
     try:
-        transaction = funct(*args)
+        raise Exception
+        # transaction = funct(*args)
     except (ArcusException, HTTPError) as exc:
         op_info.status = OperationStatus.failed
         if hasattr(exc, 'message'):
