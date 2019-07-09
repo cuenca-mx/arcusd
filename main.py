@@ -1,4 +1,4 @@
-from arcusd import change_status
+from arcusd import arcusd_cli
 
 if __name__ == '__main__':
-    change_status()
+    arcusd_cli()
