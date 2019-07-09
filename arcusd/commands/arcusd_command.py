@@ -3,7 +3,8 @@ import click
 from arcusd import OperationType
 from arcusd.callbacks import CallbackHelper
 from arcusd.contracts import OpInfo
-from arcusd.data_access.tasks import get_task_info, update_task_info, save_task_info
+from arcusd.data_access.tasks import get_task_info, update_task_info,\
+    save_task_info
 from datetime import datetime
 
 
@@ -60,7 +61,9 @@ def change_status(transaction_id: str, status: str) -> None:
 @click.argument('transaction_id', type=str)
 @click.argument('status', type=str)
 def cancel_task(transaction_id: str, status: str) -> None:
-    """"script to change the status of a transaction from success to cancelled on refund"""
+    """"script to change the status of a transaction from
+    success to cancelled on refund"""
+
     task = get_task_info(dict(request_id=transaction_id))
     if task is None:
         click.echo(f'transaction id {transaction_id} does not exists')
@@ -68,7 +71,8 @@ def cancel_task(transaction_id: str, status: str) -> None:
     else:
         try:
             date = datetime.now()
-            Zendesk_link = click.prompt('please enter Zendesk link of ticket', type=str)
+            Zendesk_link = click.prompt('please enter Zendesk link of ticket',
+                                        type=str)
             update_task_info(dict(request_id=transaction_id), dict(
                 op_info=dict(
                     status='CANCELLED'
