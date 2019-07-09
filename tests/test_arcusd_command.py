@@ -138,4 +138,25 @@ def test_cancel_status_cancels_task(mock_pay_bill,
         input='test.com')
     assert result.exit_code == 0
     transaction = get_task_info(dict(request_id=request_id))
-    assert transaction['refund_details']['Zendesk_link'] == 'test.com'
+    assert transaction['refund_details']['zendesk_link'] == 'test.com'
+
+
+@patch('arcusd.arcusactions.pay_bill', side_effect=Exception('unexpected!'))
+@patch(SEND_OP_RESULT, side_effect=ConnectionError())
+def test_cancel_task_handles_error(mock_pay_bill, mock_send_op_result):
+    request_id = 'fake-id-test'
+    task_info = dict(
+        task_id='12345',
+        request_id=request_id,
+    )
+    save_task_info(task_info)
+    runner = CliRunner()
+    with pytest.raises(Exception):
+        pay_bill(request_id, ServiceProvider.internet_telmex.name,
+                 '24242ServiceProvider.satellite_tv_sky.value')
+    result = runner.invoke(cancel_task,
+                           [request_id, 'failed'],
+                           input='test.com')
+    assert result.output == \
+        'please enter Zendesk link of ticket: : test.com\n' \
+        'connection error try again\n'

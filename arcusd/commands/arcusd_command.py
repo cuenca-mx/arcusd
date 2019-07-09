@@ -69,13 +69,13 @@ def cancel_task(transaction_id: str, status: str) -> None:
         click.echo(f'transaction id {transaction_id} does not exists')
         return
     else:
-        date = datetime.now()
-        Zendesk_link = click.prompt('please enter Zendesk link of ticket',
+        date = datetime.utcnow()
+        zendesk_link = click.prompt('please enter Zendesk link of ticket: ',
                                     type=str)
         update_task_info(dict(request_id=transaction_id), dict(
             task_state='CANCELLED',
             refund_details=dict(
-                Zendesk_link=Zendesk_link,
+                zendesk_link=zendesk_link,
                 datetime=date, )
         ))
         try:
