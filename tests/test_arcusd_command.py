@@ -138,7 +138,9 @@ def test_cancel_status_cancels_task(mock_pay_bill,
         input='test.com')
     assert result.exit_code == 0
     transaction = get_task_info(dict(request_id=request_id))
-    assert transaction['refund_details']['zendesk_link'] == 'test.com'
+    assert transaction['op_info']['status'] == 'CANCELLED'
+    assert transaction['op_info']['refund_details']['zendesk_link'] == \
+        'test.com'
 
 
 @patch('arcusd.arcusactions.pay_bill', side_effect=Exception('unexpected!'))

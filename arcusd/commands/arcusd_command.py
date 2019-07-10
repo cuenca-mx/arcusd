@@ -72,12 +72,14 @@ def cancel_task(transaction_id: str, status: str) -> None:
         date = datetime.utcnow()
         zendesk_link = click.prompt('please enter Zendesk link of ticket: ',
                                     type=str)
-        update_task_info(dict(request_id=transaction_id), dict(
-            task_state='CANCELLED',
-            refund_details=dict(
-                zendesk_link=zendesk_link,
-                datetime=date, )
-        ))
+        update_task_info({'request_id': transaction_id},
+                         {"op_info.status": "CANCELLED",
+                          "op_info.refund_details":
+                              {'date_time': date,
+                               'zendesk_link': zendesk_link
+                               }
+                          }
+                         )
         try:
             CallbackHelper.send_op_result(OpInfo(transaction_id,
                                                  OperationType.payment,
