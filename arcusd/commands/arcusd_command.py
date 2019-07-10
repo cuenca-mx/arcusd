@@ -60,7 +60,7 @@ def change_status(transaction_id: str, status: str) -> None:
 @arcusd_cli.command()
 @click.argument('transaction_id', type=str)
 @click.argument('status', type=click.Choice(['success', 'failed']))
-def cancel_task(transaction_id: str, status: str) -> None:
+def refund_payment(transaction_id: str, status: str) -> None:
     """"script to change the status of a transaction from
     success to cancelled on refund"""
 
@@ -68,6 +68,8 @@ def cancel_task(transaction_id: str, status: str) -> None:
     if task is None:
         click.echo(f'transaction id {transaction_id} does not exists')
         return
+    if "refund_details" in task['op_info']:
+        click.echo('payment was already refunded')
     else:
         date = datetime.utcnow()
         zendesk_link = click.prompt('please enter Zendesk link of ticket: ',
@@ -84,6 +86,5 @@ def cancel_task(transaction_id: str, status: str) -> None:
             CallbackHelper.send_op_result(OpInfo(transaction_id,
                                                  OperationType.payment,
                                                  status))
-            click.echo('Successfully changed')
         except ConnectionError:
             click.echo('connection error try again')

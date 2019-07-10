@@ -3,7 +3,7 @@ import pytest
 from click.testing import CliRunner
 from unittest.mock import patch
 from arcusd.commands.arcusd_command import change_status,\
-    cancel_task
+    refund_payment
 from arcusd.daemon.tasks import pay_bill
 from arcusd.data_access.tasks import save_task_info, get_task_info
 from arcusd.types import ServiceProvider
@@ -114,8 +114,25 @@ def test_cancel_task_id_donnot_exist():
     )
     save_task_info(task_info)
     runner = CliRunner()
-    result = runner.invoke(cancel_task, ['other-fake-id', 'success'])
+    result = runner.invoke(refund_payment, ['other-fake-id', 'success'])
     assert result.output == 'transaction id other-fake-id does not exists\n'
+
+
+def test_cancel_task_already_refunded():
+    request_id = 'fake-id-refunded'
+    task_info = dict(
+        task_id='1234567',
+        request_id=request_id,
+        op_info=dict(status='CANCELLED',
+                     refund_details={'date_time': 'today',
+                                     'zendesk_link': 'link.com'})
+    )
+    save_task_info(task_info)
+    runner = CliRunner()
+    result = runner.invoke(refund_payment, [request_id, 'failed'])
+    transaction = get_task_info(dict(request_id=request_id))
+    assert transaction['op_info']['refund_details']['date_time'] == 'today'
+    assert result.output == 'payment was already refunded\n'
 
 
 @patch('arcusd.arcusactions.pay_bill', side_effect=Exception('unexpected!'))
@@ -124,8 +141,10 @@ def test_cancel_status_cancels_task(mock_pay_bill,
                                     mock_send_op_result):
     request_id = 'fake-id2'
     task_info = dict(
-        task_id='12345',
+        task_id='abcdfg',
+        task_sender='test',
         request_id=request_id,
+        op_info=dict(abc='abc')
     )
     save_task_info(task_info)
     runner = CliRunner()
@@ -133,7 +152,7 @@ def test_cancel_status_cancels_task(mock_pay_bill,
         pay_bill(request_id, ServiceProvider.internet_telmex.name,
                  '24242ServiceProvider.satellite_tv_sky.value')
     result = runner.invoke(
-        cancel_task,
+        refund_payment,
         [request_id, 'failed'],
         input='test.com')
     assert result.exit_code == 0
@@ -148,15 +167,17 @@ def test_cancel_status_cancels_task(mock_pay_bill,
 def test_cancel_task_handles_error(mock_pay_bill, mock_send_op_result):
     request_id = 'fake-id-test'
     task_info = dict(
-        task_id='12345',
+        task_id='thisIsId',
+        task_sender='test',
         request_id=request_id,
+        op_info=dict(abc='abc')
     )
     save_task_info(task_info)
     runner = CliRunner()
     with pytest.raises(Exception):
         pay_bill(request_id, ServiceProvider.internet_telmex.name,
                  '24242ServiceProvider.satellite_tv_sky.value')
-    result = runner.invoke(cancel_task,
+    result = runner.invoke(refund_payment,
                            [request_id, 'failed'],
                            input='test.com')
     assert result.output == \
