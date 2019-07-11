@@ -119,3 +119,20 @@ def test_command_change_status_to_failed_property_exist(mock_pay_bill,
     assert result.exit_code == 0
     transaction = get_task_info(dict(request_id=request_id))
     assert transaction['op_info']['status'] == 'failed'
+
+
+@patch('arcusd.arcusactions.pay_bill', side_effect=Exception('unexpected!'))
+@patch(SEND_OP_RESULT, side_effect=ConnectionError())
+def test_command_error_property_exists(mock_pay_bill, mock_send_op_result):
+    request_id = 'completeFakeId'
+    task_info = dict(
+        task_id='abcdfg',
+        task_sender='test',
+        request_id=request_id,
+        op_info=dict(status='success')
+    )
+    save_task_info(task_info)
+    runner = CliRunner()
+    result = runner.invoke(refund_payment, [request_id, 'failed'])
+    get_task_info(dict(request_id=request_id))
+    assert result.output == 'connection error try again\n'
