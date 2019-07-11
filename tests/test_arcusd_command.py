@@ -2,8 +2,7 @@ import pytest
 
 from click.testing import CliRunner
 from unittest.mock import patch
-from arcusd.commands.arcusd_command import change_status,\
-    refund_payment
+from arcusd.commands.arcusd_command import change_status, refund_payment
 from arcusd.daemon.tasks import pay_bill
 from arcusd.data_access.tasks import save_task_info, get_task_info
 from arcusd.types import ServiceProvider
@@ -106,7 +105,7 @@ def test_set_status_success_and_create_op_info(mock_pay_bill,
     assert transaction['op_info']['operation']['id'] == 'arcus-id'
 
 
-def test_cancel_task_id_donnot_exist():
+def test_refund_payment_id_donnot_exist():
     request_id = 'fake-id'
     task_info = dict(
         task_id='12345',
@@ -114,31 +113,30 @@ def test_cancel_task_id_donnot_exist():
     )
     save_task_info(task_info)
     runner = CliRunner()
-    result = runner.invoke(refund_payment, ['other-fake-id', 'success'])
+    result = runner.invoke(refund_payment, ['other-fake-id'])
     assert result.output == 'transaction id other-fake-id does not exists\n'
 
 
-def test_cancel_task_already_refunded():
+def test_refund_payment_already_refunded():
     request_id = 'fake-id-refunded'
     task_info = dict(
         task_id='1234567',
         request_id=request_id,
-        op_info=dict(status='CANCELLED',
+        op_info=dict(status='REFUNDED',
                      refund_details={'date_time': 'today',
                                      'zendesk_link': 'link.com'})
     )
     save_task_info(task_info)
     runner = CliRunner()
-    result = runner.invoke(refund_payment, [request_id, 'failed'])
+    result = runner.invoke(refund_payment, [request_id])
     transaction = get_task_info(dict(request_id=request_id))
-    assert transaction['op_info']['refund_details']['date_time'] == 'today'
     assert result.output == 'payment was already refunded\n'
 
 
 @patch('arcusd.arcusactions.pay_bill', side_effect=Exception('unexpected!'))
 @patch(SEND_OP_RESULT, return_value=dict(status='ok'))
-def test_cancel_status_cancels_task(mock_pay_bill,
-                                    mock_send_op_result):
+def test_refund_payment_cancels_task(mock_pay_bill,
+                                     mock_send_op_result):
     request_id = 'fake-id2'
     task_info = dict(
         task_id='abcdfg',
@@ -153,18 +151,18 @@ def test_cancel_status_cancels_task(mock_pay_bill,
                  '24242ServiceProvider.satellite_tv_sky.value')
     result = runner.invoke(
         refund_payment,
-        [request_id, 'failed'],
+        [request_id],
         input='test.com')
     assert result.exit_code == 0
     transaction = get_task_info(dict(request_id=request_id))
-    assert transaction['op_info']['status'] == 'CANCELLED'
+    assert transaction['op_info']['status'] == 'REFUNDED'
     assert transaction['op_info']['refund_details']['zendesk_link'] == \
         'test.com'
 
 
 @patch('arcusd.arcusactions.pay_bill', side_effect=Exception('unexpected!'))
 @patch(SEND_OP_RESULT, side_effect=ConnectionError())
-def test_cancel_task_handles_error(mock_pay_bill, mock_send_op_result):
+def test_refund_payment_handles_error(mock_pay_bill, mock_send_op_result):
     request_id = 'fake-id-test'
     task_info = dict(
         task_id='thisIsId',
@@ -178,8 +176,8 @@ def test_cancel_task_handles_error(mock_pay_bill, mock_send_op_result):
         pay_bill(request_id, ServiceProvider.internet_telmex.name,
                  '24242ServiceProvider.satellite_tv_sky.value')
     result = runner.invoke(refund_payment,
-                           [request_id, 'failed'],
+                           [request_id],
                            input='test.com')
     assert result.output == \
-        'please enter Zendesk link of ticket: : test.com\n' \
-        'connection error try again\n'
+        ('please enter Zendesk link of ticket: : test.com\n'
+         'connection error try again\n')

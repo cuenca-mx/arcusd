@@ -1,11 +1,10 @@
 import click
 
+from datetime import datetime
 from arcusd import OperationType
 from arcusd.callbacks import CallbackHelper
 from arcusd.contracts import OpInfo
-from arcusd.data_access.tasks import get_task_info, update_task_info,\
-    save_task_info
-from datetime import datetime
+from arcusd.data_access.tasks import get_task_info, update_task_info
 
 
 @click.group()
@@ -59,8 +58,7 @@ def change_status(transaction_id: str, status: str) -> None:
 
 @arcusd_cli.command()
 @click.argument('transaction_id', type=str)
-@click.argument('status', type=click.Choice(['success', 'failed']))
-def refund_payment(transaction_id: str, status: str) -> None:
+def refund_payment(transaction_id: str) -> None:
     """"script to change the status of a transaction from
     success to cancelled on refund"""
 
@@ -75,7 +73,7 @@ def refund_payment(transaction_id: str, status: str) -> None:
         zendesk_link = click.prompt('please enter Zendesk link of ticket: ',
                                     type=str)
         update_task_info({'request_id': transaction_id},
-                         {"op_info.status": "CANCELLED",
+                         {"op_info.status": "REFUNDED",
                           "op_info.refund_details":
                               {'date_time': date,
                                'zendesk_link': zendesk_link
@@ -85,6 +83,6 @@ def refund_payment(transaction_id: str, status: str) -> None:
         try:
             CallbackHelper.send_op_result(OpInfo(transaction_id,
                                                  OperationType.payment,
-                                                 status))
+                                                 'failed'))
         except ConnectionError:
             click.echo('connection error try again')
