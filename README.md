@@ -109,7 +109,7 @@ Note that `amount` must be expressed in cents. The example code make a top-up of
 ##### Refunds or Incomplete transactions
 For refunds or incomplete transactions you can run the command `arcusd change-status`,
  which takes two parameters, an id of the transaction and a status(failed, success),
- success status will correct transaction if incomplete and refund it,
+ success status will correct transaction if incomplete,
  failed status will refund it, example:
 
 ```bash
