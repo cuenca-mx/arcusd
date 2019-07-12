@@ -9,8 +9,10 @@ from arcusd.data_access.tasks import get_task_info, update_task_info
 @click.command()
 @click.argument('transaction_id', type=str)
 @click.argument('status', type=click.Choice(['success', 'failed']))
-def refund_payment(transaction_id: str, status: str) -> None:
-    """Script to refund payment or correct record of payment"""
+def change_status(transaction_id: str, status: str) -> None:
+    """If status entered is success it completes op_info
+    property on incomplete transactions and refunds
+    transactions on failed status"""
 
     task = get_task_info(dict(request_id=transaction_id))
     if task is None:

@@ -1,4 +1,4 @@
-from arcusd import refund_payment
+from arcusd import change_status
 
 if __name__ == '__main__':
-    refund_payment()
+    change_status()
