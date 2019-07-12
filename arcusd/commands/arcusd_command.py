@@ -6,7 +6,12 @@ from arcusd.contracts import OpInfo
 from arcusd.data_access.tasks import get_task_info, update_task_info
 
 
-@click.command()
+@click.group()
+def arcusd_cli():
+    pass
+
+
+@arcusd_cli.command()
 @click.argument('transaction_id', type=str)
 @click.argument('status', type=click.Choice(['success', 'failed']))
 def change_status(transaction_id: str, status: str) -> None:

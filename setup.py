@@ -8,6 +8,6 @@ setup(
     install_requires=['Click'],
     entry_points='''
         [console_scripts]
-        arcusd-change-status=arcusd.commands.arcusd_command:change_status
+        arcusd=arcusd.commands.arcusd_command:arcusd_cli
     ''',
 )
