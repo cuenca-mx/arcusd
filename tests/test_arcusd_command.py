@@ -136,3 +136,18 @@ def test_command_error_property_exists(mock_pay_bill, mock_send_op_result):
     result = runner.invoke(refund_payment, [request_id, 'failed'])
     get_task_info(dict(request_id=request_id))
     assert result.output == 'connection error try again\n'
+
+
+def test_command_wrong_status_entered_to_do_refund():
+    request_id = 'completeFakeId1'
+    task_info = dict(
+        task_id='abcdfg',
+        task_sender='test',
+        request_id=request_id,
+        op_info=dict(status='success')
+    )
+    save_task_info(task_info)
+    runner = CliRunner()
+    result = runner.invoke(refund_payment, [request_id, 'success'])
+    assert (result.output ==
+            'you need to enter failed status to do refund on this payment\n')

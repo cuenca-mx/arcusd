@@ -20,6 +20,10 @@ def refund_payment(transaction_id: str, status: str) -> None:
         click.echo('transaction was already refunded')
         return
     if 'op_info' in task:
+        if task['op_info']['status'] == 'success' and status == 'success':
+            click.echo('you need to enter failed status'
+                       ' to do refund on this payment')
+            return
         if task['op_info']['status'] == 'success' and status == 'failed':
             update_task_info({'request_id': transaction_id},
                              {"op_info.status": status})
