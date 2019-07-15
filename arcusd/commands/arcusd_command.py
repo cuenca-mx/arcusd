@@ -24,7 +24,7 @@ def change_status(transaction_id: str, status: str) -> None:
     if task is None:
         click.echo(f'transaction id {transaction_id} does not exists')
         return
-    if task['op_info']['status'] == 'failed':
+    if 'op_info' in task and task['op_info']['status'] == 'failed':
         click.echo('transaction was already refunded')
         return
     else:
