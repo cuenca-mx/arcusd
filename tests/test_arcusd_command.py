@@ -2,19 +2,19 @@ import pytest
 
 from click.testing import CliRunner
 from unittest.mock import patch
+
 from arcusd.commands.arcusd_command import change_status
 from arcusd.daemon.tasks import pay_bill
-from arcusd.data_access.tasks import save_task_info, get_task_info
+from arcusd.data_access.tasks import get_task_info, save_task_info
 from arcusd.types import ServiceProvider
 
 
 SEND_OP_RESULT = 'arcusd.callbacks.CallbackHelper.send_op_result'
 
 
-def test_id_doesnt_exist():
+def test_transaction_id_does_not_exist():
     request_id = 'request-id'
     task_info = dict(
-        task_id='abcdfg',
         request_id=request_id,
     )
     save_task_info(task_info)
@@ -26,8 +26,6 @@ def test_id_doesnt_exist():
 def test_command_donnot_change_status_when_already_refunded():
     request_id = 'testingId'
     task_info = dict(
-        task_id='abcdfg',
-        task_sender='test',
         request_id=request_id,
         op_info=dict(status='failed')
     )
@@ -42,7 +40,6 @@ def test_command_donnot_change_status_when_already_refunded():
 def test_success_and_create_op_info(mock_pay_bill, mock_send_op_result):
     request_id = 'idtest'
     task_info = dict(
-        task_id='abcdfg',
         request_id=request_id,
     )
     save_task_info(task_info)
@@ -67,7 +64,6 @@ def test_set_status_failed_creates_op_info(mock_pay_bill,
                                            mock_send_op_result):
     request_id = 'request-id2'
     task_info = dict(
-        task_id='abcdfg',
         request_id=request_id,
     )
     save_task_info(task_info)
@@ -88,7 +84,6 @@ def test_set_status_failed_creates_op_info(mock_pay_bill,
 def test_refund_payment_handles_error(mock_pay_bill, mock_send_op_result):
     request_id = 'testid'
     task_info = dict(
-        task_id='abcdfg',
         request_id=request_id,
     )
     save_task_info(task_info)
@@ -107,8 +102,6 @@ def test_command_change_status_already_exists(mock_pay_bill,
                                               mock_send_op_result):
     request_id = 'testingId2'
     task_info = dict(
-        task_id='abcdfg',
-        task_sender='test',
         request_id=request_id,
         op_info=dict(status='success')
     )
