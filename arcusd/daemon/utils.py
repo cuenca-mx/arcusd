@@ -19,7 +19,7 @@ def execute_op(request_id: str, op_type: OperationType, funct,
         if hasattr(exc, 'message'):
             op_info.error_message = exc.message
         else:
-            op_info.error_message = 'failed transaction'
+            op_info.error_message = exc.read()
         capture_exception(exc)
     else:
         op_info.operation = transaction
