@@ -19,3 +19,7 @@ def update_task_info(query: dict, values: dict):
 
 def get_task_info(query):
     return db.tasks.find_one(query)
+
+
+def update_insert_task_info(query: dict, values: dict):
+    db.tasks.update(query, {'$set': values}, **{'upsert': True})
