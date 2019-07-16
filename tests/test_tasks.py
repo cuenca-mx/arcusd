@@ -104,7 +104,20 @@ def test_successful_payment_bill_id(send_op_result):
 def test_failed_payment(send_op_result):
     request_id = 'request-id'
     pay_bill(request_id, ServiceProvider.internet_telmex.name,
-             '24242ServiceProvider.satellite_tv_sky.value024')
+             '24242ServiceProvider.satellite_tv_sky.value')
+    assert send_op_result.called
+    op_info = send_op_result.call_args[0][0]
+    assert op_info.request_id == request_id
+    assert op_info.tran_type == OperationType.payment
+    assert op_info.status == OperationStatus.failed
+
+
+@patch(SEND_OP_RESULT, return_value=dict(status='ok'))
+@pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
+def test_failed_payment_exception_400(send_op_result):
+    request_id = 'request-id'
+    pay_bill(request_id, ServiceProvider.internet_telmex.name,
+             '24242ServiceProvider.satellite_tv_sky.value')
     assert send_op_result.called
     op_info = send_op_result.call_args[0][0]
     assert op_info.request_id == request_id

@@ -105,3 +105,14 @@ app.send_task('arcusd.daemon.tasks.topup', kwargs={
 })
 ```
 Note that `amount` must be expressed in cents. The example code make a top-up of MXN $100.00
+
+##### Refunds or Incomplete transactions
+For refunds or incomplete transactions you can run the command `arcusd change-status`,
+ which takes two parameters, an id of the transaction and a status(failed, success),
+ success status will correct transaction if incomplete,
+ failed status will refund it, example:
+
+```bash
+arcusd change-status --help
+arcusd change-status i123456789 failed
+```
