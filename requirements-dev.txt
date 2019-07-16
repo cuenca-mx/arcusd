@@ -1,4 +1,4 @@
 coveralls
 pycodestyle
 pytest
-pytest-vcr
+pytest-vcr==1.0.1
