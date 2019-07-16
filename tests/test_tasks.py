@@ -4,9 +4,8 @@ import pytest
 import arcusd.arcusactions
 from arcusd.daemon.tasks import (cancel_transaction, pay_bill, pay_bill_id,
                                  query_bill, topup)
-from arcusd.daemon.utils import mapping
 from arcusd.exc import UnknownServiceProvider
-from arcusd.types import OperationStatus, OperationType, ServiceProvider
+from arcusd.types import OperationStatus, OperationType
 
 SEND_OP_RESULT = 'arcusd.callbacks.CallbackHelper.send_op_result'
 
@@ -15,8 +14,7 @@ SEND_OP_RESULT = 'arcusd.callbacks.CallbackHelper.send_op_result'
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 def test_query_bill(send_op_result):
     request_id = 'request-id'
-    query_bill(request_id, ServiceProvider.satellite_tv_sky.name,
-               '501000000007')
+    query_bill(request_id, 'satellite_tv_sky', '501000000007')
     assert send_op_result.called
     op_info = send_op_result.call_args[0][0]
     assert op_info.request_id == request_id
@@ -29,17 +27,17 @@ def test_query_bill(send_op_result):
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 @pytest.mark.parametrize(
     'service_provider_code,account_number,expected_message', [
-        (ServiceProvider.satellite_tv_sky.name, '501000000004',
+        ('satellite_tv_sky', '501000000004',
          '501000000004 is an invalid account_number'),
-        (ServiceProvider.cable_izzi.name, '1111362009', 'Unexpected error'),
-        (ServiceProvider.invoice_att.name, '1111322016',
+        ('cable_izzi', '1111362009', 'Unexpected error'),
+        ('invoice_att', '1111322016',
          'Failed to make the consult, please try again later'),
-        (ServiceProvider.cable_megacable.name,
-         '1111992022',
+        ('cable_megacable', '1111992022',
          'Biller maintenance in progress, please try again later')
     ])
 @patch(SEND_OP_RESULT, return_value=dict(status='ok'))
-def test_query_bill_failed(send_op_result, service_provider_code,
+def test_query_bill_failed(send_op_result,
+                           service_provider_code,
                            account_number,
                            expected_message):
     request_id = 'request-id'
@@ -57,8 +55,7 @@ def test_query_bill_failed(send_op_result, service_provider_code,
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 def test_successful_payment(send_op_result):
     request_id = 'request-id'
-    pay_bill(request_id, ServiceProvider.satellite_tv_sky.name,
-             '501000000007')
+    pay_bill(request_id, 'satellite_tv_sky', '501000000007')
     assert send_op_result.called
     op_info = send_op_result.call_args[0][0]
     assert op_info.request_id == request_id
@@ -72,8 +69,7 @@ def test_successful_payment(send_op_result):
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 def test_successful_payment_with_amount(send_op_result):
     request_id = 'request-id'
-    pay_bill(request_id, ServiceProvider.satellite_tv_sky.name,
-             '501000000007', 57000)
+    pay_bill(request_id, 'satellite_tv_sky', '501000000007', 57000)
     assert send_op_result.called
     op_info = send_op_result.call_args[0][0]
     assert op_info.request_id == request_id
@@ -87,8 +83,7 @@ def test_successful_payment_with_amount(send_op_result):
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 def test_successful_payment_bill_id(send_op_result):
     request_id = 'request-id'
-    bill = arcusd.arcusactions.query_bill(
-        ServiceProvider.satellite_tv_sky.name, '501000000007')
+    bill = arcusd.arcusactions.query_bill(40, '501000000007')
     pay_bill_id(request_id, bill.id)
     assert send_op_result.called
     op_info = send_op_result.call_args[0][0]
@@ -103,7 +98,7 @@ def test_successful_payment_bill_id(send_op_result):
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 def test_failed_payment(send_op_result):
     request_id = 'request-id'
-    pay_bill(request_id, ServiceProvider.internet_telmex.name,
+    pay_bill(request_id, 'internet_telmex',
              '24242ServiceProvider.satellite_tv_sky.value')
     assert send_op_result.called
     op_info = send_op_result.call_args[0][0]
@@ -116,8 +111,8 @@ def test_failed_payment(send_op_result):
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 def test_failed_payment_exception_400(send_op_result):
     request_id = 'request-id'
-    pay_bill(request_id, ServiceProvider.internet_telmex.name,
-             '24242ServiceProvider.satellite_tv_sky.value')
+    pay_bill(request_id, 'internet_telmex',
+             '24242ServiceProvider.satellite_tv_sky.value024')
     assert send_op_result.called
     op_info = send_op_result.call_args[0][0]
     assert op_info.request_id == request_id
@@ -129,8 +124,7 @@ def test_failed_payment_exception_400(send_op_result):
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 def test_successful_topup(send_op_result):
     request_id = 'request-id'
-    topup(request_id, ServiceProvider.topup_att.name, '5599999999', 10000,
-          'MXN')
+    topup(request_id, 'topup_att', '5599999999', 10000, 'MXN')
     assert send_op_result.called
     op_info = send_op_result.call_args[0][0]
     assert op_info.request_id == request_id
@@ -146,8 +140,7 @@ def test_successful_topup(send_op_result):
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 def test_successful_topup(send_op_result):
     request_id = 'request-id'
-    topup(request_id, ServiceProvider.topup_att.name, '5599999999', 10000,
-          'MXN')
+    topup(request_id, 'topup_att', '5599999999', 10000, 'MXN')
     assert send_op_result.called
     op_info = send_op_result.call_args[0][0]
     assert op_info.request_id == request_id
@@ -163,8 +156,8 @@ def test_successful_topup(send_op_result):
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 def test_successful_invoice_with_name_on_account(send_op_result):
     request_id = 'request-id'
-    topup(request_id, ServiceProvider.internet_axtel.name, '5599999999', 35000,
-          'MXN', 'Billy R. Rosemond')
+    topup(request_id, 'internet_axtel', '5599999999', 35000, 'MXN',
+          'Billy R. Rosemond')
     assert send_op_result.called
     op_info = send_op_result.call_args[0][0]
     assert op_info.request_id == request_id
@@ -184,8 +177,7 @@ def test_successful_invoice_with_name_on_account(send_op_result):
 @patch(SEND_OP_RESULT, return_value=dict(status='ok'))
 def test_failed_topup(send_op_result, phone_number, amount, expected_message):
     request_id = 'request-id'
-    topup(request_id, ServiceProvider.topup_att.name, phone_number, amount,
-          'MXN')
+    topup(request_id, 'topup_att', phone_number, amount, 'MXN')
     assert send_op_result.called
     op_info = send_op_result.call_args[0][0]
     assert op_info.request_id == request_id
@@ -198,8 +190,8 @@ def test_failed_topup(send_op_result, phone_number, amount, expected_message):
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 def test_cancel_bill(send_op_result):
     request_id = 'request-id'
-    transaction = arcusd.arcusactions.pay_bill(
-        mapping(ServiceProvider.electricity_cfe.name), '123456851236')
+    cfe_arcus_id = 35
+    transaction = arcusd.arcusactions.pay_bill(cfe_arcus_id, '123456851236')
     cancel_transaction(request_id, transaction.id)
     assert send_op_result.called
     cancel_op_info = send_op_result.call_args[0][0]
@@ -210,8 +202,7 @@ def test_cancel_bill(send_op_result):
 
 def test_invalid_service_provider():
     with pytest.raises(UnknownServiceProvider) as exc:
-        query_bill('abcdfeghijoklmn', 'fake-provider',
-                   '501000000007')
+        query_bill('abcdfeghijoklmn', 'fake-provider', '501000000007')
     assert exc.value.message == 'Unknown service provider: fake-provider'
 
 
@@ -220,8 +211,7 @@ def test_invalid_service_provider():
 def test_send_operation_result_callback_failed_with_connection_error(
         send_op_result):
     request_id = 'request-id'
-    pay_bill(request_id, ServiceProvider.satellite_tv_sky.name,
-             '501000000007')
+    pay_bill(request_id, 'satellite_tv_sky', '501000000007')
     assert send_op_result.called
     op_info = send_op_result.call_args[0][0]
     assert op_info.request_id == request_id
