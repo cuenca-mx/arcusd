@@ -188,8 +188,7 @@ def test_failed_topup(send_op_result, phone_number, amount, expected_message):
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 def test_cancel_bill(send_op_result):
     request_id = 'request-id'
-    cfe_arcus_id = 35
-    transaction = arcusd.arcusactions.pay_bill(cfe_arcus_id, '123456851236')
+    transaction = arcusd.arcusactions.pay_bill(35, '123456851236')
     cancel_transaction(request_id, transaction.id)
     assert send_op_result.called
     cancel_op_info = send_op_result.call_args[0][0]
