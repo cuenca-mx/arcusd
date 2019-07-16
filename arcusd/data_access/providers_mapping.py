@@ -22,7 +22,7 @@ def get_biller_id(service_provider_code: str) -> int:
 def get_service_provider_code(biller_id: int) -> str:
     mapping = db.providers_mapping.find_one(dict(biller_id=biller_id))
     if not mapping:
-        raise UnknownServiceProvider('unknown')
+        raise UnknownServiceProvider(str(biller_id))
     return mapping['service_provider_code']
 
 
