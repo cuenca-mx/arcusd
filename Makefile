@@ -18,6 +18,7 @@ lint:
 		pycodestyle arcusd/ tests/
 
 test: clean-pyc lint
+		python scripts/create_mappings_for_test.py
 		coverage run --source arcusd -m py.test
 		coverage report -m
 
