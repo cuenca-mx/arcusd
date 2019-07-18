@@ -14,8 +14,6 @@ def execute_op(request_id: str, op_type: OperationType, funct,
     try:
         transaction = funct(*args)
     except (ArcusException, HTTPError) as exc:
-        import pdb
-        pdb.set_trace()
         op_info.status = OperationStatus.failed
         if hasattr(exc, 'message'):
             op_info.error_message = exc.message
