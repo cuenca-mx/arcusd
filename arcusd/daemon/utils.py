@@ -14,6 +14,8 @@ def execute_op(request_id: str, op_type: OperationType, funct,
     try:
         transaction = funct(*args)
     except (ArcusException, HTTPError) as exc:
+        import pdb
+        pdb.set_trace()
         op_info.status = OperationStatus.failed
         if hasattr(exc, 'message'):
             op_info.error_message = exc.message
@@ -34,3 +36,19 @@ def execute_op(request_id: str, op_type: OperationType, funct,
             update_task_info({'request_id': request_id},
                              {'callback_response': resp})
     return op_info
+
+
+def error_interpreter(code):
+    switcher = {
+        'R7': 'Esta cuenta tiene pagos domiciliados activos y no acepta este tipo de pago',
+        'R18': 'Límite de pagos excedido, intenta más tarde',
+        'R36': 'Posible pago duplicado'
+    }
+    switcher.update(dict.fromkeys(['R5', 'R1', 'R2', 'R4', 'R29'],
+                                  'Por favor, verifica el número de cuenta e intenta de nuevo'))
+    switcher.update(dict.fromkeys(['R3', 'R11', 'R41'],
+                                  'Este proveedor no acepta pagos parciales, '
+                                  'asegúrate de cubrir el monto en su totalidad'))
+    switcher.update(dict.fromkeys(['R8', 'R12'],
+                                  'El balance en esta cuenta ya ha sido cubierto'))
+    return switcher.get(code)
