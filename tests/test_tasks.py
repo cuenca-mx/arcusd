@@ -104,6 +104,7 @@ def test_failed_payment(send_op_result):
     assert op_info.request_id == request_id
     assert op_info.tran_type == OperationType.payment
     assert op_info.status == OperationStatus.failed
+    assert op_info.notification is None
 
 
 @patch(SEND_OP_RESULT, return_value=dict(status='ok'))

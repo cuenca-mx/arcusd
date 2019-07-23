@@ -17,6 +17,7 @@ def execute_op(request_id: str, op_type: OperationType, funct,
         op_info.status = OperationStatus.failed
         if hasattr(exc, 'message'):
             op_info.error_message = exc.message
+            op_info.notification = error_interpreter(exc)
         else:
             op_info.error_message = format(exc)
         capture_exception(exc)
@@ -34,3 +35,26 @@ def execute_op(request_id: str, op_type: OperationType, funct,
             update_task_info({'request_id': request_id},
                              {'callback_response': resp})
     return op_info
+
+
+def error_interpreter(error):
+    switcher = {
+        'R7': 'Esta cuenta tiene pagos domiciliados activos '
+              'y no acepta este tipo de pago',
+        'R18': 'Límite de pagos excedido, intenta más tarde',
+        'R36': 'Posible pago duplicado'
+    }
+    switcher.update(dict.fromkeys(['R5', 'R1', 'R2', 'R4', 'R29'],
+                                  'Por favor, verifica el número de cuenta '
+                                  'e intenta de nuevo'))
+    switcher.update(dict.fromkeys(['R3', 'R11', 'R41'],
+                                  'Este proveedor no acepta pagos parciales, '
+                                  'asegúrate de cubrir el monto en su '
+                                  'totalidad'))
+    switcher.update(dict.fromkeys(['R8', 'R12'],
+                                  'El balance en esta cuenta '
+                                  'ya ha sido cubierto'))
+    if hasattr(error, 'code') and error.code in switcher:
+        return switcher.get(error.code)
+    else:
+        return None
