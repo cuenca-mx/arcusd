@@ -57,4 +57,4 @@ def error_interpreter(error):
     if hasattr(error, 'code') and error.code in switcher:
         return switcher.get(error.code)
     else:
-        return 'Algo salió mal, por favor intenta nuevamente'
+        return None
