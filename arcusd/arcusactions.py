@@ -1,4 +1,5 @@
 import os
+import re
 from typing import Optional
 
 from arcus.client import Client
@@ -24,8 +25,12 @@ def unit_to_cents(unit: float) -> int:
     return int(unit * 100)
 
 
+def clean(value: str) -> str:
+    return re.sub(r'[\D]', '', value)
+
+
 def query_bill(biller_id: int, account_number: str) -> Bill:
-    bill = client.bills.create(biller_id, account_number)
+    bill = client.bills.create(biller_id, clean(account_number))
     bill_contract = Bill(
         id=bill.id,
         service_provider_code=get_service_provider_code(biller_id),
@@ -52,7 +57,7 @@ def pay_bill_id(bill_id: int) -> Transaction:
 
 def pay_bill(biller_id: int, account_number: str,
              amount: Optional[int] = None) -> Transaction:
-    bill = client.bills.create(biller_id, account_number)
+    bill = client.bills.create(biller_id, clean(account_number))
     if amount is None:
         transaction = bill.pay()
     else:
@@ -83,7 +88,10 @@ def cancel_transaction(transaction_id: int) -> Cancellation:
 def topup(biller_id: int, phone_number: str, amount: int,
           currency: str, name_on_account: str) -> Topup:
     unit = cents_to_unit(amount)
-    topup = client.topups.create(biller_id, phone_number, unit, currency,
+    topup = client.topups.create(biller_id,
+                                 clean(phone_number),
+                                 unit,
+                                 currency,
                                  name_on_account)
     topup_contract = Topup(
         id=topup.id,
