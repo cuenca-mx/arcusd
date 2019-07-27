@@ -15,4 +15,3 @@ class OpInfo(Contract):
         self.status = status
         self.operation = operation
         self.error_message = error_message
-        self.notification = None
