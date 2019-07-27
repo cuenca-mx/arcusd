@@ -26,7 +26,7 @@ def unit_to_cents(unit: float) -> int:
 
 
 def clean(value: str) -> str:
-    return re.sub(r'[\D]', '', value)
+    return re.sub(r'\D', '', value)
 
 
 def query_bill(biller_id: int, account_number: str) -> Bill:
