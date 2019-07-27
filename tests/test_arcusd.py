@@ -11,5 +11,5 @@ def test_unit_to_cents():
 
 def test_clean_phone_number():
     assert clean('(555) 555 5555') == '5555555555'
-    assert clean(r'555-555') == '555555'
-    assert clean(r'555?444') == '555444'
+    assert clean('555-555') == '555555'
+    assert clean('555?444') == '555444'
