@@ -1,7 +1,9 @@
 from sentry_sdk import capture_exception
 
 from requests import HTTPError
-from arcus.exc import ArcusException
+from arcus.exc import (ArcusException, AlreadyPaid,
+                       DuplicatedPayment, IncompleteAmount,
+                       InvalidAccountNumber, RecurrentPayments)
 from ..callbacks import CallbackHelper
 from ..contracts.operationinfo import OpInfo
 from ..data_access.tasks import update_task_info
@@ -15,9 +17,9 @@ def execute_op(request_id: str, op_type: OperationType, funct,
         transaction = funct(*args)
     except (ArcusException, HTTPError) as exc:
         op_info.status = OperationStatus.failed
+        op_info.notification = error_interpreter(exc)
         if hasattr(exc, 'message'):
             op_info.error_message = exc.message
-            op_info.notification = error_interpreter(exc)
         else:
             op_info.error_message = format(exc)
         capture_exception(exc)
@@ -39,22 +41,17 @@ def execute_op(request_id: str, op_type: OperationType, funct,
 
 def error_interpreter(error):
     switcher = {
-        'R7': 'Esta cuenta tiene pagos domiciliados activos '
-              'y no acepta este tipo de pago',
-        'R18': 'Límite de pagos excedido, intenta más tarde',
-        'R36': 'Posible pago duplicado'
+        RecurrentPayments: 'Esta cuenta tiene pagos domiciliados activos '
+                           'y no acepta este tipo de pago',
+        DuplicatedPayment: 'Posible pago duplicado',
+        IncompleteAmount: 'Este proveedor no acepta pagos parciales,'
+                          ' asegúrate de cubrir el monto en su totalidad',
+        AlreadyPaid: 'El balance en esta cuenta ya ha sido cubierto',
+        InvalidAccountNumber: 'Por favor, verifica el número de cuenta '
+                              'e intenta de nuevo',
     }
-    switcher.update(dict.fromkeys(['R5', 'R1', 'R2', 'R4', 'R29'],
-                                  'Por favor, verifica el número de cuenta '
-                                  'e intenta de nuevo'))
-    switcher.update(dict.fromkeys(['R3', 'R11', 'R41'],
-                                  'Este proveedor no acepta pagos parciales, '
-                                  'asegúrate de cubrir el monto en su '
-                                  'totalidad'))
-    switcher.update(dict.fromkeys(['R8', 'R12'],
-                                  'El balance en esta cuenta '
-                                  'ya ha sido cubierto'))
-    if hasattr(error, 'code') and error.code in switcher:
-        return switcher.get(error.code)
+    for key in switcher:
+        if isinstance(error, key):
+            return switcher[key]
     else:
         return None
