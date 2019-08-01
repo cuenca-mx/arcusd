@@ -57,5 +57,5 @@ interactions:
       X-Request-Id: [2fc1650b-68da-4f00-8b01-2fc0e32b9463]
       X-Runtime: ['20.039637']
       X-XSS-Protection: [1; mode=block]
-    status: {code: 400, message: Bad Request}
+    status: {code: 500, message: Bad Request}
 version: 1

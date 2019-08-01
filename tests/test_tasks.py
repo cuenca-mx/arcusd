@@ -170,7 +170,7 @@ def test_successful_invoice_with_name_on_account(send_op_result):
 
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 @pytest.mark.parametrize('phone_number,amount,expected_message', [
-    ('559999', 10000, 'Invalid Phone Number'),
+    ('559999', 10000, '559999 is an invalid account_number for biller 13599'),
     ('5599999999', 9330, 'Invalid Payment Amount')
 ])
 @patch(SEND_OP_RESULT, return_value=dict(status='ok'))
@@ -189,6 +189,8 @@ def test_failed_topup(send_op_result, phone_number, amount, expected_message):
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 def test_cancel_bill(send_op_result):
     request_id = 'request-id'
+    import pdb
+    pdb.set_trace()
     transaction = arcusd.arcusactions.pay_bill(35, '123456851236')
     cancel_transaction(request_id, transaction.id)
     assert send_op_result.called
