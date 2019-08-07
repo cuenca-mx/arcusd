@@ -217,3 +217,19 @@ def test_send_operation_result_callback_failed_with_connection_error(
     assert op_info.status == OperationStatus.success
     assert type(op_info.operation.id) is int
     assert op_info.operation.status == 'fulfilled'
+
+
+@pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
+@pytest.mark.parametrize(
+    'phone_number,amount,expected_message,expected_notification', [
+     ('557777', 10000, '557777 is an invalid account_number for biller 13599',
+      'Por favor, verifica el número de telefono e intenta de nuevo')
+     ])
+@patch(SEND_OP_RESULT, return_value=dict(status='ok'))
+def test_notification(send_op_result, phone_number, amount,
+                      expected_message, expected_notification):
+    request_id = 'request-id'
+    topup(request_id, 'topup_att', phone_number, amount, 'MXN')
+    assert send_op_result.called
+    op_info = send_op_result.call_args[0][0]
+    assert op_info.notification == expected_notification

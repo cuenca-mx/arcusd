@@ -1,12 +1,11 @@
 from sentry_sdk import capture_exception
 
 from requests import HTTPError
-from arcus.exc import (ArcusException, AlreadyPaid,
-                       DuplicatedPayment, IncompleteAmount,
-                       InvalidAccountNumber, RecurrentPayments)
+from arcus.exc import ArcusException
 from ..callbacks import CallbackHelper
 from ..contracts.operationinfo import OpInfo
 from ..data_access.tasks import update_task_info
+from ..errors_dict import errors_dict
 from ..types import OperationStatus, OperationType
 
 
@@ -39,19 +38,9 @@ def execute_op(request_id: str, op_type: OperationType, funct,
     return op_info
 
 
-def error_interpreter(error):
-    switcher = {
-        RecurrentPayments: 'Esta cuenta tiene pagos domiciliados activos '
-                           'y no acepta este tipo de pago',
-        DuplicatedPayment: 'Posible pago duplicado',
-        IncompleteAmount: 'Este proveedor no acepta pagos parciales,'
-                          ' asegúrate de cubrir el monto en su totalidad',
-        AlreadyPaid: 'El balance en esta cuenta ya ha sido cubierto',
-        InvalidAccountNumber: 'Por favor, verifica el número de cuenta '
-                              'e intenta de nuevo',
-    }
-    for key in switcher:
+def error_interpreter(error: object):
+    notification = None
+    for key in errors_dict:
         if isinstance(error, key):
-            return switcher[key]
-    else:
-        return None
+            notification = errors_dict[key]
+    return notification
