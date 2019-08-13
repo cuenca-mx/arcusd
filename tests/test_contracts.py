@@ -57,4 +57,4 @@ def test_contract_encoder():
                              '"operation": {"id": 987765, "amount": 1599900, '
                              '"currency": "MXN", "transaction_fee": 1000, '
                              '"hours_to_fulfill": 0, "status": "success"}, '
-                             '"error_message": null}')
+                             '"error_message": null, "notification": null}')

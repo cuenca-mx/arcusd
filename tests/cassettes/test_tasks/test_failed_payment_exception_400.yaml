@@ -2,60 +2,95 @@ interactions:
 - request:
     body: '{"biller_id": 37, "account_number": "2424240024"}'
     headers:
-      Accept: [application/vnd.regalii.v3.1+json]
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: ['APIAuth 88879c1b066dc9aea6201f27be2bbba9:ja1u6NlpBnjCx+BlbSjL1PAq5bU=']
-      Connection: [keep-alive]
-      Content-Length: ['49']
-      Content-MD5: [ZzalFfx6gqbsDisb9hrS9Q==]
-      Content-Type: [application/json]
-      Date: ['Mon, 28 Jan 2019 18:33:29 GMT']
-      User-Agent: [python-requests/2.20.1]
+      Accept:
+      - application/vnd.regalii.v3.1+json
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - APIAuth 88879c1b066dc9aea6201f27be2bbba9:fj02gr8xMzjW4/iNxhTM/cZS/vg=
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '49'
+      Content-MD5:
+      - ZzalFfx6gqbsDisb9hrS9Q==
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 12 Aug 2019 17:49:07 GMT
+      User-Agent:
+      - python-requests/2.21.0
     method: POST
     uri: https://api.casiregalii.com/bills
   response:
-    body: {string: '{"type":"bill","id":8395,"biller_id":37,"account_number":"2424240024","name_on_account":null,"due_date":null,"balance":825.0,"balance_currency":"MXN","balance_updated_at":"2019-01-28T18:33:30Z","error_code":null,"error_message":null,"status":"linked","migrated_at":null,"mfa_challenges":[]}'}
+    body:
+      string: '{"type":"bill","id":8395,"biller_id":37,"account_number":"2424240024","name_on_account":null,"due_date":null,"balance":56.0,"balance_currency":"MXN","balance_updated_at":"2019-08-12T17:49:08Z","error_code":null,"error_message":null,"status":"linked","migrated_at":null,"mfa_challenges":[]}'
     headers:
-      Cache-Control: ['max-age=0, private, must-revalidate']
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Mon, 28 Jan 2019 18:33:31 GMT']
-      ETag: [W/"3f09c85423621cb65f81d9d70726eff0"]
-      Strict-Transport-Security: [max-age=31536000]
-      Transfer-Encoding: [chunked]
-      X-Content-Type-Options: [nosniff]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [6c64d8b6-dec4-41fb-8c1d-3f23a843ea0c]
-      X-Runtime: ['1.046690']
-      X-XSS-Protection: [1; mode=block]
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 12 Aug 2019 17:49:09 GMT
+      ETag:
+      - W/"921ced9f42faf9709c1377778c134f48"
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      X-Request-Id:
+      - e91713e1-b3cb-4133-961f-81630e9e1fe8
+      X-Runtime:
+      - '1.156646'
+    status:
+      code: 200
+      message: OK
 - request:
-    body: '{"amount": 825.0, "currency": "MXN"}'
+    body: '{"amount": 56.0, "currency": "MXN"}'
     headers:
-      Accept: [application/vnd.regalii.v3.1+json]
-      Accept-Encoding: ['gzip, deflate']
-      Authorization: ['APIAuth 88879c1b066dc9aea6201f27be2bbba9:EkrNZkl8cjlgNWtdFrdzRqKGDbk=']
-      Connection: [keep-alive]
-      Content-Length: ['36']
-      Content-MD5: [RDXEv2DjnDToNKLm3jAFdw==]
-      Content-Type: [application/json]
-      Date: ['Mon, 28 Jan 2019 18:33:31 GMT']
-      User-Agent: [python-requests/2.20.1]
+      Accept:
+      - application/vnd.regalii.v3.1+json
+      Accept-Encoding:
+      - gzip, deflate
+      Authorization:
+      - APIAuth 88879c1b066dc9aea6201f27be2bbba9:4whY9rkEqClOfs5jMnPTIWIn1T4=
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '35'
+      Content-MD5:
+      - rdbjwubSfYIGnp5/M07OMA==
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 12 Aug 2019 17:49:09 GMT
+      User-Agent:
+      - python-requests/2.21.0
     method: POST
     uri: https://api.casiregalii.com/bills/8395/pay
   response:
-    body: {string: '{"code":"R400"}'}
+    body:
+      string: '{"code":"R500"}'
     headers:
-      Cache-Control: [no-cache]
-      Connection: [keep-alive]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Mon, 28 Jan 2019 18:33:51 GMT']
-      Strict-Transport-Security: [max-age=31536000]
-      Transfer-Encoding: [chunked]
-      X-Content-Type-Options: [nosniff]
-      X-Frame-Options: [SAMEORIGIN]
-      X-Request-Id: [2fc1650b-68da-4f00-8b01-2fc0e32b9463]
-      X-Runtime: ['20.039637']
-      X-XSS-Protection: [1; mode=block]
-    status: {code: 400, message: Bad Request}
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 12 Aug 2019 17:49:29 GMT
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      X-Request-Id:
+      - 788cf4d6-a9a9-4b77-bc62-f897c6687c1d
+      X-Runtime:
+      - '20.043132'
+    status:
+      code: 500
+      message: Bad Request
 version: 1

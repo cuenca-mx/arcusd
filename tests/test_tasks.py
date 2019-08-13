@@ -104,6 +104,7 @@ def test_failed_payment(send_op_result):
     assert op_info.request_id == request_id
     assert op_info.tran_type == OperationType.payment
     assert op_info.status == OperationStatus.failed
+    assert op_info.notification is None
 
 
 @patch(SEND_OP_RESULT, return_value=dict(status='ok'))
@@ -169,7 +170,7 @@ def test_successful_invoice_with_name_on_account(send_op_result):
 
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 @pytest.mark.parametrize('phone_number,amount,expected_message', [
-    ('559999', 10000, 'Invalid Phone Number'),
+    ('559999', 10000, '559999 is an invalid account_number for biller 13599'),
     ('5599999999', 9330, 'Invalid Payment Amount')
 ])
 @patch(SEND_OP_RESULT, return_value=dict(status='ok'))
@@ -216,3 +217,19 @@ def test_send_operation_result_callback_failed_with_connection_error(
     assert op_info.status == OperationStatus.success
     assert type(op_info.operation.id) is int
     assert op_info.operation.status == 'fulfilled'
+
+
+@pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
+@pytest.mark.parametrize(
+    'phone_number,amount,expected_message,expected_notification', [
+     ('557777', 10000, '557777 is an invalid account_number for biller 13599',
+      'Por favor, verifica el número de telefono e intenta de nuevo')
+     ])
+@patch(SEND_OP_RESULT, return_value=dict(status='ok'))
+def test_notification(send_op_result, phone_number, amount,
+                      expected_message, expected_notification):
+    request_id = 'request-id'
+    topup(request_id, 'topup_att', phone_number, amount, 'MXN')
+    assert send_op_result.called
+    op_info = send_op_result.call_args[0][0]
+    assert op_info.notification == expected_notification
