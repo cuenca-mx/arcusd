@@ -1,7 +1,9 @@
+from typing import Union
+
+from arcus.exc import ArcusException
+from requests import HTTPError
 from sentry_sdk import capture_exception
 
-from requests import HTTPError
-from arcus.exc import ArcusException
 from ..callbacks import CallbackHelper
 from ..contracts.operationinfo import OpInfo
 from ..data_access.tasks import update_task_info
@@ -38,7 +40,7 @@ def execute_op(request_id: str, op_type: OperationType, funct,
     return op_info
 
 
-def error_interpreter(error):
+def error_interpreter(error: Union[ArcusException, HTTPError]) -> str:
     error_type = type(error)
     notification = errors_dict.get(error_type, None)
     return notification
