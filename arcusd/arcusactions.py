@@ -75,8 +75,10 @@ def pay_bill(biller_id: int, account_number: str,
 
 
 def cancel_transaction(transaction_id: int) -> Cancellation:
-    transaction = ArcusTransaction(transaction_id, 0, '', 0, 0,
-                                   '', '', '', 0, 0, 0)
+    transaction = ArcusTransaction(
+        id=transaction_id, amount=0, amount_currency='',
+        transaction_fee=0, hours_to_fulfill=0, created_at='',
+        status='', type='', fx_rate=0, amount_usd=0, total_usd=0)
     arcus_cancellation = transaction.cancel()
     cancellation = Cancellation(
         transaction_id=transaction_id,

@@ -38,9 +38,7 @@ def execute_op(request_id: str, op_type: OperationType, funct,
     return op_info
 
 
-def error_interpreter(error: object):
-    notification = None
-    for key in errors_dict:
-        if isinstance(error, key):
-            notification = errors_dict[key]
+def error_interpreter(error):
+    error_type = type(error)
+    notification = errors_dict.get(error_type, None)
     return notification
