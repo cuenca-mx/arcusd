@@ -23,7 +23,8 @@ def execute_op(request_id: str, op_type: OperationType, funct,
             op_info.error_message = exc.message
         else:
             op_info.error_message = format(exc)
-        capture_exception(exc)
+        if not op_info.notification:
+            capture_exception(exc)
     else:
         op_info.operation = transaction
         op_info.status = OperationStatus.success
