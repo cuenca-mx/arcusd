@@ -233,3 +233,28 @@ def test_notification(send_op_result, phone_number, amount,
     assert send_op_result.called
     op_info = send_op_result.call_args[0][0]
     assert op_info.notification == expected_notification
+
+
+@pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
+@patch(SEND_OP_RESULT, return_value=dict(status='ok'))
+def test_pay_bill_with_non_min_value(send_op_result):
+    request_id = 'request-id'
+    pay_bill(request_id, 'satellite_tv_sky', '501000000007', 1)
+    assert send_op_result.called
+    op_info = send_op_result.call_args[0][0]
+    assert op_info.request_id == request_id
+    assert op_info.tran_type == OperationType.payment
+    assert op_info.status == OperationStatus.failed
+    assert op_info.notification == 'El monto a pagar es inválido.'
+
+
+@patch(SEND_OP_RESULT, return_value=dict(status='ok'))
+def test_topup_with_non_min_value(send_op_result):
+    request_id = 'request-id'
+    topup(request_id, 'topup_att', '501000000007', 1)
+    assert send_op_result.called
+    op_info = send_op_result.call_args[0][0]
+    assert op_info.request_id == request_id
+    assert op_info.tran_type == OperationType.topup
+    assert op_info.status == OperationStatus.failed
+    assert op_info.notification == 'El monto a pagar es inválido.'
