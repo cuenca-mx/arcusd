@@ -32,7 +32,7 @@ def clean(value: str) -> str:
 
 def amount_to_unit(cents: int) -> float:
     if cents <= 100:
-        raise InvalidAmount('00', 'Min amount is 1 peso')
+        raise InvalidAmount(code='00', message='Min amount is 1 peso')
     return cents_to_unit(cents)
 
 
