@@ -4,6 +4,7 @@ from typing import Optional
 
 from arcus.client import Client
 from arcus.client import Transaction as ArcusTransaction
+from arcus.exc import InvalidAmount
 
 from arcusd.contracts import Bill, Cancellation, Topup, Transaction
 from arcusd.data_access.providers_mapping import get_service_provider_code
@@ -27,6 +28,12 @@ def unit_to_cents(unit: float) -> int:
 
 def clean(value: str) -> str:
     return re.sub(r'\D', '', value)
+
+
+def amount_to_unit(cents: int) -> float:
+    if cents <= 100:
+        raise InvalidAmount(code='00', message='Min amount is 1 peso')
+    return cents_to_unit(cents)
 
 
 def query_bill(biller_id: int, account_number: str) -> Bill:
@@ -61,7 +68,7 @@ def pay_bill(biller_id: int, account_number: str,
     if amount is None:
         transaction = bill.pay()
     else:
-        amount = cents_to_unit(amount)
+        amount = amount_to_unit(amount)
         transaction = bill.pay(amount)
     transaction_contract = Transaction(
         id=transaction.id,
@@ -90,7 +97,7 @@ def cancel_transaction(transaction_id: int) -> Cancellation:
 
 def topup(biller_id: int, phone_number: str, amount: int,
           currency: str, name_on_account: str) -> Topup:
-    unit = cents_to_unit(amount)
+    unit = amount_to_unit(amount)
     topup = client.topups.create(biller_id,
                                  clean(phone_number),
                                  unit,

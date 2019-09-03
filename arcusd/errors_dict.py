@@ -1,5 +1,5 @@
 from arcus.exc import (AlreadyPaid, DuplicatedPayment, IncompleteAmount,
-                       InvalidAccountNumber, RecurrentPayments)
+                       InvalidAccountNumber, InvalidAmount, RecurrentPayments)
 
 errors_dict = {
         RecurrentPayments: 'Esta cuenta tiene pagos domiciliados activos '
@@ -10,4 +10,5 @@ errors_dict = {
         AlreadyPaid: 'El balance en esta cuenta ya ha sido cubierto',
         InvalidAccountNumber: 'Por favor, verifica el número de telefono '
                               'e intenta de nuevo',
+        InvalidAmount: 'El monto a pagar es inválido.'
     }
