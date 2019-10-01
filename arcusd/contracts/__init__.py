@@ -3,5 +3,5 @@ from .cancellation import Cancellation
 from .contract import Contract
 from .encoders import ContractEncoder
 from .operationinfo import OpInfo
-from .topup import Topup
+from .payment import Payment
 from .transaction import Transaction
