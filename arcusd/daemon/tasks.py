@@ -11,7 +11,8 @@ from ..types import OperationType
 def topup(request_id: str, service_provider_code: str, phone_number: str,
           amount: int, currency: str = 'MXN',
           name_on_account: Optional[str] = None):
-    execute_op(request_id, OperationType.topup, arcusd.arcusactions.topup,
+    execute_op(request_id, OperationType.topup,
+               arcusd.arcusactions.bill_payments,
                get_biller_id(service_provider_code), phone_number, amount,
                currency, name_on_account)
 

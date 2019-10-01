@@ -97,12 +97,12 @@ def cancel_transaction(transaction_id: int) -> Cancellation:
     return cancellation
 
 
-def topup(biller_id: int, phone_number: str, amount: int,
-          currency: str, name_on_account: str) -> Payment:
+def bill_payments(biller_id: int, account_number: str, amount: int,
+                  currency: str, name_on_account: str) -> Payment:
     unit = amount_to_unit(amount)
     use_topup_creds = biller_id in TOPUP_BILLERS
     payment = client.bill_payments.create(biller_id,
-                                          clean(phone_number),
+                                          clean(account_number),
                                           unit,
                                           currency,
                                           name_on_account,
