@@ -6,11 +6,13 @@ from arcus.client import Client
 from arcus.client import Transaction as ArcusTransaction
 from arcus.exc import InvalidAmount
 
-from arcusd.contracts import Bill, Cancellation, Topup, Transaction
+from arcusd.contracts import Bill, Cancellation, Payment, Transaction
 from arcusd.data_access.providers_mapping import get_service_provider_code
 
 ARCUS_API_KEY = os.environ['ARCUS_API_KEY']
 ARCUS_SECRET_KEY = os.environ['ARCUS_SECRET_KEY']
+TOPUP_BILLERS = [int(biller_id) for biller_id in
+                 os.environ['TOPUP_BILLERS'].split(',')]
 
 use_arcus_sandbox = os.environ.get('ARCUS_USE_SANDBOX') == 'true'
 
@@ -95,27 +97,29 @@ def cancel_transaction(transaction_id: int) -> Cancellation:
     return cancellation
 
 
-def topup(biller_id: int, phone_number: str, amount: int,
-          currency: str, name_on_account: str) -> Topup:
+def bill_payments(biller_id: int, account_number: str, amount: int,
+                  currency: str, name_on_account: str) -> Payment:
     unit = amount_to_unit(amount)
-    topup = client.topups.create(biller_id,
-                                 clean(phone_number),
-                                 unit,
-                                 currency,
-                                 name_on_account)
-    topup_contract = Topup(
-        id=topup.id,
+    use_topup_creds = biller_id in TOPUP_BILLERS
+    payment = client.bill_payments.create(biller_id,
+                                          clean(account_number),
+                                          unit,
+                                          currency,
+                                          name_on_account,
+                                          topup=use_topup_creds)
+    payment_contract = Payment(
+        id=payment.id,
         service_provider_code=get_service_provider_code(biller_id),
-        account_number=topup.account_number,
-        amount=unit_to_cents(topup.bill_amount),
-        currency=topup.bill_amount_currency,
-        payment_transaction_fee=unit_to_cents(topup.payment_transaction_fee),
-        payment_total=unit_to_cents(topup.payment_total_chain_currency),
-        chain_earned=unit_to_cents(topup.chain_earned),
-        chain_paid=unit_to_cents(topup.chain_paid),
-        starting_balance=unit_to_cents(topup.starting_balance),
-        ending_balance=unit_to_cents(topup.ending_balance),
-        hours_to_fulfill=topup.hours_to_fulfill,
-        ticket_text=topup.ticket_text
+        account_number=payment.account_number,
+        amount=unit_to_cents(payment.bill_amount),
+        currency=payment.bill_amount_currency,
+        payment_transaction_fee=unit_to_cents(payment.payment_transaction_fee),
+        payment_total=unit_to_cents(payment.payment_total_chain_currency),
+        chain_earned=unit_to_cents(payment.chain_earned),
+        chain_paid=unit_to_cents(payment.chain_paid),
+        starting_balance=unit_to_cents(payment.starting_balance),
+        ending_balance=unit_to_cents(payment.ending_balance),
+        hours_to_fulfill=payment.hours_to_fulfill,
+        ticket_text=payment.ticket_text
     )
-    return topup_contract
+    return payment_contract

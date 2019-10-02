@@ -1,7 +1,7 @@
 from .contract import Contract
 
 
-class Topup(Contract):
+class Payment(Contract):
 
     def __init__(self,
                  id: int,
