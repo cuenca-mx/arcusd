@@ -7,7 +7,7 @@ install:
 		pip install -q -r requirements.txt
 
 install-dev: install
-		pip install -r requirements-dev.txt
+		pip install -q -r requirements-dev.txt
 
 venv:
 		$(PYTHON) -m venv --prompt arcusd venv
