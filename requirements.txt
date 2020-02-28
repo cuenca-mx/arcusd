@@ -5,3 +5,4 @@ sentry-sdk==0.10.2
 requests==2.21.0
 click==7.0
 dataclasses
+newrelic>=5.4.1.134,<5.5.0.0
