@@ -10,4 +10,4 @@ RUN make install
 ADD . /arcusd/
 RUN pip install -e .
 
-CMD NEW_RELIC_LICENSE_KEY=${NEW_RELIC_LICENSE_KEY:-} NEW_RELIC_APP_NAME=arcusd newrelic-admin run-program celery worker -A arcusd.daemon.tasks --loglevel=info -c ${ARCUSD_WORKERS:-0}
+CMD NEW_RELIC_LICENSE_KEY=$NEW_RELIC_LICENSE_KEY NEW_RELIC_APP_NAME=arcusd newrelic-admin run-program celery worker -A arcusd.daemon.tasks --loglevel=info -c ${ARCUSD_WORKERS:-5}
