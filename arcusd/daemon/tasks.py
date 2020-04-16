@@ -9,8 +9,8 @@ from .utils import execute_op
 from ..types import OperationType
 
 
-@newrelic.agent.background_task()
 @app.task
+@newrelic.agent.background_task()
 def topup(request_id: str, service_provider_code: str, phone_number: str,
           amount: int, currency: str = 'MXN',
           name_on_account: Optional[str] = None):
@@ -20,23 +20,23 @@ def topup(request_id: str, service_provider_code: str, phone_number: str,
                currency, name_on_account)
 
 
-@newrelic.agent.background_task()
 @app.task
+@newrelic.agent.background_task()
 def query_bill(request_id: str, service_provider_code: str,
                account_number: str):
     execute_op(request_id, OperationType.query, arcusd.arcusactions.query_bill,
                get_biller_id(service_provider_code), account_number)
 
 
-@newrelic.agent.background_task()
 @app.task
+@newrelic.agent.background_task()
 def pay_bill_id(request_id: str, bill_id: int):
     execute_op(request_id, OperationType.payment,
                arcusd.arcusactions.pay_bill_id, bill_id)
 
 
-@newrelic.agent.background_task()
 @app.task
+@newrelic.agent.background_task()
 def pay_bill(request_id: str, service_provider_code: str, account_number: str,
              amount: Optional[int] = None):
     execute_op(request_id, OperationType.payment, arcusd.arcusactions.pay_bill,
@@ -44,8 +44,8 @@ def pay_bill(request_id: str, service_provider_code: str, account_number: str,
                amount)
 
 
-@newrelic.agent.background_task()
 @app.task
+@newrelic.agent.background_task()
 def cancel_transaction(request_id: str, transaction_id: int):
     execute_op(request_id, OperationType.payment,
                arcusd.arcusactions.cancel_transaction, transaction_id)
