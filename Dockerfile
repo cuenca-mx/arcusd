@@ -1,4 +1,4 @@
-FROM cuenca/python:latest
+FROM cuenca/python:0.0.1
 LABEL maintainer="dev@cuenca.com"
 
 # Install app
@@ -10,4 +10,4 @@ RUN make install
 ADD . /arcusd/
 RUN pip install -e .
 
-CMD celery worker -A arcusd.daemon.tasks --loglevel=info -c ${ARCUSD_WORKERS:-0}
+CMD newrelic-admin run-program celery worker -A arcusd.daemon.tasks --loglevel=info -c ${ARCUSD_WORKERS:-5}
