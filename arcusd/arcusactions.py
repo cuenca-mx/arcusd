@@ -29,7 +29,7 @@ def unit_to_cents(unit: float) -> int:
 
 
 def clean(value: str) -> str:
-    return re.sub(r'\D', '', value)
+    return re.sub(r'[\W_]+', '', value)
 
 
 def amount_to_unit(cents: int) -> float:
