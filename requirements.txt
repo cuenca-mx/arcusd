@@ -2,7 +2,7 @@ arcus==1.2.2
 celery>=4.2,<4.5
 pymongo==3.10.1
 sentry-sdk==0.15.1
-requests==2.21.0
+requests==2.24.0
 click==7.1.2
 dataclasses
 newrelic>=5.4.1.134,<5.15.0.0
