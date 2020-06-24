@@ -1,1 +1,2 @@
-from .types import OperationType, OperationStatus
+__all__ = ['OperationType', 'OperationStatus']
+from .types import OperationStatus, OperationType

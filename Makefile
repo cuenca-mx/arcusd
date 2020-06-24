@@ -1,7 +1,9 @@
 SHELL := bash
 DOCKER=docker-compose run --rm arcusd
 PYTHON=python3.6
-
+PROJECT=arcusd
+isort = isort -rc -ac $(PROJECT) tests setup.py
+black = black -S -l 79 --target-version py37 $(PROJECT) tests setup.py
 
 install:
 		pip install -q -r requirements.txt
@@ -14,8 +16,15 @@ venv:
 		source venv/bin/activate
 		pip install --quiet --upgrade pip
 
+format:
+		$(isort)
+		$(black)
+
 lint:
-		pycodestyle arcusd/ tests/
+		$(isort) --check-only
+		$(black) --check
+		flake8 $(PROJECT) tests setup.py
+
 
 test: clean-pyc lint
 		python scripts/create_mappings_for_test.py

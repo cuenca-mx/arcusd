@@ -1,9 +1,9 @@
 from datetime import datetime
 
-from celery.signals import task_prerun, task_postrun
+from celery.signals import task_postrun, task_prerun
 
-from arcusd.data_access.tasks import save_task_info, update_task_info
 from arcusd.contracts import Contract
+from arcusd.data_access.tasks import save_task_info, update_task_info
 
 
 @task_prerun.connect

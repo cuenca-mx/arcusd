@@ -1,10 +1,9 @@
-from enum import Enum
 import datetime as dt
 import json
+from enum import Enum
 
 
 class Contract:
-
     def to_dict(self):
         items = {}
         for key, value in self.__dict__.items():

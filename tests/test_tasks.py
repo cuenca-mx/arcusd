@@ -1,9 +1,15 @@
 from unittest.mock import patch
+
 import pytest
 
 import arcusd.arcusactions
-from arcusd.daemon.tasks import (cancel_transaction, pay_bill, pay_bill_id,
-                                 query_bill, topup)
+from arcusd.daemon.tasks import (
+    cancel_transaction,
+    pay_bill,
+    pay_bill_id,
+    query_bill,
+    topup,
+)
 from arcusd.exc import UnknownServiceProvider
 from arcusd.types import OperationStatus, OperationType
 
@@ -26,20 +32,30 @@ def test_query_bill(send_op_result):
 
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 @pytest.mark.parametrize(
-    'service_provider_code,account_number,expected_message', [
-        ('satellite_tv_sky', '501000000004',
-         '501000000004 is an invalid account_number'),
+    'service_provider_code,account_number,expected_message',
+    [
+        (
+            'satellite_tv_sky',
+            '501000000004',
+            '501000000004 is an invalid account_number',
+        ),
         ('cable_izzi', '1111362009', 'Unexpected error'),
-        ('invoice_att', '1111322016',
-         'Failed to make the consult, please try again later'),
-        ('cable_megacable', '1111992022',
-         'Biller maintenance in progress, please try again later')
-    ])
+        (
+            'invoice_att',
+            '1111322016',
+            'Failed to make the consult, please try again later',
+        ),
+        (
+            'cable_megacable',
+            '1111992022',
+            'Biller maintenance in progress, please try again later',
+        ),
+    ],
+)
 @patch(SEND_OP_RESULT, return_value=dict(status='ok'))
-def test_query_bill_failed(send_op_result,
-                           service_provider_code,
-                           account_number,
-                           expected_message):
+def test_query_bill_failed(
+    send_op_result, service_provider_code, account_number, expected_message
+):
     request_id = 'request-id'
     query_bill(request_id, service_provider_code, account_number)
     assert send_op_result.called
@@ -47,8 +63,10 @@ def test_query_bill_failed(send_op_result,
     assert op_info.request_id == request_id
     assert op_info.tran_type == OperationType.query
     assert op_info.status == OperationStatus.failed
-    assert (op_info.error_message == expected_message
-            or op_info.error_message.startswith(expected_message))
+    assert (
+        op_info.error_message == expected_message
+        or op_info.error_message.startswith(expected_message)
+    )
 
 
 @patch(SEND_OP_RESULT, return_value=dict(status='ok'))
@@ -131,32 +149,23 @@ def test_successful_topup(send_op_result):
     assert op_info.status == OperationStatus.success
     assert op_info.operation.amount == 10000
     assert op_info.operation.currency == 'MXN'
-    assert (op_info.operation.starting_balance >
-            op_info.operation.ending_balance)
-
-
-@patch(SEND_OP_RESULT, return_value=dict(status='ok'))
-@pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
-def test_successful_topup(send_op_result):
-    request_id = 'request-id'
-    topup(request_id, 'topup_att', '5599999999', 10000, 'MXN')
-    assert send_op_result.called
-    op_info = send_op_result.call_args[0][0]
-    assert op_info.request_id == request_id
-    assert op_info.tran_type == OperationType.topup
-    assert op_info.status == OperationStatus.success
-    assert op_info.operation.amount == 10000
-    assert op_info.operation.currency == 'MXN'
-    assert (op_info.operation.starting_balance >
-            op_info.operation.ending_balance)
+    assert (
+        op_info.operation.starting_balance > op_info.operation.ending_balance
+    )
 
 
 @patch(SEND_OP_RESULT, return_value=dict(status='ok'))
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 def test_successful_invoice_with_name_on_account(send_op_result):
     request_id = 'request-id'
-    topup(request_id, 'internet_axtel', '5599999999', 35000, 'MXN',
-          'Billy R. Rosemond')
+    topup(
+        request_id,
+        'internet_axtel',
+        '5599999999',
+        35000,
+        'MXN',
+        'Billy R. Rosemond',
+    )
     assert send_op_result.called
     op_info = send_op_result.call_args[0][0]
     assert op_info.request_id == request_id
@@ -164,15 +173,23 @@ def test_successful_invoice_with_name_on_account(send_op_result):
     assert op_info.status == OperationStatus.success
     assert op_info.operation.amount == 35000
     assert op_info.operation.currency == 'MXN'
-    assert (op_info.operation.starting_balance >
-            op_info.operation.ending_balance)
+    assert (
+        op_info.operation.starting_balance > op_info.operation.ending_balance
+    )
 
 
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
-@pytest.mark.parametrize('phone_number,amount,expected_message', [
-    ('559999', 10000, '559999 is an invalid account_number for biller 13599'),
-    ('5599999999', 9330, 'Invalid Payment Amount')
-])
+@pytest.mark.parametrize(
+    'phone_number,amount,expected_message',
+    [
+        (
+            '559999',
+            10000,
+            '559999 is an invalid account_number for biller 13599',
+        ),
+        ('5599999999', 9330, 'Invalid Payment Amount'),
+    ],
+)
 @patch(SEND_OP_RESULT, return_value=dict(status='ok'))
 def test_failed_topup(send_op_result, phone_number, amount, expected_message):
     request_id = 'request-id'
@@ -207,7 +224,8 @@ def test_invalid_service_provider():
 @patch(SEND_OP_RESULT, side_effect=ConnectionError())
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 def test_send_operation_result_callback_failed_with_connection_error(
-        send_op_result):
+    send_op_result,
+):
     request_id = 'request-id'
     pay_bill(request_id, 'satellite_tv_sky', '501000000007')
     assert send_op_result.called
@@ -221,13 +239,24 @@ def test_send_operation_result_callback_failed_with_connection_error(
 
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_tasks')
 @pytest.mark.parametrize(
-    'phone_number,amount,expected_message,expected_notification', [
-     ('557777', 10000, '557777 is an invalid account_number for biller 13599',
-      'Por favor, verifica el número de telefono e intenta de nuevo')
-     ])
+    'phone_number,amount,expected_message,expected_notification',
+    [
+        (
+            '557777',
+            10000,
+            '557777 is an invalid ' 'account_number for biller 13599',
+            'Por favor, verifica el número de telefono e intenta de nuevo',
+        )
+    ],
+)
 @patch(SEND_OP_RESULT, return_value=dict(status='ok'))
-def test_notification(send_op_result, phone_number, amount,
-                      expected_message, expected_notification):
+def test_notification(
+    send_op_result,
+    phone_number,
+    amount,
+    expected_message,
+    expected_notification,
+):
     request_id = 'request-id'
     topup(request_id, 'topup_att', phone_number, amount, 'MXN')
     assert send_op_result.called

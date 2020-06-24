@@ -1,8 +1,9 @@
 import pytest
 from requests.exceptions import ConnectionError
+
+from arcusd import OperationStatus, OperationType
 from arcusd.callbacks import CallbackHelper
 from arcusd.contracts import OpInfo, Transaction
-from arcusd import OperationStatus, OperationType
 
 
 @pytest.mark.vcr(cassette_library_dir='tests/cassettes/test_callbacks')
@@ -14,7 +15,7 @@ def test_callbackhelper_send_message_success():
         currency='MXN',
         transaction_fee=500,
         hours_to_fulfill=10,
-        status='fulfilled'
+        status='fulfilled',
     )
     CallbackHelper.send_op_result(op_info)
 
@@ -28,7 +29,7 @@ def test_callbackhelper_send_message_connection_error():
         currency='MXN',
         transaction_fee=500,
         hours_to_fulfill=10,
-        status='fulfilled'
+        status='fulfilled',
     )
     with pytest.raises(ConnectionError):
         CallbackHelper.send_op_result(op_info)

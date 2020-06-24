@@ -1,8 +1,8 @@
 arcus==1.2.2
-celery>=4.2,<4.5
+celery==4.4.6
 pymongo==3.10.1
 sentry-sdk==0.15.1
 requests==2.24.0
 click==7.1.2
 dataclasses
-newrelic>=5.4.1.134,<5.15.0.0
+newrelic==5.14.1.144
