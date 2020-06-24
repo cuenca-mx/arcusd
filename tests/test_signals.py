@@ -1,7 +1,7 @@
 from unittest.mock import Mock
 
-from arcusd.contracts import OpInfo, Transaction
-from arcusd.daemon.arcusd_signals import task_before_run, task_after_run
+from arcusd.contracts import OpInfo
+from arcusd.daemon.arcusd_signals import task_after_run, task_before_run
 from arcusd.data_access.tasks import get_task_info
 from arcusd.types import OperationStatus, OperationType
 

@@ -2,21 +2,22 @@ from .contract import Contract
 
 
 class Payment(Contract):
-
-    def __init__(self,
-                 id: int,
-                 service_provider_code: int,
-                 account_number: str,
-                 amount: int,
-                 currency: str,
-                 payment_transaction_fee: int,
-                 payment_total: int,
-                 chain_earned: int,
-                 chain_paid: int,
-                 starting_balance: int,
-                 ending_balance: int,
-                 hours_to_fulfill: int,
-                 ticket_text: str):
+    def __init__(
+        self,
+        id: int,
+        service_provider_code: int,
+        account_number: str,
+        amount: int,
+        currency: str,
+        payment_transaction_fee: int,
+        payment_total: int,
+        chain_earned: int,
+        chain_paid: int,
+        starting_balance: int,
+        ending_balance: int,
+        hours_to_fulfill: int,
+        ticket_text: str,
+    ):
         self.id = id
         self.service_provider_code = service_provider_code
         self.account_number = account_number

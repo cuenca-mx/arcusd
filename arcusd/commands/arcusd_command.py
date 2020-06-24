@@ -3,8 +3,11 @@ import click
 from arcusd import OperationType
 from arcusd.callbacks import CallbackHelper
 from arcusd.contracts import OpInfo
-from arcusd.data_access.tasks import (get_task_info, update_task_info,
-                                      update_insert_task_info)
+from arcusd.data_access.tasks import (
+    get_task_info,
+    update_insert_task_info,
+    update_task_info,
+)
 
 
 @click.group()
@@ -30,28 +33,34 @@ def change_status(transaction_id: str, status: str) -> None:
     else:
         if status == 'success':
             id_value = click.prompt('please enter arcus id: ', type=str)
-            amount = click.prompt('please enter amount paid in cents: ',
-                                  type=int)
-            update_task_info(dict(request_id=transaction_id), dict(
-                op_info=dict(
-                    request_id=transaction_id,
-                    tran_type='payment',
-                    status=status,
-                    operation=dict(
-                        id=id_value,
-                        amount=amount,
-                        currency='MXN'
+            amount = click.prompt(
+                'please enter amount paid in cents: ', type=int
+            )
+            update_task_info(
+                dict(request_id=transaction_id),
+                dict(
+                    op_info=dict(
+                        request_id=transaction_id,
+                        tran_type='payment',
+                        status=status,
+                        operation=dict(
+                            id=id_value, amount=amount, currency='MXN'
+                        ),
                     )
-                )
-            ))
+                ),
+            )
         else:
-            update_insert_task_info({'request_id': transaction_id},
-                                    {'op_info.request_id': transaction_id,
-                                     'op_info.tran_type': 'payment',
-                                     'op_info.status': status})
+            update_insert_task_info(
+                {'request_id': transaction_id},
+                {
+                    'op_info.request_id': transaction_id,
+                    'op_info.tran_type': 'payment',
+                    'op_info.status': status,
+                },
+            )
         try:
-            CallbackHelper.send_op_result(OpInfo(transaction_id,
-                                                 OperationType.payment,
-                                                 status))
+            CallbackHelper.send_op_result(
+                OpInfo(transaction_id, OperationType.payment, status)
+            )
         except ConnectionError:
             click.echo('connection error try again')

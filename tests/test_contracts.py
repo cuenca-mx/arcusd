@@ -11,13 +11,13 @@ def test_to_dict():
         currency='MXN',
         transaction_fee=1000,
         hours_to_fulfill=0,
-        status='success'
+        status='success',
     )
     op_info = OpInfo(
         request_id='request-id',
         tran_type=OperationType.payment,
         status=OperationStatus.success,
-        operation=transaction
+        operation=transaction,
     )
     op_info.operation = transaction
     op_info_dict = op_info.to_dict()
@@ -43,18 +43,20 @@ def test_contract_encoder():
         currency='MXN',
         transaction_fee=1000,
         hours_to_fulfill=0,
-        status='success'
+        status='success',
     )
     op_info = OpInfo(
         request_id='request-id',
         tran_type=OperationType.payment,
         status=OperationStatus.success,
-        operation=transaction
+        operation=transaction,
     )
     contract_json = json.dumps(op_info, cls=ContractEncoder)
-    assert contract_json == ('{"request_id": "request-id", '
-                             '"tran_type": "payment", "status": "success", '
-                             '"operation": {"id": 987765, "amount": 1599900, '
-                             '"currency": "MXN", "transaction_fee": 1000, '
-                             '"hours_to_fulfill": 0, "status": "success"}, '
-                             '"error_message": null, "notification": null}')
+    assert contract_json == (
+        '{"request_id": "request-id", '
+        '"tran_type": "payment", "status": "success", '
+        '"operation": {"id": 987765, "amount": 1599900, '
+        '"currency": "MXN", "transaction_fee": 1000, '
+        '"hours_to_fulfill": 0, "status": "success"}, '
+        '"error_message": null, "notification": null}'
+    )

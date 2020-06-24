@@ -13,7 +13,8 @@ db = client.get_database()
 
 def get_biller_id(service_provider_code: str) -> int:
     mapping = db.providers_mapping.find_one(
-        dict(service_provider_code=service_provider_code))
+        dict(service_provider_code=service_provider_code)
+    )
     if not mapping:
         raise UnknownServiceProvider(service_provider_code)
     return mapping['biller_id']
@@ -28,5 +29,5 @@ def get_service_provider_code(biller_id: int) -> str:
 
 def add_mapping(service_provider_code: str, biller_id: int) -> None:
     db.providers_mapping.insert_one(
-        dict(service_provider_code=service_provider_code,
-             biller_id=biller_id))
+        dict(service_provider_code=service_provider_code, biller_id=biller_id)
+    )

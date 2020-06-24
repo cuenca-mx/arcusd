@@ -3,9 +3,7 @@ import pytest
 
 @pytest.fixture(scope='module')
 def vcr_config():
-    return dict(
-        ignore_hosts={'sentry.io'}
-    )
+    return dict(ignore_hosts={'sentry.io'})
 
 
 @pytest.fixture(scope='module')

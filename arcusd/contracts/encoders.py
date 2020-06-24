@@ -4,7 +4,6 @@ from enum import Enum
 
 
 class ContractEncoder(json.JSONEncoder):
-
     def default(self, obj):
         try:
             super().default(obj)

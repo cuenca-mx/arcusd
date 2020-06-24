@@ -11,8 +11,9 @@ from ..errors_dict import errors_dict
 from ..types import OperationStatus, OperationType
 
 
-def execute_op(request_id: str, op_type: OperationType, funct,
-               *args, **kwargs) -> OpInfo:
+def execute_op(
+    request_id: str, op_type: OperationType, funct, *args, **kwargs
+) -> OpInfo:
     op_info = OpInfo(request_id, op_type)
     try:
         transaction = funct(*args)
@@ -28,16 +29,18 @@ def execute_op(request_id: str, op_type: OperationType, funct,
     else:
         op_info.operation = transaction
         op_info.status = OperationStatus.success
-    update_task_info({'request_id': request_id},
-                     {'op_info': op_info.to_dict()})
+    update_task_info(
+        {'request_id': request_id}, {'op_info': op_info.to_dict()}
+    )
     if kwargs.get('send_callback', True):
         try:
             resp = CallbackHelper.send_op_result(op_info)
         except ConnectionError:
             resp = {'status': 'failed: ConnectionError'}
         finally:
-            update_task_info({'request_id': request_id},
-                             {'callback_response': resp})
+            update_task_info(
+                {'request_id': request_id}, {'callback_response': resp}
+            )
     return op_info
 
 

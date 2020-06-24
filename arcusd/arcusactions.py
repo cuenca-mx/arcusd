@@ -2,8 +2,7 @@ import os
 import re
 from typing import Optional
 
-from arcus.client import Client
-from arcus.client import Transaction as ArcusTransaction
+from arcus.client import Client, Transaction as ArcusTransaction
 from arcus.exc import InvalidAmount
 
 from arcusd.contracts import Bill, Cancellation, Payment, Transaction
@@ -11,13 +10,13 @@ from arcusd.data_access.providers_mapping import get_service_provider_code
 
 ARCUS_API_KEY = os.environ['ARCUS_API_KEY']
 ARCUS_SECRET_KEY = os.environ['ARCUS_SECRET_KEY']
-TOPUP_BILLERS = [int(biller_id) for biller_id in
-                 os.environ['TOPUP_BILLERS'].split(',')]
+TOPUP_BILLERS = [
+    int(biller_id) for biller_id in os.environ['TOPUP_BILLERS'].split(',')
+]
 
 use_arcus_sandbox = os.environ.get('ARCUS_USE_SANDBOX') == 'true'
 
-client = Client(ARCUS_API_KEY, ARCUS_SECRET_KEY,
-                sandbox=use_arcus_sandbox)
+client = Client(ARCUS_API_KEY, ARCUS_SECRET_KEY, sandbox=use_arcus_sandbox)
 
 
 def cents_to_unit(cents: int) -> float:
@@ -45,7 +44,7 @@ def query_bill(biller_id: int, account_number: str) -> Bill:
         service_provider_code=get_service_provider_code(biller_id),
         account_number=bill.account_number,
         balance=unit_to_cents(bill.balance),
-        currency=bill.balance_currency
+        currency=bill.balance_currency,
     )
     return bill_contract
 
@@ -59,13 +58,14 @@ def pay_bill_id(bill_id: int) -> Transaction:
         currency=transaction.amount_currency,
         transaction_fee=unit_to_cents(transaction.transaction_fee),
         hours_to_fulfill=transaction.hours_to_fulfill,
-        status=transaction.status
+        status=transaction.status,
     )
     return transaction_contract
 
 
-def pay_bill(biller_id: int, account_number: str,
-             amount: Optional[int] = None) -> Transaction:
+def pay_bill(
+    biller_id: int, account_number: str, amount: Optional[int] = None
+) -> Transaction:
     bill = client.bills.create(biller_id, clean(account_number))
     if amount is None:
         transaction = bill.pay()
@@ -78,16 +78,25 @@ def pay_bill(biller_id: int, account_number: str,
         currency=transaction.amount_currency,
         transaction_fee=unit_to_cents(transaction.transaction_fee),
         hours_to_fulfill=transaction.hours_to_fulfill,
-        status=transaction.status
+        status=transaction.status,
     )
     return transaction_contract
 
 
 def cancel_transaction(transaction_id: int) -> Cancellation:
     transaction = ArcusTransaction(
-        id=transaction_id, amount=0, amount_currency='',
-        transaction_fee=0, hours_to_fulfill=0, created_at='',
-        status='', type='', fx_rate=0, amount_usd=0, total_usd=0)
+        id=transaction_id,
+        amount=0,
+        amount_currency='',
+        transaction_fee=0,
+        hours_to_fulfill=0,
+        created_at='',
+        status='',
+        type='',
+        fx_rate=0,
+        amount_usd=0,
+        total_usd=0,
+    )
     arcus_cancellation = transaction.cancel()
     cancellation = Cancellation(
         transaction_id=transaction_id,
@@ -97,16 +106,23 @@ def cancel_transaction(transaction_id: int) -> Cancellation:
     return cancellation
 
 
-def bill_payments(biller_id: int, account_number: str, amount: int,
-                  currency: str, name_on_account: str) -> Payment:
+def bill_payments(
+    biller_id: int,
+    account_number: str,
+    amount: int,
+    currency: str,
+    name_on_account: str,
+) -> Payment:
     unit = amount_to_unit(amount)
     use_topup_creds = biller_id in TOPUP_BILLERS
-    payment = client.bill_payments.create(biller_id,
-                                          clean(account_number),
-                                          unit,
-                                          currency,
-                                          name_on_account,
-                                          topup=use_topup_creds)
+    payment = client.bill_payments.create(
+        biller_id,
+        clean(account_number),
+        unit,
+        currency,
+        name_on_account,
+        topup=use_topup_creds,
+    )
     payment_contract = Payment(
         id=payment.id,
         service_provider_code=get_service_provider_code(biller_id),
@@ -120,6 +136,6 @@ def bill_payments(biller_id: int, account_number: str, amount: int,
         starting_balance=unit_to_cents(payment.starting_balance),
         ending_balance=unit_to_cents(payment.ending_balance),
         hours_to_fulfill=payment.hours_to_fulfill,
-        ticket_text=payment.ticket_text
+        ticket_text=payment.ticket_text,
     )
     return payment_contract
