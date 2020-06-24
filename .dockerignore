@@ -12,3 +12,8 @@ __pycache__/
 
 # envrc
 .envrc
+
+tests/
+requirements-dev.txt
+requirements-test.txt
+
