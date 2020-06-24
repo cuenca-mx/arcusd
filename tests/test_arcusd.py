@@ -13,4 +13,4 @@ def test_clean_phone_number():
     assert clean('(555) 555 5555') == '5555555555'
     assert clean('555-555') == '555555'
     assert clean('555?444') == '555444'
-    assert clean('-.-5544MMCCXX**' '') == '5544MMCCXX'
+    assert clean('-.-5544MMCCXX**') == '5544MMCCXX'
