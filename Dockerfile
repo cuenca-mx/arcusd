@@ -1,4 +1,4 @@
-FROM cuenca/python:0.0.1
+FROM python:3.7
 LABEL maintainer="dev@cuenca.com"
 
 # Install app
