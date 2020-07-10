@@ -2,7 +2,8 @@ import os
 import re
 from typing import Optional
 
-from arcus.client import Client, Transaction as ArcusTransaction
+from arcus.client import Client
+from arcus.client import Transaction as ArcusTransaction
 from arcus.exc import InvalidAmount
 
 from arcusd.contracts import Bill, Cancellation, Payment, Transaction
