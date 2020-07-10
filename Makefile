@@ -2,7 +2,7 @@ SHELL := bash
 DOCKER=docker-compose run --rm arcusd
 PYTHON=python3.6
 PROJECT=arcusd
-isort = isort -rc -ac $(PROJECT) tests setup.py
+isort = isort $(PROJECT) tests setup.py
 black = black -S -l 79 --target-version py37 $(PROJECT) tests setup.py
 
 install:
