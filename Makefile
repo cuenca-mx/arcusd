@@ -45,10 +45,11 @@ travis-test: docker-build
 		docker-compose exec arcusd scripts/test.sh
 		docker-compose exec arcusd coveralls
 
-docker-test: docker-build
-		# Clean up even if there's an error
-		$(DOCKER) scripts/test.sh || $(MAKE) docker-stop
-		$(MAKE) docker-stop
+github-test: docker-build
+		$(DOCKER) scripts/test.sh
+
+github-coverage: docker-build
+		$(DOCKER) scripts/coverage.sh
 
 docker-stop:
 		docker-compose stop
