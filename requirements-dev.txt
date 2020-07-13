@@ -2,5 +2,5 @@ coveralls==2.1.1
 pytest==5.4.3
 pytest-vcr==1.0.2
 black==19.10b0
-isort[pipfile]==5.0.7
+isort[pipfile]==5.0.9
 flake8==3.8.3
