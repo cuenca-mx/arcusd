@@ -28,8 +28,6 @@ lint:
 
 test: clean-pyc lint
 		python scripts/create_mappings_for_test.py
-		coverage run --source arcusd -m py.test
-		coverage report -m
 
 docker-build: clean-pyc
 		docker-compose build
@@ -40,15 +38,11 @@ docker-shell: docker-build
 		$(DOCKER) scripts/devwrapper.sh bash || $(MAKE) docker-stop
 		$(MAKE) docker-stop
 
-travis-test: docker-build
-		docker-compose up -d
-		docker-compose exec arcusd scripts/test.sh
-		docker-compose exec arcusd coveralls
+github-test: docker-build
+		$(DOCKER) scripts/test.sh
 
-docker-test: docker-build
-		# Clean up even if there's an error
-		$(DOCKER) scripts/test.sh || $(MAKE) docker-stop
-		$(MAKE) docker-stop
+github-coverage: docker-build
+		$(DOCKER) scripts/coverage.sh
 
 docker-stop:
 		docker-compose stop
