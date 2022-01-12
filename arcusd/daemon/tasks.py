@@ -20,11 +20,14 @@ def topup(
     currency: str = 'MXN',
     name_on_account: Optional[str] = None,
 ):
+    biller_id = get_biller_id(service_provider_code)
     execute_op(
         request_id,
-        OperationType.topup,
+        OperationType.topup
+        if biller_id in arcusd.arcusactions.TOPUP_BILLERS
+        else OperationType.payment,
         arcusd.arcusactions.bill_payments,
-        get_biller_id(service_provider_code),
+        biller_id,
         phone_number,
         amount,
         currency,
