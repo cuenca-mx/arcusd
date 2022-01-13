@@ -28,6 +28,7 @@ lint:
 
 test: clean-pyc lint
 		python scripts/create_mappings_for_test.py
+		pytest --cov-report=xml
 
 docker-build: clean-pyc
 		docker-compose build
