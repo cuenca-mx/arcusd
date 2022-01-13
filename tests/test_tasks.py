@@ -187,7 +187,11 @@ def test_successful_invoice_with_name_on_account(send_op_result):
             10000,
             '559999 is an invalid account_number for biller 13599',
         ),
-        ('5599999999', 9330, 'Invalid Payment Amount'),
+        (
+            '5599999999',
+            9330,
+            'Incomplete payment amount of 93.3, must pay full balance',
+        ),
     ],
 )
 @patch(SEND_OP_RESULT, return_value=dict(status='ok'))
