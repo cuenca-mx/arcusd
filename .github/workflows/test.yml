@@ -18,15 +18,12 @@ jobs:
 
   pytest:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.6, 3.7, 3.8]
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python 3.8
       uses: actions/setup-python@v1
       with:
-        python-version: ${{ matrix.python-version }}
+        python-version: 3.8
     - name: Install dependencies
       run: make install-dev
     - name: Run tests
@@ -52,7 +49,7 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
-          # token: xxxxx  <- we need to generate token
+          token: db0b8601-e922-4f20-b2f2-1e381b86748f
           file: ./coverage.xml
           flags: unittests
           name: codecov-umbrella
