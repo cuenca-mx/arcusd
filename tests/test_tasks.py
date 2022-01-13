@@ -169,7 +169,7 @@ def test_successful_invoice_with_name_on_account(send_op_result):
     assert send_op_result.called
     op_info = send_op_result.call_args[0][0]
     assert op_info.request_id == request_id
-    assert op_info.tran_type == OperationType.topup
+    assert op_info.tran_type == OperationType.payment
     assert op_info.status == OperationStatus.success
     assert op_info.operation.amount == 35000
     assert op_info.operation.currency == 'MXN'
