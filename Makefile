@@ -6,10 +6,10 @@ isort = isort $(PROJECT) tests setup.py
 black = black -S -l 79 --target-version py37 $(PROJECT) tests setup.py
 
 install:
-		pip install -r requirements.txt
+		pip install -q -r requirements.txt
 
 install-dev: install
-		pip install -r requirements-dev.txt
+		pip install -q -r requirements-dev.txt
 
 venv:
 		$(PYTHON) -m venv --prompt arcusd venv
