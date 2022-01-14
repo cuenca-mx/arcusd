@@ -11,4 +11,3 @@ include = [
     'arcusd.daemon.tasks',
     'arcusd.daemon.tasks_sync',
 ]
-result_backend = 'amqp'
