@@ -12,4 +12,4 @@ RUN make install
 ADD . /arcusd/
 RUN pip install -e .
 
-CMD newrelic-admin run-program celery worker -A arcusd.daemon.tasks --loglevel=info -c ${ARCUSD_WORKERS:-5}
+CMD newrelic-admin run-program celery -A arcusd.daemon.tasks worker --loglevel=info -c ${ARCUSD_WORKERS:-5}
